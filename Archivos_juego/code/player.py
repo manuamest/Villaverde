@@ -1,5 +1,6 @@
 import pygame
 from settings import *
+from timer import Timer
 
 class Player(pygame.sprite.Sprite):
 	def __init__(self, pos, group):
@@ -15,22 +16,63 @@ class Player(pygame.sprite.Sprite):
 		self.pos = pygame.math.Vector2(self.rect.center)
 		self.speed = 200
 
+		# timers 
+		self.timers = {
+			'tool use':Timer(350,self.use_tool),
+			'tool switch':Timer(200)
+		}
+
+		# tools 
+		self.tools = ['hoe','axe','water']
+		self.tool_index = 0
+		self.selected_tool = self.tools[self.tool_index]
+
+
+	def use_tool(self):
+		pass
+		# print(self.selected_tool)
+
+
 	def input(self):
 		keys = pygame.key.get_pressed()
 
-		if keys[pygame.K_w]:
-			self.direction.y = -1
-		elif keys[pygame.K_s]:
-			self.direction.y = 1
-		else:
-			self.direction.y = 0
+		if not self.timers['tool use'].active:
+			if keys[pygame.K_w]:
+				self.direction.y = -1
+			elif keys[pygame.K_s]:
+				self.direction.y = 1
+			else:
+				self.direction.y = 0
 
-		if keys[pygame.K_d]:
-			self.direction.x = 1
-		elif keys[pygame.K_a]:
-			self.direction.x = -1
-		else:
-			self.direction.x = 0
+			if keys[pygame.K_d]:
+				self.direction.x = 1
+			elif keys[pygame.K_a]:
+				self.direction.x = -1
+			else:
+				self.direction.x = 0
+			
+			# tool use
+			if keys[pygame.K_SPACE]:
+				print(f'tool [{self.selected_tool}] is being used')
+				self.timers['tool use'].activate()
+				self.direction = pygame.math.Vector2()
+			
+			# change tool
+			if keys[pygame.K_q] and not self.timers['tool switch'].active:
+				self.timers['tool switch'].activate()
+				self.tool_index += 1
+				if self.tool_index < len(self.tools):
+					self.tool_index = self.tool_index 
+				else: 
+					self.tool_index = 0
+				self.selected_tool = self.tools[self.tool_index]
+				print(f'change tool to [{self.selected_tool}] ')
+
+
+	def update_timers(self):
+		for timer in self.timers.values():
+			timer.update()
+
 
 	def move(self,dt):
 
@@ -49,4 +91,5 @@ class Player(pygame.sprite.Sprite):
 
 	def update(self, dt):
 		self.input()
+		self.update_timers()
 		self.move(dt)
