@@ -7,7 +7,7 @@ class Player(pygame.sprite.Sprite):
 
 		# general setup
 		self.image = pygame.Surface((32,64))
-		self.image.fill('green')
+		self.image.fill((0,255,0))
 		self.rect = self.image.get_rect(center = pos)
 
 		# movement attributes
