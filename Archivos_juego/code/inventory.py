@@ -31,11 +31,9 @@ def añadir_trigo():
     inventario_items["Trigo"] += 1
 
 
-# Cargar la imagen de fondo para el inventario
-# Asegúrate de que la imagen 'inventario_fondo.png' está en el mismo directorio que tu script
+
 imagen_fondo_inventario = pygame.image.load('./sprites/inventario.png')
 imagen_fondo_inventario = pygame.transform.scale(imagen_fondo_inventario, (400, 300))
-
 
 
 
