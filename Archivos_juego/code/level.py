@@ -28,6 +28,7 @@ class Level:
         self.camera.y = self.player.rect.centery - SCREEN_HEIGHT // 2
 
     def run(self, dt):
+        self.display_surface.fill('black')
         self.update_camera()
 
         #Dibujar el fondo
