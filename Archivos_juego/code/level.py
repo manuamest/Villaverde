@@ -1,6 +1,7 @@
-import pygame 
+import pygame
 from settings import *
 from player import Player
+
 
 class Level:
     def __init__(self):
@@ -14,7 +15,7 @@ class Level:
         self.camera = pygame.math.Vector2(0, 0)
 
         #Cargar la imagen de fondo
-        self.background = pygame.image.load('./Archivos_juego/code/prueba.jpg').convert()
+        self.background = pygame.image.load('./prueba.jpg').convert()
 
         self.setup()
 
