@@ -17,36 +17,34 @@ except FileNotFoundError:
 
 # Colores
 NEGRO = (0, 0, 0)
-BLANCO = (255, 255, 255)
+MARRON = (150, 75, 0)
 GRIS = (200, 200, 200)
-AZUL_CLARO = (173, 216, 230)
 
 # Variables del inventario
 inventario_abierto = False
-# Cambiado a un diccionario con ítems y sus cantidades
 inventario_items = {"Madera": 5, "Trigo": 3}
+
+# Cargar la imagen de fondo para el inventario
+# Asegúrate de que la imagen 'inventario_fondo.png' está en el mismo directorio que tu script
+imagen_fondo_inventario = pygame.image.load('maderita3.png')
+imagen_fondo_inventario = pygame.transform.scale(imagen_fondo_inventario, (400, 300))
 
 # Función para dibujar el inventario
 def dibujar_inventario():
-    # Dimensiones del inventario
     inventario_ancho = 400
     inventario_alto = 300
     inventario_x = pantalla_ancho // 2 - inventario_ancho // 2
     inventario_y = pantalla_alto // 2 - inventario_alto // 2
 
-    # Dibujar el fondo del inventario
-    fondo = pygame.Surface((inventario_ancho, inventario_alto))
-    fondo.fill(AZUL_CLARO)
-    fondo.set_alpha(230)  # Semi transparencia
-    pantalla.blit(fondo, (inventario_x, inventario_y))
-    pygame.draw.rect(pantalla, NEGRO, (inventario_x, inventario_y, inventario_ancho, inventario_alto), 3)  # Borde
+    # Dibujar la imagen de fondo para el inventario
+    pantalla.blit(imagen_fondo_inventario, (inventario_x, inventario_y))
 
     # Dibujar los items del inventario y sus cantidades
     for i, (item, cantidad) in enumerate(inventario_items.items()):
         texto = fuente.render(f"{item}: {cantidad}", True, NEGRO)
         item_x = inventario_x + 20
         item_y = inventario_y + 20 + i * 50  # Espaciado aumentado para mejor visualización
-        pygame.draw.rect(pantalla, BLANCO, (item_x - 10, item_y - 10, 360, 40), 0, 5)  # Fondo de ítem
+        pygame.draw.rect(pantalla, MARRON, (item_x - 10, item_y - 10, 360, 40), 0, 5)  # Fondo de ítem
         pantalla.blit(texto, (item_x, item_y))
 
 # Bucle principal
