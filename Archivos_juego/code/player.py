@@ -12,6 +12,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.Surface((32, 64))
         self.image.fill((0, 255, 0))
         self.rect = self.image.get_rect(center=pos)
+        self.z = LAYERS['main']
 
         # movement attributes
         self.direction = pygame.math.Vector2()
@@ -34,8 +35,7 @@ class Player(pygame.sprite.Sprite):
 
     def use_tool(self):
         pass
-
-    # print(self.selected_tool)
+        # print(self.selected_tool)
 
     def input(self):
         keys = pygame.key.get_pressed()

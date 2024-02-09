@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 from player import Player
+from sprites import *
 
 
 class Level:
@@ -9,34 +10,42 @@ class Level:
         self.display_surface = pygame.display.get_surface()
 
         #Grupos de sprites
-        self.all_sprites = pygame.sprite.Group()
-
-        #Posicion de la camara
-        self.camera = pygame.math.Vector2(0, 0)
-
-        #Cargar la imagen de fondo
-        self.background = pygame.image.load('./prueba.jpg').convert()
-
+        self.all_sprites = CameraGroup()
+        
         self.setup()
 
-    def setup(self):
-        self.player = Player((640, 360), self.all_sprites)
 
-    def update_camera(self):
-        #Hacer que la cámara siga al jugador
-        self.camera.x = self.player.rect.centerx - SCREEN_WIDTH // 2
-        self.camera.y = self.player.rect.centery - SCREEN_HEIGHT // 2
+    def setup(self):
+        self.player = Player((SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), self.all_sprites)
+        background_image = pygame.image.load('./prueba.jpg').convert_alpha()
+        # Hacer el fondo 4 veces más grande
+        background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH * 4, SCREEN_HEIGHT * 4))
+        
+        Generic(
+            pos = (0,0),
+            surf = background_image,
+            groups = self.all_sprites,
+            z = LAYERS['ground'])
 
     def run(self, dt):
         self.display_surface.fill('black')
-        self.update_camera()
-
-        #Dibujar el fondo
-        self.display_surface.blit(self.background, (0 - self.camera.x, 0 - self.camera.y))
-
-        #Dibujar los sprites
-        for sprite in self.all_sprites:
-            self.display_surface.blit(sprite.image, sprite.rect.move(-self.camera.x, -self.camera.y))
-
-        #Actualizar todos los sprites
+        self.all_sprites.custom_draw(self.player)
         self.all_sprites.update(dt)
+
+class CameraGroup(pygame.sprite.Group):
+    def __init__(self):
+        super().__init__()
+        self.display_surface = pygame.display.get_surface()
+        self.camera = pygame.math.Vector2()
+
+    def custom_draw(self, player):
+        #Camara sigue al jugador
+        self.camera.x = player.rect.centerx - SCREEN_WIDTH / 2
+        self.camera.y = player.rect.centery - SCREEN_HEIGHT / 2
+        #Los sprites se dibujan por orden (ahora mismo solo hay jugador y suelo)
+        for layer in LAYERS.values():
+            for sprite in self.sprites():
+                if sprite.z == layer:
+                    offset_rect = sprite.rect.copy()
+                    offset_rect.center -= self.camera
+                    self.display_surface.blit(sprite.image, offset_rect)

@@ -1,9 +1,10 @@
 import pygame
+from settings import *
 
 class Inventory:
     def __init__(self):
-        self.pantalla_ancho = 800
-        self.pantalla_alto = 600
+        self.pantalla_ancho = SCREEN_WIDTH
+        self.pantalla_alto = SCREEN_HEIGHT
         self.pantalla = pygame.display.set_mode((self.pantalla_ancho, self.pantalla_alto))
 
         # Cargar fuentes
