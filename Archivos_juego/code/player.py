@@ -3,7 +3,6 @@ from settings import *
 from timer import Timer
 from inventory import Inventory
 
-
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group):
         super().__init__(group)
@@ -22,7 +21,8 @@ class Player(pygame.sprite.Sprite):
         # timers
         self.timers = {
             'tool use': Timer(350, self.use_tool),
-            'tool switch': Timer(200)
+            'tool switch': Timer(200),
+            'inventory toggle': Timer(300)  # Nuevo temporizador para el inventario
         }
 
         # tools
@@ -30,8 +30,9 @@ class Player(pygame.sprite.Sprite):
         self.tool_index = 0
         self.selected_tool = self.tools[self.tool_index]
 
-        # Crear una instancia de la clase Inventory
+        # inventory
         self.inventory = Inventory()
+        self.inventory_open = False  # Estado inicial del inventario cerrado
 
     def use_tool(self):
         pass
@@ -39,7 +40,6 @@ class Player(pygame.sprite.Sprite):
 
     def input(self):
         keys = pygame.key.get_pressed()
-
 
         if not self.timers['tool use'].active:
             if keys[pygame.K_w]:
@@ -62,24 +62,25 @@ class Player(pygame.sprite.Sprite):
                 self.timers['tool use'].activate()
                 self.direction = pygame.math.Vector2()
 
-            # Draw inventory (cambiar forma de hacerlo)
-            if keys[pygame.K_b]:
-                self.inventory.dibujar_inventario()
-            if keys[pygame.K_m]:
-                    self.inventory.añadir_madera()
-            if keys[pygame.K_t]:
-                        self.inventory.añadir_trigo()
+            # Cambiar estado del inventario con temporizador
+            if keys[pygame.K_b] and not self.timers['inventory toggle'].active:
+                self.timers['inventory toggle'].activate()
+                self.inventory_open = not self.inventory_open  # Cambia entre abrir y cerrar inventario
 
-        # change tool
-            if keys[pygame.K_q] and not self.timers['tool switch'].active:
-                self.timers['tool switch'].activate()
-                self.tool_index += 1
-                if self.tool_index < len(self.tools):
-                    self.tool_index = self.tool_index
-                else:
-                    self.tool_index = 0
-                self.selected_tool = self.tools[self.tool_index]
-                print(f'change tool to [{self.selected_tool}] ')
+            # Acciones del inventario
+            if self.inventory_open:
+                self.inventory.dibujar_inventario()
+                if keys[pygame.K_m]:
+                    self.inventory.añadir_madera()
+                if keys[pygame.K_t]:
+                    self.inventory.añadir_trigo()
+
+        # Cambiar herramienta
+        if keys[pygame.K_q] and not self.timers['tool switch'].active:
+            self.timers['tool switch'].activate()
+            self.tool_index = (self.tool_index + 1) % len(self.tools)
+            self.selected_tool = self.tools[self.tool_index]
+            print(f'change tool to [{self.selected_tool}] ')
 
     def update_timers(self):
         for timer in self.timers.values():
@@ -98,7 +99,7 @@ class Player(pygame.sprite.Sprite):
         # vertical movement
         self.pos.y += self.direction.y * self.speed * dt
         self.rect.centery = self.pos.y
-
+        
     def update(self, dt):
         self.input()
         self.update_timers()
