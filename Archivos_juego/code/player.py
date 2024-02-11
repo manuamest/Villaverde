@@ -3,36 +3,50 @@ from settings import *
 from timer import Timer
 from inventory import Inventory
 
+class InteractableObject(pygame.sprite.Sprite):
+    def __init__(self, pos, group):
+        super().__init__(group)
+
+        # Configuración general
+        self.image = pygame.Surface((32, 32))
+        self.image.fill((255, 0, 0))
+        self.rect = self.image.get_rect(center=(500, 500))  # Posición del objeto a la derecha del jugador
+        self.z = LAYERS['main']
+
+    def interact(self):
+        print("Interactuando con el objeto")
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group):
         super().__init__(group)
 
-        # general setup
+        # Configuración general
         self.image = pygame.Surface((32, 64))
         self.image.fill((0, 255, 0))
         self.rect = self.image.get_rect(center=pos)
         self.z = LAYERS['main']
 
-        # movement attributes
+        # Atributos de movimiento
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.center)
         self.speed = 200
 
-        # timers
+        # Temporizadores
         self.timers = {
-            'tool use': Timer(350, self.use_tool),
-            'tool switch': Timer(200),
-            'inventory toggle': Timer(300)  # Nuevo temporizador para el inventario
+            'uso de herramienta': Timer(350, self.use_tool),
+            'cambio de herramienta': Timer(200),
+            'alternar inventario': Timer(1000),  # Temporizador para el inventario
+            'interacción': Timer(300)  # Temporizador para la interacción con objetos
         }
 
-        # tools
-        self.tools = ['hoe', 'axe', 'water']
+        # Herramientas
+        self.tools = ['azada', 'hacha', 'agua']
         self.tool_index = 0
         self.selected_tool = self.tools[self.tool_index]
 
-        # inventory
+        # Inventario
         self.inventory = Inventory()
-        self.inventory_open = False  # Estado inicial del inventario cerrado
+        self.inventario_abierto = False  # Estado inicial del inventario cerrado
 
     def use_tool(self):
         pass
@@ -41,7 +55,7 @@ class Player(pygame.sprite.Sprite):
     def input(self):
         keys = pygame.key.get_pressed()
 
-        if not self.timers['tool use'].active:
+        if not self.timers['uso de herramienta'].active:
             if keys[pygame.K_w]:
                 self.direction.y = -1
             elif keys[pygame.K_s]:
@@ -56,19 +70,19 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.direction.x = 0
 
-            # tool use
+            # Uso de herramienta
             if keys[pygame.K_SPACE]:
-                print(f'tool [{self.selected_tool}] is being used')
-                self.timers['tool use'].activate()
+                print(f'Herramienta [{self.selected_tool}] está siendo usada')
+                self.timers['uso de herramienta'].activate()
                 self.direction = pygame.math.Vector2()
 
-            # Cambiar estado del inventario con temporizador
-            if keys[pygame.K_b] and not self.timers['inventory toggle'].active:
-                self.timers['inventory toggle'].activate()
-                self.inventory_open = not self.inventory_open  # Cambia entre abrir y cerrar inventario
+            # Alternar estado del inventario
+            if keys[pygame.K_b] and not self.timers['alternar inventario'].active:
+                self.timers['alternar inventario'].activate()
+                self.inventario_abierto = not self.inventario_abierto  # Cambia entre abrir y cerrar inventario
 
             # Acciones del inventario
-            if self.inventory_open:
+            if self.inventario_abierto:
                 self.inventory.dibujar_inventario()
                 if keys[pygame.K_m]:
                     self.inventory.añadir_madera()
@@ -76,11 +90,22 @@ class Player(pygame.sprite.Sprite):
                     self.inventory.añadir_trigo()
 
         # Cambiar herramienta
-        if keys[pygame.K_q] and not self.timers['tool switch'].active:
-            self.timers['tool switch'].activate()
+        if keys[pygame.K_q] and not self.timers['cambio de herramienta'].active:
+            self.timers['cambio de herramienta'].activate()
             self.tool_index = (self.tool_index + 1) % len(self.tools)
             self.selected_tool = self.tools[self.tool_index]
-            print(f'change tool to [{self.selected_tool}] ')
+            print(f'Cambiando a herramienta [{self.selected_tool}] ')
+
+        # Interactuar con objetos
+        if keys[pygame.K_e] and not self.timers['interacción'].active:
+            self.timers['interacción'].activate()
+            player_center = pygame.math.Vector2(self.rect.center)
+            for sprite in self.groups()[0].sprites():
+                if isinstance(sprite, InteractableObject):
+                    obj_center = pygame.math.Vector2(sprite.rect.center)
+                    distancia = player_center.distance_to(obj_center)
+                    if distancia < 50:  # Distancia al objeto
+                        sprite.interact()
 
     def update_timers(self):
         for timer in self.timers.values():
@@ -88,18 +113,18 @@ class Player(pygame.sprite.Sprite):
 
     def move(self, dt):
 
-        # normalizing a vector
+        # Normalizar un vector
         if self.direction.magnitude() > 0:
             self.direction = self.direction.normalize()
 
-        # horizontal movement
+        # Movimiento horizontal
         self.pos.x += self.direction.x * self.speed * dt
         self.rect.centerx = self.pos.x
 
-        # vertical movement
+        # Movimiento vertical
         self.pos.y += self.direction.y * self.speed * dt
         self.rect.centery = self.pos.y
-        
+
     def update(self, dt):
         self.input()
         self.update_timers()

@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from player import Player
+from player import Player, InteractableObject
 from sprites import *
 
 
@@ -26,6 +26,11 @@ class Level:
             surf = background_image,
             groups = self.all_sprites,
             z = LAYERS['ground'])
+
+        # Crear instancia del objeto interactuable
+        InteractableObject(
+            pos=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2),  # Posición inicial del jugador
+            group=self.all_sprites)
 
     def run(self, dt):
         self.display_surface.fill('black')
