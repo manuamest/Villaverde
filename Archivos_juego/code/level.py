@@ -30,7 +30,25 @@ class Level:
         # Crear instancia del objeto interactuable
         InteractableObject(
             pos=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2),  # Posición inicial del jugador
-            group=self.all_sprites)
+            group=self.all_sprites,color=(255,0,0))
+
+
+        InteractableObject(
+            pos=(SCREEN_WIDTH / 2 + 200, SCREEN_HEIGHT / 2 + 200),
+            group=self.all_sprites,color=(255,255,0))
+
+        InteractableObject(
+            pos=(SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 2 + 300),
+            group=self.all_sprites, color=(255, 255, 0))
+
+
+        InteractableObject(
+            pos=(SCREEN_WIDTH / 2 + 500, SCREEN_HEIGHT / 2 + 500),  # Posición inicial del jugador
+            group=self.all_sprites,color=(0,0,255))
+
+
+
+
 
     def run(self, dt):
         self.display_surface.fill('black')
