@@ -1,7 +1,6 @@
 import pygame
 
-from Archivos_juego.code.settings import LAYERS
-
+from settings import LAYERS
 
 class InteractableObject(pygame.sprite.Sprite):
     def __init__(self, pos, group, color):

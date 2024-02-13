@@ -2,6 +2,7 @@ import pygame
 from settings import *
 from player import Player, InteractableObject
 from sprites import *
+from overlay import Overlay
 
 
 class Level:
@@ -14,10 +15,13 @@ class Level:
         
         self.setup()
 
+        # Overlay 
+        self.overlay = Overlay(self.player)
+
 
     def setup(self):
         self.player = Player((SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), self.all_sprites)
-        background_image = pygame.image.load('./prueba.jpg').convert_alpha()
+        background_image = pygame.image.load('Archivos_juego/code/prueba.jpg').convert_alpha()
         # Hacer el fondo 4 veces más grande
         background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH * 4, SCREEN_HEIGHT * 4))
         
@@ -54,6 +58,9 @@ class Level:
         self.display_surface.fill('black')
         self.all_sprites.custom_draw(self.player)
         self.all_sprites.update(dt)
+
+        # Para mostrar el overlay
+        self.overlay.display()
 
 class CameraGroup(pygame.sprite.Group):
     def __init__(self):

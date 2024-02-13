@@ -73,22 +73,22 @@ class Player(pygame.sprite.Sprite):
             if self.inventario_abierto:
                 self.inventory.dibujar_inventario()
 
-        # Cambiar herramienta
-        if keys[pygame.K_q] and not self.timers['cambio de herramienta'].active:
-            self.timers['cambio de herramienta'].activate()
-            self.tool_index = (self.tool_index + 1) % len(self.tools)
-            self.selected_tool = self.tools[self.tool_index]
-            print(f'Cambiando a herramienta [{self.selected_tool}] ')
+            # Cambiar herramienta
+            if keys[pygame.K_q] and not self.timers['cambio de herramienta'].active:
+                self.timers['cambio de herramienta'].activate()
+                self.tool_index = (self.tool_index + 1) % len(self.tools)
+                self.selected_tool = self.tools[self.tool_index]
+                print(f'Cambiando a herramienta [{self.selected_tool}] ')
 
-        if keys[pygame.K_e] and not self.timers['interacción'].active:
-            self.timers['interacción'].activate()
-            player_center = pygame.math.Vector2(self.rect.center)
-            for sprite in self.groups()[0].sprites():
-                if isinstance(sprite, InteractableObject):
-                    obj_center = pygame.math.Vector2(sprite.rect.center)
-                    distancia = player_center.distance_to(obj_center)
-                    if distancia < 50:  # Si está lo suficientemente cerca para interactuar
-                        sprite.interact(self.inventory)
+            if keys[pygame.K_e] and not self.timers['interacción'].active:
+                self.timers['interacción'].activate()
+                player_center = pygame.math.Vector2(self.rect.center)
+                for sprite in self.groups()[0].sprites():
+                    if isinstance(sprite, InteractableObject):
+                        obj_center = pygame.math.Vector2(sprite.rect.center)
+                        distancia = player_center.distance_to(obj_center)
+                        if distancia < 50:  # Si está lo suficientemente cerca para interactuar
+                            sprite.interact(self.inventory)
 
     def update_timers(self):
         for timer in self.timers.values():
