@@ -9,7 +9,7 @@ class Overlay:
         self.player = player
 
         # imports para el overlay
-        overlay_path = 'Archivos_juego/code/overlay/'
+        overlay_path = './code/overlay/'
         # Asocia cada herramienta con su imagen
         self.tools_surf = {tool: pygame.image.load(f'{overlay_path}{tool}.png').convert_alpha() for tool in player.tools}
         print(self.tools_surf)

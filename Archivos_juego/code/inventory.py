@@ -8,7 +8,7 @@ class Inventory:
         self.pantalla = pygame.display.set_mode((self.pantalla_ancho, self.pantalla_alto))
 
         # Cargar fuentes
-        self.fuente = pygame.font.Font("Archivos_juego/code/fonts/Stardew_Valley.ttf", 24)
+        self.fuente = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 24)
 
         # Colores
         self.COLOR_LETRAS = (238, 212, 167)
@@ -20,12 +20,12 @@ class Inventory:
         self.inventario_items = {"Madera": 0, "Trigo": 0}
 
         # Cargar la imagen de fondo para el inventario
-        self.imagen_fondo_inventario = pygame.image.load('Archivos_juego/code/sprites/inventario.png')
+        self.imagen_fondo_inventario = pygame.image.load('./code/sprites/inventario.png')
         self.imagen_fondo_inventario = pygame.transform.scale(self.imagen_fondo_inventario, (400, 300))
 
         self.sprites_items = {
-            "Madera": pygame.image.load('Archivos_juego/code/sprites/madera.png'),
-            "Trigo": pygame.image.load('Archivos_juego/code/sprites/trigo.png'),
+            "Madera": pygame.image.load('./code/sprites/madera.png'),
+            "Trigo": pygame.image.load('./code/sprites/trigo.png'),
         }
 
     def añadir_madera(self):
