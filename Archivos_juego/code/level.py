@@ -21,7 +21,14 @@ class Level:
 
     def setup(self):
         # Cargar el mapa de Tiled
-        self.tmx_map = load_pygame("./code/mapa/mapa.tmx")
+        # Verano
+        # self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
+        # Otoño
+        # self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
+        # Invierno
+        # self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
+        # Volcán
+        self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
 
         # Obtener la capa de colisiones
         self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
