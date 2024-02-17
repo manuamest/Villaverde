@@ -3,11 +3,8 @@ from settings import *
 from player import Player, InteractableObject
 from sprites import *
 from overlay import Overlay
-
-import pygame
 import pytmx
 from pytmx.util_pygame import load_pygame
-from settings import *
 
 class Level:
     def __init__(self):

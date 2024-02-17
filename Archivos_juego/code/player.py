@@ -4,12 +4,6 @@ from timer import Timer
 from inventory import Inventory
 from interactuable import InteractableObject
 
-import pygame
-from settings import *
-from timer import Timer
-from inventory import Inventory
-from interactuable import InteractableObject
-
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group, collision_layer, size=(32, 64)):
         super().__init__(group)
