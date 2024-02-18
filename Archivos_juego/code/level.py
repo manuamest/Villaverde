@@ -17,15 +17,16 @@ class Level:
         self.overlay = Overlay(self.player)
 
     def setup(self):
+        self.zoom = 3
         # Cargar el mapa de Tiled
         # Verano
-        # self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
+        self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
         # Otoño
-        # self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
+        #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
-        # self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
+        #self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
         # Volcán
-        self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
+        #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
 
         # Obtener la capa de colisiones
         self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
@@ -38,10 +39,7 @@ class Level:
         player_start_x = map_width / 2
         player_start_y = map_height / 2
 
-        # Reducir el tamaño del jugador
-        player_size = (8, 16)
-        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, size=player_size)
-        self.player.z = (LAYERS['main'] + LAYERS['main']+1) / 2  # Establecer z del jugador entre la primera y última capa
+        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer)
 
         # Crear instancias de objetos interactuables
         InteractableObject(
@@ -60,6 +58,13 @@ class Level:
             pos=(player_start_x + 500, player_start_y + 500),  # Posición inicial del jugador
             group=self.all_sprites, color=(0, 0, 255))
 
+        # Ajustar la posición y el tamaño de los objetos en el mapa
+        for obj in self.collision_layer:
+            obj.x *= self.zoom  # Aumentar la posición x
+            obj.y *= self.zoom  # Aumentar la posición y
+            obj.width *= self.zoom  # Aumentar el ancho
+            obj.height *= self.zoom  # Aumentar la altura
+
     def run(self, dt):
         self.display_surface.fill('black')
 
@@ -73,10 +78,12 @@ class Level:
                 for x, y, gid in layer:
                     tile = self.tmx_map.get_tile_image_by_gid(gid)
                     if tile:
-                        self.display_surface.blit(tile, (x * self.tmx_map.tilewidth - self.camera.x,
-                                                        y * self.tmx_map.tileheight - self.camera.y))
+                        # Ajustar el tamaño de la imagen del fondo
+                        scaled_tile = pygame.transform.scale(tile, (int(tile.get_width() * self.zoom), int(tile.get_height() * self.zoom)))
+                        self.display_surface.blit(scaled_tile, (x * self.tmx_map.tilewidth * self.zoom - self.camera.x,
+                                                                y * self.tmx_map.tileheight * self.zoom - self.camera.y))
 
-        self.all_sprites.custom_draw(self.player)
+        self.all_sprites.custom_draw(self.player, self.zoom)
         self.all_sprites.update(dt)
 
         # Verificar colisiones
@@ -87,16 +94,6 @@ class Level:
 
         # Para mostrar el overlay
         self.overlay.display()
-
-    def draw_tiled_map(self):
-        # Dibujar el fondo desde el mapa de Tiled
-        for layer in self.tmx_map.visible_layers:
-            if isinstance(layer, pytmx.TiledTileLayer):
-                for x, y, gid in layer:
-                    tile = self.tmx_map.get_tile_image_by_gid(gid)
-                    if tile:
-                        self.display_surface.blit(tile, (x * self.tmx_map.tilewidth - self.camera.x,
-                                                        y * self.tmx_map.tileheight - self.camera.y))
 
     def check_collision(self):
         player_rect = self.player.rect
@@ -114,7 +111,7 @@ class CameraGroup(pygame.sprite.Group):
         self.display_surface = pygame.display.get_surface()
         self.camera = pygame.math.Vector2()
 
-    def custom_draw(self, player):
+    def custom_draw(self, player, zoom):
         # Camara sigue al jugador
         self.camera.x = player.rect.centerx - SCREEN_WIDTH / 2
         self.camera.y = player.rect.centery - SCREEN_HEIGHT / 2
@@ -127,16 +124,19 @@ class CameraGroup(pygame.sprite.Group):
 
         # Dibujar sprites antes de la primera capa
         for layer in range(LAYERS['main']):
+                    # Dibujar los sprites
             for sprite in sprites_sorted:
-                if sprite.z == layer:
-                    offset_rect = sprite.rect.copy()
-                    offset_rect.center -= self.camera
-                    self.display_surface.blit(sprite.image, offset_rect)
+                offset_rect = sprite.rect.copy()
+                offset_rect.center -= self.camera
+                scaled_image = pygame.transform.scale(sprite.image, (int(sprite.rect.width), int(sprite.rect.height)))
+                self.display_surface.blit(scaled_image, offset_rect)
 
-        # Dibujar al jugador entre la primera capa y el resto
+        # Dibujar al jugador
         offset_rect = player.rect.copy()
         offset_rect.center -= self.camera
-        self.display_surface.blit(player.image, offset_rect)
+        scaled_image = pygame.transform.scale(player.image, (int(player.image.get_width() * zoom), int(player.image.get_height() * zoom)))
+        scaled_rect = scaled_image.get_rect(center=offset_rect.center)
+        self.display_surface.blit(scaled_image, scaled_rect.topleft)
 
         # Dibujar sprites después de la primera capa
         for layer in range(LAYERS['main'] + 1, len(LAYERS)):

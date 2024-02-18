@@ -3,20 +3,26 @@ from settings import *
 from timer import Timer
 from inventory import Inventory
 from interactuable import InteractableObject
+from utils import import_folder
+
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_layer, size=(32, 64)):
+    def __init__(self, pos, group, collision_layer):
         super().__init__(group)
+
+        self.import_assets()
+        self.frame_index = 0
+        self.status = 'abajo'
+
         self.collision_layer = collision_layer
-        self.image = pygame.Surface(size)
-        self.image.fill((0, 255, 0))
+        self.image = self.animations[self.status][self.frame_index]
         self.rect = self.image.get_rect(center=pos)
         self.z = LAYERS['main']
 
         self.direction = pygame.math.Vector2()
         self.velocity = pygame.math.Vector2(0, 0)
         self.pos = pygame.math.Vector2(self.rect.center)
-        self.speed = 100
+        self.speed = 120
 
         self.timers = {
             'uso de herramienta': Timer(350, self.use_tool),
@@ -24,6 +30,10 @@ class Player(pygame.sprite.Sprite):
             'alternar inventario': Timer(1000),
             'interacción': Timer(300)
         }
+
+        # Tamaño original del jugador
+        self.original_width = self.rect.width
+        self.original_height = self.rect.height
 
         self.tools = ['azada', 'hacha', 'agua']
         self.tool_index = 0
@@ -33,7 +43,34 @@ class Player(pygame.sprite.Sprite):
         self.inventario_abierto = False
 
     def use_tool(self):
-        pass
+        if self.selected_tool == 'azada':
+            pass
+		
+        if self.selected_tool == 'hacha':
+            pass
+		
+        if self.selected_tool == 'agua':
+            pass
+
+    def import_assets(self):
+        self.animations = {'arriba': [], 'abajo': [], 'izquierda': [], 'derecha': [],
+                        'derecha_inactivo': [], 'izquierda_inactivo': [], 'arriba_inactivo': [], 'abajo_inactivo': [],
+                        'derecha_azada': [], 'izquierda_azada': [], 'arriba_azada': [], 'abajo_azada': [],
+                        'derecha_hacha': [], 'izquierda_hacha': [], 'arriba_hacha': [], 'abajo_hacha': [],
+                        'derecha_agua': [], 'izquierda_agua': [], 'arriba_agua': [], 'abajo_agua': []}
+
+        for animation in self.animations.keys():
+            full_path = 'code/sprites/wuan/' + animation
+            self.animations[animation] = import_folder(full_path)
+
+
+    def animate(self, dt):
+        self.frame_index += 4 * dt
+        if self.frame_index >= len(self.animations[self.status]):
+            self.frame_index = 0
+
+        self.image = self.animations[self.status][int(self.frame_index)]
+
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -43,17 +80,22 @@ class Player(pygame.sprite.Sprite):
 
             if keys[pygame.K_w]:
                 self.direction.y = -1
+                self.status = 'arriba'
             elif keys[pygame.K_s]:
                 self.direction.y = 1
+                self.status = 'abajo'
 
             if keys[pygame.K_d]:
                 self.direction.x = 1
+                self.status = 'derecha'
             elif keys[pygame.K_a]:
                 self.direction.x = -1
+                self.status = 'izquierda'
 
             if keys[pygame.K_SPACE]:
                 print(f'Herramienta [{self.selected_tool}] está siendo usada')
                 self.timers['uso de herramienta'].activate()
+                self.frame_index = 0
 
             if keys[pygame.K_b] and not self.timers['alternar inventario'].active:
                 self.timers['alternar inventario'].activate()
@@ -77,6 +119,15 @@ class Player(pygame.sprite.Sprite):
                         distancia = player_center.distance_to(obj_center)
                         if distancia < 50:
                             sprite.interact(self.inventory)
+
+    def get_status(self):
+        # Si no hay movimiento (está en reposo)
+        if self.direction.magnitude() == 0:
+            self.status = self.status.split('_')[0] + '_inactivo'
+
+        # Si está utilizando una herramienta
+        if self.timers['uso de herramienta'].active:
+            self.status = self.status.split('_')[0] + '_' + self.selected_tool
 
     def update_timers(self):
         for timer in self.timers.values():
@@ -107,9 +158,10 @@ class Player(pygame.sprite.Sprite):
         # No collision detected, return False
         return False
 
-
     def update(self, dt):
         self.input()
+        self.get_status()
         self.update_timers()
         self.velocity = self.direction * self.speed  # Actualizar la velocidad basada en la dirección
         self.move(dt)
+        self.animate(dt)
