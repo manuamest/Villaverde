@@ -23,9 +23,9 @@ class Level:
         self.zoom = 4
         # Cargar el mapa de Tiled
         # Verano
-        # self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
+        self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
         # Otoño
-        self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
+        #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
         # self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
         # Volcán
@@ -58,7 +58,7 @@ class Level:
             group=self.all_sprites, color=(255, 255, 0))
 
         InteractableObject(
-            pos=(player_start_x + 500, player_start_y + 500),  # Posición inicial del jugador
+            pos=(player_start_x + 500, player_start_y + 800),  # Posición inicial del jugador
             group=self.all_sprites, color=(0, 0, 255))
         
         # Ajustar la posición y el tamaño de los objetos en el mapa
