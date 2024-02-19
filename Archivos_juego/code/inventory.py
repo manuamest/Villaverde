@@ -19,16 +19,17 @@ class Inventory:
         self.inventario_abierto = False
         self.inventario_items = {"Madera": 0, "Trigo": 0}
 
-        # Cargar la imagen de fondo para el inventario
-        self.imagen_fondo_inventario = pygame.image.load('./code/sprites/inventario.png')
+        # Cargar la imagen de fondo para el inventario y hacerla semi-transparente
+        self.imagen_fondo_inventario = pygame.image.load('./code/sprites/inventario.png').convert_alpha()
         self.imagen_fondo_inventario = pygame.transform.scale(self.imagen_fondo_inventario, (400, 300))
+        self.imagen_fondo_inventario.set_alpha(200)
 
         self.sprites_items = {
             "Madera": pygame.image.load('./code/sprites/madera.png'),
             "Trigo": pygame.image.load('./code/sprites/trigo.png'),
         }
 
-    def añadir_madera(self):
+    def añadir_madera(self):    
         self.inventario_items["Madera"] += 1
 
     def añadir_trigo(self):
