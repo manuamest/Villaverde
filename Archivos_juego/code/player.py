@@ -5,9 +5,8 @@ from inventory import Inventory
 from interactuable import InteractableObject
 from utils import import_folder
 
-
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_layer):
+    def __init__(self, pos, group, collision_layer, soil_layer):
         super().__init__(group)
 
         self.import_assets()
@@ -15,6 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.status = 'abajo'
 
         self.collision_layer = collision_layer
+        self.soil_layer = soil_layer
         self.image = self.animations[self.status][self.frame_index]
         self.rect = self.image.get_rect(center=pos)
         self.z = LAYERS['main']
@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.velocity = pygame.math.Vector2(0, 0)
         self.pos = pygame.math.Vector2(self.rect.center)
-        self.speed = 120
+        self.speed = 100
 
         self.timers = {
             'uso de herramienta': Timer(350, self.use_tool),
@@ -44,13 +44,27 @@ class Player(pygame.sprite.Sprite):
 
     def use_tool(self):
         if self.selected_tool == 'azada':
-            pass
-		
+            self.soil_layer.get_hit(self.target_pos)
+        
         if self.selected_tool == 'hacha':
             pass
-		
+
         if self.selected_tool == 'agua':
             pass
+
+    def use_seed(self):
+        self.soil_layer.plant_seed(self.target_pos, self.selected_seed)
+
+    def get_target_pos(self):
+        # Obtén la posición del jugador en coordenadas de tiles
+        player_tile_x = self.rect.centerx // TILE_SIZE
+        player_tile_y = self.rect.centery // TILE_SIZE
+        
+        # Calcula la posición del objetivo basada en las coordenadas de tiles
+        target_tile_pos = (player_tile_x, player_tile_y)
+        
+        # Multiplica la posición del tile por el tamaño del tile para obtener la posición en píxeles
+        self.target_pos = (target_tile_pos[0] * TILE_SIZE, target_tile_pos[1] * TILE_SIZE)
 
     def import_assets(self):
         self.animations = {'arriba': [], 'abajo': [], 'izquierda': [], 'derecha': [],
@@ -70,7 +84,6 @@ class Player(pygame.sprite.Sprite):
             self.frame_index = 0
 
         self.image = self.animations[self.status][int(self.frame_index)]
-
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -93,8 +106,8 @@ class Player(pygame.sprite.Sprite):
                 self.status = 'izquierda'
 
             if keys[pygame.K_SPACE]:
-                print(f'Herramienta [{self.selected_tool}] está siendo usada')
                 self.timers['uso de herramienta'].activate()
+                self.direction = pygame.math.Vector2()
                 self.frame_index = 0
 
             if keys[pygame.K_b] and not self.timers['alternar inventario'].active:
@@ -128,7 +141,7 @@ class Player(pygame.sprite.Sprite):
         # Si está utilizando una herramienta
         if self.timers['uso de herramienta'].active:
             self.status = self.status.split('_')[0] + '_' + self.selected_tool
-
+               
     def update_timers(self):
         for timer in self.timers.values():
             timer.update()
@@ -158,10 +171,12 @@ class Player(pygame.sprite.Sprite):
         # No collision detected, return False
         return False
 
+
     def update(self, dt):
         self.input()
         self.get_status()
         self.update_timers()
+        self.get_target_pos()
         self.velocity = self.direction * self.speed  # Actualizar la velocidad basada en la dirección
         self.move(dt)
         self.animate(dt)

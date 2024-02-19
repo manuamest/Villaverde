@@ -5,26 +5,29 @@ from sprites import *
 from overlay import Overlay
 import pytmx
 from pytmx.util_pygame import load_pygame
+from soil import SoilLayer
 
 class Level:
     def __init__(self):
         self.display_surface = pygame.display.get_surface()
         self.all_sprites = CameraGroup()
         self.camera = pygame.math.Vector2()
+
+        self.soil_layer = SoilLayer(self.all_sprites)
         self.setup()
         
         # Overlay 
         self.overlay = Overlay(self.player)
 
     def setup(self):
-        self.zoom = 3
+        self.zoom = 4
         # Cargar el mapa de Tiled
         # Verano
-        self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
+        # self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
         # Otoño
-        #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
+        self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
-        #self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
+        # self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
         # Volcán
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
 
@@ -39,7 +42,7 @@ class Level:
         player_start_x = map_width / 2
         player_start_y = map_height / 2
 
-        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer)
+        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer)
 
         # Crear instancias de objetos interactuables
         InteractableObject(
@@ -57,7 +60,7 @@ class Level:
         InteractableObject(
             pos=(player_start_x + 500, player_start_y + 500),  # Posición inicial del jugador
             group=self.all_sprites, color=(0, 0, 255))
-
+        
         # Ajustar la posición y el tamaño de los objetos en el mapa
         for obj in self.collision_layer:
             obj.x *= self.zoom  # Aumentar la posición x
@@ -82,6 +85,7 @@ class Level:
                         scaled_tile = pygame.transform.scale(tile, (int(tile.get_width() * self.zoom), int(tile.get_height() * self.zoom)))
                         self.display_surface.blit(scaled_tile, (x * self.tmx_map.tilewidth * self.zoom - self.camera.x,
                                                                 y * self.tmx_map.tileheight * self.zoom - self.camera.y))
+
 
         self.all_sprites.custom_draw(self.player, self.zoom)
         self.all_sprites.update(dt)
@@ -137,6 +141,7 @@ class CameraGroup(pygame.sprite.Group):
         scaled_image = pygame.transform.scale(player.image, (int(player.image.get_width() * zoom), int(player.image.get_height() * zoom)))
         scaled_rect = scaled_image.get_rect(center=offset_rect.center)
         self.display_surface.blit(scaled_image, scaled_rect.topleft)
+
 
         # Dibujar sprites después de la primera capa
         for layer in range(LAYERS['main'] + 1, len(LAYERS)):
