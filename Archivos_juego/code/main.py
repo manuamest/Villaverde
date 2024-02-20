@@ -10,6 +10,10 @@ class Game:
 		self.clock = pygame.time.Clock()
 		self.level = Level()
 
+		icon_path = "./code/sprites/icono.png"
+		icon = pygame.image.load(icon_path)
+		pygame.display.set_icon(icon)
+
 	def run(self):
 		while True:
 			for event in pygame.event.get():
@@ -17,7 +21,7 @@ class Game:
 					pygame.quit()
 					sys.exit()
   
-			dt = self.clock.tick() / 1000
+			dt = self.clock.tick() / 500
 			self.level.run(dt)
 			pygame.display.update()
 

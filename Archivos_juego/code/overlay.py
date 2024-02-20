@@ -12,8 +12,6 @@ class Overlay:
         overlay_path = './code/sprites/overlay/'
         # Asocia cada herramienta con su imagen
         self.tools_surf = {tool: pygame.image.load(f'{overlay_path}{tool}.png').convert_alpha() for tool in player.tools}
-        print(self.tools_surf)
-
     def display(self):
 
         # Herramienta

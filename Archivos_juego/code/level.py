@@ -6,6 +6,7 @@ from overlay import Overlay
 import pytmx
 from pytmx.util_pygame import load_pygame
 from soil import SoilLayer
+from npc import NPC
 
 class Level:
     def __init__(self):
@@ -52,13 +53,13 @@ class Level:
 
         # Crear instancias de objetos interactuables
         InteractableObject(
-            pos=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2),  # Posición inicial del jugador
+            pos=(SCREEN_WIDTH / 2 + 500, SCREEN_HEIGHT / 2),  # Posición inicial del jugador
             group=self.all_sprites,color=(255,0,0),dialogue=self.dialogue)
 
 
         InteractableObject(
             pos=(SCREEN_WIDTH / 2 + 200, SCREEN_HEIGHT / 2 + 200),
-            group=self.all_sprites,color=(255,255,0),dialogue=self.dialogue)
+            group=self.all_sprites,color=(255,255,0),dialogue=self.dialogue, sprite="./code/sprites/trigo.png", interactable_type="trigo")
 
         InteractableObject(
             pos=(SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 2 + 300),
@@ -68,16 +69,17 @@ class Level:
             pos=(SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 2 + 500),
             group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue)
 
-
         InteractableObject(
             pos=(SCREEN_WIDTH / 2 + 500, SCREEN_HEIGHT / 2 + 500),  # Posición inicial del jugador
             group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue)
 
         InteractableObject(
-            pos=(SCREEN_WIDTH / 2 + 600, SCREEN_HEIGHT / 2 + 600),  # Posición inicial del jugador
+            pos=(SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2 ),  # Posición inicial del jugador
             group=self.all_sprites, color=(255, 0, 255), dialogue=self.dialogue)
 
-        
+        NPC(pos=(SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2),
+            group=self.all_sprites, sprite_directory="./code/sprites/wuan/abajo_inactivo", dialogue=self.dialogue)
+
         # Ajustar la posición y el tamaño de los objetos en el mapa
         for obj in self.collision_layer:
             obj.x *= self.zoom  # Aumentar la posición x
@@ -154,7 +156,8 @@ class CameraGroup(pygame.sprite.Group):
                 offset_rect = sprite.rect.copy()
                 offset_rect.center -= self.camera
                 scaled_image = pygame.transform.scale(sprite.image, (int(sprite.rect.width), int(sprite.rect.height)))
-                self.display_surface.blit(scaled_image, offset_rect)
+                scaled_rect = scaled_image.get_rect(center=offset_rect.center)
+                self.display_surface.blit(scaled_image, scaled_rect.topleft)
 
         # Dibujar al jugador
         offset_rect = player.rect.copy()

@@ -1,38 +1,41 @@
 import pygame
-
+import os
 from settings import LAYERS
 
 class InteractableObject(pygame.sprite.Sprite):
-    def __init__(self, pos, group, color,dialogue):
+    def __init__(self, pos, group, color, dialogue, sprite=None, interactable_type=None):
         super().__init__(group)
         self.color = color  # Guarda el color
+        self.sprite = sprite  # Guarda el sprite
+        self.interactable_type = interactable_type  # Guarda el tipo de interactuable
 
         # Configuración general
-        self.image = pygame.Surface((32, 32))
-        self.image.fill(color)  # Usa el color pasado como argumento
+        if self.sprite is None:
+            self.image = pygame.Surface((32, 32))
+            self.image.fill(color)  # Usa el color pasado como argumento
+        else:
+            self.image = pygame.image.load(sprite).convert_alpha()  # Cargar y convertir el sprite
         self.rect = self.image.get_rect(center=pos)
-        self.z = LAYERS['main']
+        self.z = LAYERS['ground plant']
 
     def interact(self, inventory):
-        if self.color == (255, 255, 0):
+        if self.interactable_type == "Trigo":
             inventory.añadir_trigo()
             self.kill()
-        elif self.color == (0, 0, 255):
+        elif self.interactable_type == "Madera":
             inventory.añadir_madera()
             self.kill()
-
-        elif self.color == (255,128,0):
+        elif self.interactable_type == "Dinero":
             inventory.añadir_dinero()
             self.kill()
 
-    def talk(self, dialogue, inventory,personaje):
-
+    def talk(self, dialogue, inventory, personaje):
         if personaje == "don diego":
             dialogue.activar_dialogo()
-            dialogue.dibujar_dialogo(inventory,"don diego")
+            dialogue.dibujar_dialogo(inventory, "don diego")
         elif personaje == "butanero":
             dialogue.activar_dialogo()
-            dialogue.dibujar_dialogo(inventory,"butanero")
+            dialogue.dibujar_dialogo(inventory, "butanero")
             if inventory.get_dinero():
                 dialogue.set_opcion_escogida(True)
             else:
