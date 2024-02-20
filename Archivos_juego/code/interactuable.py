@@ -3,7 +3,7 @@ import pygame
 from settings import LAYERS
 
 class InteractableObject(pygame.sprite.Sprite):
-    def __init__(self, pos, group, color):
+    def __init__(self, pos, group, color,dialogue):
         super().__init__(group)
         self.color = color  # Guarda el color
 
@@ -14,15 +14,26 @@ class InteractableObject(pygame.sprite.Sprite):
         self.z = LAYERS['main']
 
     def interact(self, inventory):
-
         if self.color == (255, 255, 0):
             inventory.añadir_trigo()
-            print("Añadido trigo al inventario")
             self.kill()
         elif self.color == (0, 0, 255):
             inventory.añadir_madera()
-            print("Añadida madera al inventario")
             self.kill()
 
-        else:
-            print("Interactuando con jugador")
+        elif self.color == (255,128,0):
+            inventory.añadir_dinero()
+            self.kill()
+
+    def talk(self, dialogue, inventory,personaje):
+
+        if personaje == "don diego":
+            dialogue.activar_dialogo()
+            dialogue.dibujar_dialogo(inventory,"don diego")
+        elif personaje == "butanero":
+            dialogue.activar_dialogo()
+            dialogue.dibujar_dialogo(inventory,"butanero")
+            if inventory.get_dinero():
+                dialogue.set_opcion_escogida(True)
+            else:
+                dialogue.set_opcion_escogida(True)
