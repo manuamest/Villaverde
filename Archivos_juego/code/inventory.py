@@ -17,7 +17,7 @@ class Inventory:
 
         # Variables del inventario
         self.inventario_abierto = False
-        self.inventario_items = {"Madera": 0, "Trigo": 0}
+        self.inventario_items = {"Madera": 0, "Trigo": 0,"Bolsa de dinero":0}
 
         # Cargar la imagen de fondo para el inventario y hacerla semi-transparente
         self.imagen_fondo_inventario = pygame.image.load('./code/sprites/inventario.png').convert_alpha()
@@ -27,13 +27,23 @@ class Inventory:
         self.sprites_items = {
             "Madera": pygame.image.load('./code/sprites/madera.png'),
             "Trigo": pygame.image.load('./code/sprites/trigo.png'),
+            "Bolsa de dinero": pygame.image.load('./code/sprites/dinero.png'),
         }
 
-    def añadir_madera(self):    
+    def añadir_madera(self):
         self.inventario_items["Madera"] += 1
 
     def añadir_trigo(self):
         self.inventario_items["Trigo"] += 1
+
+    def añadir_dinero(self):
+        self.inventario_items["Bolsa de dinero"] += 1
+
+    def eliminar_dinero(self):
+        self.inventario_items["Bolsa de dinero"] -= 1
+
+    def get_dinero(self):
+        return self.inventario_items["Bolsa de dinero"] > 0
 
     # Función para dibujar el inventario
     def dibujar_inventario(self):

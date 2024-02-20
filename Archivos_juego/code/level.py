@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from player import Player, InteractableObject
+from player import Player, InteractableObject, Dialogue
 from sprites import *
 from overlay import Overlay
 import pytmx
@@ -13,11 +13,17 @@ class Level:
         self.all_sprites = CameraGroup()
         self.camera = pygame.math.Vector2()
 
+        # Dialogue
+        self.dialogue = Dialogue()
+
         self.soil_layer = SoilLayer(self.all_sprites)
         self.setup()
         
         # Overlay 
         self.overlay = Overlay(self.player)
+
+
+        
 
     def setup(self):
         self.zoom = 4
@@ -46,20 +52,31 @@ class Level:
 
         # Crear instancias de objetos interactuables
         InteractableObject(
-            pos=(player_start_x, player_start_y),  # Posición inicial del jugador
-            group=self.all_sprites, color=(255, 0, 0))
+            pos=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2),  # Posición inicial del jugador
+            group=self.all_sprites,color=(255,0,0),dialogue=self.dialogue)
+
 
         InteractableObject(
-            pos=(player_start_x + 200, player_start_y + 200),
-            group=self.all_sprites, color=(255, 255, 0))
+            pos=(SCREEN_WIDTH / 2 + 200, SCREEN_HEIGHT / 2 + 200),
+            group=self.all_sprites,color=(255,255,0),dialogue=self.dialogue)
 
         InteractableObject(
-            pos=(player_start_x + 300, player_start_y + 300),
-            group=self.all_sprites, color=(255, 255, 0))
+            pos=(SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 2 + 300),
+            group=self.all_sprites, color=(255, 255, 0),dialogue=self.dialogue)
 
         InteractableObject(
-            pos=(player_start_x + 500, player_start_y + 800),  # Posición inicial del jugador
-            group=self.all_sprites, color=(0, 0, 255))
+            pos=(SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 2 + 500),
+            group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue)
+
+
+        InteractableObject(
+            pos=(SCREEN_WIDTH / 2 + 500, SCREEN_HEIGHT / 2 + 500),  # Posición inicial del jugador
+            group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue)
+
+        InteractableObject(
+            pos=(SCREEN_WIDTH / 2 + 600, SCREEN_HEIGHT / 2 + 600),  # Posición inicial del jugador
+            group=self.all_sprites, color=(255, 0, 255), dialogue=self.dialogue)
+
         
         # Ajustar la posición y el tamaño de los objetos en el mapa
         for obj in self.collision_layer:
