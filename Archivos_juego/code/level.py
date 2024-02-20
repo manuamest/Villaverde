@@ -68,6 +68,10 @@ class Level:
             obj.width *= self.zoom  # Aumentar el ancho
             obj.height *= self.zoom  # Aumentar la altura
 
+        # trees 
+        #for obj in tmx_data.get_layer_by_name('Trees'): 
+        #    Tree( pos = (obj.x, obj.y), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, player_add = self.player_add)
+
     def run(self, dt):
         self.display_surface.fill('black')
 
