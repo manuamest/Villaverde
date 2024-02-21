@@ -146,14 +146,11 @@ class Player(pygame.sprite.Sprite):
                                     self.dialogo_abierto_p1 = True
                                     self.dialogue.dibujar_dialogo(self.inventory, "don diego")
                                     sprite.talk(self.dialogue, self.inventory, "don diego")
-
                                 else:
                                     if keys[pygame.K_x]:
                                         self.timers['dialogo'].activate()
                                         self.dialogue.reiniciar_dialogo("don diego")
-
-
-                            if sprite.color == (255, 0, 255):
+                            elif sprite.color == (255, 0, 255):
                                 if not self.dialogo_abierto_p2:
                                     self.dialogo_abierto_p2 = True
                                     self.dialogue.dibujar_dialogo(self.inventory, "butanero")
@@ -162,7 +159,6 @@ class Player(pygame.sprite.Sprite):
                                     if keys[pygame.K_x]:
                                         self.timers['dialogo'].activate()
                                         self.dialogue.reiniciar_dialogo("butanero")
-
                             else:
                                 sprite.interact(self.inventory)
 

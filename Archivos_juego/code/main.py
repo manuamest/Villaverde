@@ -7,28 +7,16 @@ class Game:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+        icon_path = "./code/sprites/icono.png"
+        icon = pygame.image.load(icon_path)
+        pygame.display.set_icon(icon)
         pygame.display.set_caption('Villaverde')
         self.clock = pygame.time.Clock()
         self.level = Level()
-        self.menu_options = ["Jugar", "Opciones", "Controles"]
+        self.menu_options = ["Jugar", "Opciones", "Controles", "Salir"]
         self.selected_option = 0
 
-<<<<<<< HEAD
-		icon_path = "./code/sprites/icono.png"
-		icon = pygame.image.load(icon_path)
-		pygame.display.set_icon(icon)
-
-	def run(self):
-		while True:
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					pygame.quit()
-					sys.exit()
-  
-			dt = self.clock.tick() / 500
-			self.level.run(dt)
-			pygame.display.update()
-=======
         # Cargar la imagen de fondo
         self.background_image = pygame.image.load('./code/villaverde.jpg').convert()
         original_width, original_height = self.background_image.get_size()
@@ -46,9 +34,9 @@ class Game:
 
     def show_start_screen(self):
         waiting = True
-        show_text = True
         text_flash_timer = 0
         flash_interval = 200  # Intervalo de parpadeo en milisegundos
+        show_text = True
 
         while waiting:
             for event in pygame.event.get():
@@ -64,22 +52,33 @@ class Game:
 
             # Mensaje en la pantalla de inicio (ajustado hacia abajo)
             font = pygame.font.Font(None, 36)
-            text = font.render("Presiona Enter para comenzar", True, 'white')
-            text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 220))
-            
-            # Parpadeo del texto
+            text = "Presiona Enter para comenzar"
+
+            # Actualizar el parpadeo del texto
             text_flash_timer += self.clock.get_rawtime()
             if text_flash_timer > flash_interval:
                 show_text = not show_text
                 text_flash_timer = 0
 
+            # Renderizar texto con borde
+            font_surface = font.render(text, True, 'black')
+            text_rect = font_surface.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 220))
+
+            # Dibujar texto con borde
             if show_text:
-                self.screen.blit(text, text_rect)
+                for dx in [-2, 0, 2]:
+                    for dy in [-2, 0, 2]:
+                        self.screen.blit(font_surface, (text_rect.x + dx, text_rect.y + dy))
+
+                # Renderizar texto real
+                font_surface = font.render(text, True, 'white')
+                self.screen.blit(font_surface, text_rect)
 
             pygame.display.flip()
 
             # Restablecer el temporizador para evitar una acumulación innecesaria
             self.clock.tick(FPS)
+
 
 
     def show_menu(self):
@@ -100,6 +99,7 @@ class Game:
 
         pygame.display.flip()
 
+
     def run(self):
         self.show_start_screen()  # Mostrar pantalla de inicio
 
@@ -111,9 +111,9 @@ class Game:
                     sys.exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_DOWN:
-                        self.selected_option = (self.selected_option + 1) % len(self.menu_options)
+                        self.selected_option = (self.selected_option + 1) % (len(self.menu_options) + 1)
                     elif event.key == pygame.K_UP:
-                        self.selected_option = (self.selected_option - 1) % len(self.menu_options)
+                        self.selected_option = (self.selected_option - 1) % (len(self.menu_options) + 1)
                     elif event.key == pygame.K_RETURN:
                         if self.selected_option == 0:  # Jugar
                             in_menu = False
@@ -121,6 +121,10 @@ class Game:
                             print("Mostrar Opciones")  # Agrega lógica de opciones aquí
                         elif self.selected_option == 2:  # Controles
                             print("Mostrar Controles")  # Agrega lógica de controles aquí
+                        elif self.selected_option == 3:  # Salir
+                            pygame.quit()
+                            sys.exit()
+
 
             self.show_menu()
             self.clock.tick(FPS)
@@ -132,10 +136,9 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-            dt = self.clock.tick(FPS) / 1000
+            dt = self.clock.tick(FPS) / 500
             self.level.run(dt)
             pygame.display.update()
->>>>>>> refs/remotes/origin/main
 
 if __name__ == '__main__':
     game = Game()

@@ -37,6 +37,8 @@ class Level:
         # self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
         # Volcán
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
+        # Entorno pruebas
+        #self.tmx_map = load_pygame("./code/mapa/pruebas.tmx")
 
         # Obtener la capa de colisiones
         self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
@@ -56,22 +58,17 @@ class Level:
             pos=(SCREEN_WIDTH / 2 + 500, SCREEN_HEIGHT / 2),  # Posición inicial del jugador
             group=self.all_sprites,color=(255,0,0),dialogue=self.dialogue)
 
+        InteractableObject(
+            pos=(SCREEN_WIDTH / 2 - 300, SCREEN_HEIGHT / 2 + 500),
+            group=self.all_sprites, color=(255, 255, 0),dialogue=self.dialogue, sprite="./code/sprites/trigo.png", interactable_type="trigo")
 
         InteractableObject(
-            pos=(SCREEN_WIDTH / 2 + 200, SCREEN_HEIGHT / 2 + 200),
-            group=self.all_sprites,color=(255,255,0),dialogue=self.dialogue, sprite="./code/sprites/trigo.png", interactable_type="trigo")
+            pos=(SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 + 500),
+            group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera")
 
         InteractableObject(
-            pos=(SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 2 + 300),
-            group=self.all_sprites, color=(255, 255, 0),dialogue=self.dialogue)
-
-        InteractableObject(
-            pos=(SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 2 + 500),
-            group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue)
-
-        InteractableObject(
-            pos=(SCREEN_WIDTH / 2 + 500, SCREEN_HEIGHT / 2 + 500),  # Posición inicial del jugador
-            group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue)
+            pos=(SCREEN_WIDTH / 2  - 100, SCREEN_HEIGHT / 2 + 500),  # Posición inicial del jugador
+            group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero")
 
         InteractableObject(
             pos=(SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2 ),  # Posición inicial del jugador
@@ -150,12 +147,12 @@ class CameraGroup(pygame.sprite.Group):
         sprites_sorted = sorted(sprites_without_player, key=lambda sprite: sprite.z)
 
         # Dibujar sprites antes de la primera capa
-        for layer in range(LAYERS['main']):
+        for layer in range(LAYERS['npc']):
                     # Dibujar los sprites
             for sprite in sprites_sorted:
                 offset_rect = sprite.rect.copy()
                 offset_rect.center -= self.camera
-                scaled_image = pygame.transform.scale(sprite.image, (int(sprite.rect.width), int(sprite.rect.height)))
+                scaled_image = pygame.transform.scale(sprite.image, (int(sprite.rect.width) / zoom, int(sprite.rect.height) / zoom))
                 scaled_rect = scaled_image.get_rect(center=offset_rect.center)
                 self.display_surface.blit(scaled_image, scaled_rect.topleft)
 
