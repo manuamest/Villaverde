@@ -42,11 +42,11 @@ class NPC(pygame.sprite.Sprite):
 
     def talk(self, dialogue, inventory, personaje):
         if personaje == "don diego":
-            dialogue.activar_dialogo()
+            dialogue.set_opcion_dialogo(True)
             dialogue.dibujar_dialogo(inventory, "don diego")
         elif personaje == "butanero":
               
-            dialogue.activar_dialogo()
+            dialogue.set_opcion_dialogo(True)
             dialogue.dibujar_dialogo(inventory, "butanero")
             if inventory.get_dinero():
                 dialogue.set_opcion_escogida(True)

@@ -27,10 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = 100
 
         # Diálogo
-
-        self.indice = None
         self.dialogue = Dialogue()
-        self.dialogo_abierto = False
         self.personaje_actual = None
        
 
@@ -122,14 +119,30 @@ class Player(pygame.sprite.Sprite):
                 self.direction = pygame.math.Vector2()
                 self.frame_index = 0
 
-            if keys[pygame.K_b] and not self.timers['alternar inventario'].active and not self.dialogo_abierto:
+            if keys[pygame.K_b] and not self.timers['alternar inventario'].active and not self.dialogue.obtener_dialogo():
                 self.timers['alternar inventario'].activate()
                 self.inventario_abierto = not self.inventario_abierto
 
             if self.inventario_abierto:
                 self.inventory.dibujar_inventario()
 
-            if keys[pygame.K_q] and not self.timers['cambio de herramienta'].active and not self.dialogo_abierto:
+            
+            if self.dialogue.obtener_dialogo():
+                self.dialogue.dibujar_dialogo(self.inventory, self.personaje_actual)
+                dialogos_personaje = self.dialogue.obtener_dialogo_personaje(self.personaje_actual)
+                
+                if keys[pygame.K_x] and not self.timers['dialogo'].active:
+                    self.timers['dialogo'].activate()
+                    self.dialogue.indice_dialogo += 1
+                    self.dialogue.set_indice_dialogo(self.dialogue.indice_dialogo)
+                    self.dialogue.reiniciar_letras()
+                    
+                    if self.dialogue.indice_dialogo >= len(dialogos_personaje):
+                        self.dialogue.set_opcion_dialogo(False)
+                        self.personaje_actual = None
+                        self.dialogue.set_indice_dialogo(0)      
+
+            if keys[pygame.K_q] and not self.timers['cambio de herramienta'].active and not self.dialogue.obtener_dialogo():
                 self.timers['cambio de herramienta'].activate()
                 self.tool_index = (self.tool_index + 1) % len(self.tools)
                 self.selected_tool = self.tools[self.tool_index]
@@ -147,33 +160,8 @@ class Player(pygame.sprite.Sprite):
                                 sprite.interact(self.inventory)
                         elif distancia < 100 and isinstance(sprite, NPC):
                             sprite.talk(self.dialogue, self.inventory, sprite.personaje)
-                            self.dialogo_abierto = True  
-                            self.personaje_actual = sprite.personaje  
-
-            if self.dialogo_abierto:
-                self.dialogue.dibujar_dialogo(self.inventory, self.personaje_actual)
-                if keys[pygame.K_x] and not self.timers['dialogo'].active:
-                    self.timers['dialogo'].activate()
-                    self.dialogue.indice_dialogo += 1
-                    self.indice = self.dialogue.indice_dialogo
-                    self.dialogue.set_indice_dialogo(self.dialogue.indice_dialogo)
-                    self.dialogue.reiniciar_dialogo(self.personaje_actual)
-                    if self.personaje_actual == "don diego" and self.dialogue.indice_dialogo >= len(self.dialogue.dialogos_rojo):
-                        self.dialogue.desactivar_dialogo()
-                        self.dialogo_abierto = False  
-                        self.personaje_actual = None  
-                        self.dialogue.set_indice_dialogo(0)
-                    elif self.personaje_actual == "butanero" and (self.dialogue.obtener_dinero_dado() or self.dialogue.indice_dialogo >= len(self.dialogue.dialogos_rosa)):
-                        self.dialogue.desactivar_dialogo()
-                        self.dialogo_abierto = False  
-                        self.personaje_actual = None  
-                        self.dialogue.set_indice_dialogo(0)
-                        if self.personaje_actual == "butanero" and self.dialogue.indice_dialogo >= len(self.dialogue.dialogos_rosa2):
-                            self.dialogue.desactivar_dialogo()
-                            self.dialogo_abierto = False  
-                            self.personaje_actual = None  
-                            self.dialogue.set_indice_dialogo(0)
-
+                            self.personaje_actual = sprite.personaje
+                            
 
     def get_status(self):
         # Si no hay movimiento (está en reposo)
@@ -196,7 +184,7 @@ class Player(pygame.sprite.Sprite):
         new_pos = self.pos + self.velocity * dt
         new_rect = self.rect.copy()
         new_rect.center = new_pos
-        if not self.dialogo_abierto:
+        if not self.dialogue.obtener_dialogo():
             # Check for collisions before updating the position
             if not self.check_collision(new_rect):
                 self.pos = new_pos
@@ -212,7 +200,6 @@ class Player(pygame.sprite.Sprite):
 
         # No collision detected, return False
         return False
-
 
     def update(self, dt):
         self.input()
