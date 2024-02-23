@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from player import Player, InteractableObject, Dialogue
+from player import Player, InteractableObject, Dialogue, Inventory
 from sprites import *
 from overlay import Overlay
 import pytmx
@@ -16,6 +16,7 @@ class Level:
 
         # Dialogue
         self.dialogue = Dialogue()
+        self.inventory = Inventory()
 
         self.soil_layer = SoilLayer(self.all_sprites)
         self.setup()
@@ -74,8 +75,11 @@ class Level:
             pos=(SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2 ),  # Posición inicial del jugador
             group=self.all_sprites, color=(255, 0, 255), dialogue=self.dialogue)
 
-        NPC(pos=(SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2),
-            group=self.all_sprites, sprite_directory="./code/sprites/wuan/abajo_inactivo", dialogue=self.dialogue)
+        NPC(pos=(SCREEN_WIDTH / 2 + 300 , SCREEN_HEIGHT / 2 + 900),
+            group=self.all_sprites, sprite_directory="./code/sprites/NPC/DonDiego",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego")
+        
+        NPC(pos=(SCREEN_WIDTH / 2 + 300 , SCREEN_HEIGHT / 2 + 1200),
+            group=self.all_sprites, sprite_directory="./code/sprites/NPC/JordiButanero",inventory=self.inventory, dialogue=self.dialogue,personaje="butanero")
 
         # Ajustar la posición y el tamaño de los objetos en el mapa
         for obj in self.collision_layer:

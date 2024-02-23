@@ -123,11 +123,12 @@ class Dialogue:
 
 
             if personaje == "don diego":
+              
                 texto = self.dialogos_rojo[self.obtener_indice_dialogo()]
             elif personaje == "butanero":
+            
                 if self.obtener_dinero_dado():
                     texto = self.dialogos_rosa2[self.obtener_indice_dialogo()]
-
                 else:
                     texto = self.dialogos_rosa[self.obtener_indice_dialogo()]
 
@@ -141,6 +142,7 @@ class Dialogue:
 
 
             if personaje == "don diego":
+             
                 self.pantalla.blit(self.don_diego, (self.pantalla_ancho - 445, dialogo_y + 20))
                 nombre = 'DON DIEGO'
 
@@ -182,6 +184,7 @@ class Dialogue:
             texto_rect = texto_superficie.get_rect(center=(self.pantalla_ancho - 350, dialogo_y + 260))
             self.pantalla.blit(texto_superficie, texto_rect)
 
+
     def dibujar_frases(self, texto_mostrado, inicio_texto_x, inicio_texto_y):
 
         if texto_mostrado.startswith('\u200B'):
@@ -218,12 +221,9 @@ class Dialogue:
         if linea_actual:
             self.pantalla.blit(self.fuente.render(linea_actual, True, self.MARRON),
                                (inicio_texto_x, inicio_texto_y + y_offset))
-
-
-
-
-
-
+            
+    
+    
 
 
 
