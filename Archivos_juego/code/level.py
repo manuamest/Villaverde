@@ -30,9 +30,9 @@ class Level:
         self.zoom = 4
         # Cargar el mapa de Tiled
         # Verano
-        self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
+        #self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
         # Otoño
-        #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
+        self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
         # self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
         # Volcán
@@ -148,7 +148,7 @@ class CameraGroup(pygame.sprite.Group):
 
         # Dibujar sprites antes de la primera capa
         for layer in range(LAYERS['npc']):
-                    # Dibujar los sprites
+            # Dibujar los sprites
             for sprite in sprites_sorted:
                 offset_rect = sprite.rect.copy()
                 offset_rect.center -= self.camera
