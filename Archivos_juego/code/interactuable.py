@@ -19,27 +19,14 @@ class InteractableObject(pygame.sprite.Sprite):
         self.z = LAYERS['ground plant']
 
     def interact(self, inventory):
-        print("22")
+       
         if self.interactable_type == "trigo":
-            print("24")
             inventory.añadir_trigo()
             self.kill()
         elif self.interactable_type == "madera":
             inventory.añadir_madera()
             self.kill()
         elif self.interactable_type == "dinero":
-            print("31")
             inventory.añadir_dinero()
             self.kill()
 
-    def talk(self, dialogue, inventory, personaje):
-        if personaje == "don diego":
-            dialogue.activar_dialogo()
-            dialogue.dibujar_dialogo(inventory, "don diego")
-        elif personaje == "butanero":
-            dialogue.activar_dialogo()
-            dialogue.dibujar_dialogo(inventory, "butanero")
-            if inventory.get_dinero():
-                dialogue.set_opcion_escogida(True)
-            else:
-                dialogue.set_opcion_escogida(True)

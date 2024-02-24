@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from player import Player, InteractableObject, Dialogue
+from player import Player, InteractableObject, Dialogue, Inventory
 from sprites import *
 from overlay import Overlay
 import pytmx
@@ -16,6 +16,7 @@ class Level:
 
         # Dialogue
         self.dialogue = Dialogue()
+        self.inventory = Inventory()
 
         self.soil_layer = SoilLayer(self.all_sprites)
         self.setup()
@@ -23,22 +24,19 @@ class Level:
         # Overlay 
         self.overlay = Overlay(self.player)
 
-
-        
-
     def setup(self):
         self.zoom = 4
         # Cargar el mapa de Tiled
         # Verano
         #self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
         # Otoño
-        self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
+        #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
         # self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
         # Volcán
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
         # Entorno pruebas
-        #self.tmx_map = load_pygame("./code/mapa/pruebas.tmx")
+        self.tmx_map = load_pygame("./code/mapa/pruebas.tmx")
 
         # Obtener la capa de colisiones
         self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
@@ -54,9 +52,6 @@ class Level:
         self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer)
 
         # Crear instancias de objetos interactuables
-        InteractableObject(
-            pos=(SCREEN_WIDTH / 2 + 500, SCREEN_HEIGHT / 2),  # Posición inicial del jugador
-            group=self.all_sprites,color=(255,0,0),dialogue=self.dialogue)
 
         InteractableObject(
             pos=(SCREEN_WIDTH / 2 - 300, SCREEN_HEIGHT / 2 + 500),
@@ -67,15 +62,16 @@ class Level:
             group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera")
 
         InteractableObject(
-            pos=(SCREEN_WIDTH / 2  - 100, SCREEN_HEIGHT / 2 + 500),  # Posición inicial del jugador
+            pos=(SCREEN_WIDTH / 2  - 100, SCREEN_HEIGHT / 2 + 500),
             group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero")
 
-        InteractableObject(
-            pos=(SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2 ),  # Posición inicial del jugador
-            group=self.all_sprites, color=(255, 0, 255), dialogue=self.dialogue)
+        # NPCs
 
-        NPC(pos=(SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2),
-            group=self.all_sprites, sprite_directory="./code/sprites/wuan/abajo_inactivo", dialogue=self.dialogue)
+        NPC(pos=(SCREEN_WIDTH / 2 + -100 , SCREEN_HEIGHT / 2 + 600),
+            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego")
+        
+        NPC(pos=(SCREEN_WIDTH / 2 - 300 , SCREEN_HEIGHT / 2 + 600),
+            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,personaje="butanero")
 
         # Ajustar la posición y el tamaño de los objetos en el mapa
         for obj in self.collision_layer:
@@ -105,7 +101,6 @@ class Level:
                         scaled_tile = pygame.transform.scale(tile, (int(tile.get_width() * self.zoom), int(tile.get_height() * self.zoom)))
                         self.display_surface.blit(scaled_tile, (x * self.tmx_map.tilewidth * self.zoom - self.camera.x,
                                                                 y * self.tmx_map.tileheight * self.zoom - self.camera.y))
-
 
         self.all_sprites.custom_draw(self.player, self.zoom)
         self.all_sprites.update(dt)
@@ -147,12 +142,17 @@ class CameraGroup(pygame.sprite.Group):
         sprites_sorted = sorted(sprites_without_player, key=lambda sprite: sprite.z)
 
         # Dibujar sprites antes de la primera capa
-        for layer in range(LAYERS['npc']):
+        for layer in range(LAYERS['main']):
             # Dibujar los sprites
             for sprite in sprites_sorted:
                 offset_rect = sprite.rect.copy()
                 offset_rect.center -= self.camera
-                scaled_image = pygame.transform.scale(sprite.image, (int(sprite.rect.width) / zoom, int(sprite.rect.height) / zoom))
+                if (sprite.z == 7   ):
+                    scaled_image = pygame.transform.scale(sprite.image, (int(sprite.rect.width) * zoom, int(sprite.rect.height) * zoom))
+                elif (sprite.z == 2):
+                    scaled_image = pygame.transform.scale(sprite.image, (int(sprite.rect.width) , int(sprite.rect.height) ))
+                else:
+                    scaled_image = pygame.transform.scale(sprite.image, (int(sprite.rect.width) / zoom, int(sprite.rect.height) / zoom))
                 scaled_rect = scaled_image.get_rect(center=offset_rect.center)
                 self.display_surface.blit(scaled_image, scaled_rect.topleft)
 
@@ -162,7 +162,6 @@ class CameraGroup(pygame.sprite.Group):
         scaled_image = pygame.transform.scale(player.image, (int(player.image.get_width() * zoom), int(player.image.get_height() * zoom)))
         scaled_rect = scaled_image.get_rect(center=offset_rect.center)
         self.display_surface.blit(scaled_image, scaled_rect.topleft)
-
 
         # Dibujar sprites después de la primera capa
         for layer in range(LAYERS['main'] + 1, len(LAYERS)):

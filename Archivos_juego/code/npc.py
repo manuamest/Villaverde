@@ -4,30 +4,31 @@ import os
 from settings import LAYERS
 
 class NPC(pygame.sprite.Sprite):
-    def __init__(self, pos, group, sprite_directory, dialogue):
+    def __init__(self, pos, group, sprite_directory, inventory, dialogue, personaje):
         super().__init__(group)
         self.sprite_directory = sprite_directory
         self.dialogue = dialogue
-
-        # Load sprite images
-        self.sprites = self.load_sprites()
+        self.inventory = inventory
+        self.personaje = personaje
+        self.load_sprites()
 
         # Configuración inicial
         self.image = self.sprites[0]  # Use the first sprite as the initial image
         self.rect = self.image.get_rect(center=pos)
-        self.z = LAYERS['npc']
+        self.z = LAYERS['main']
 
         # Animation variables
         self.current_frame = 0
-        self.animation_delay = 5
+        self.animation_delay = 40
         self.animation_counter = 0
 
+        self.dialogo_abierto = False
+
     def load_sprites(self):
-        sprites = []
-        for filename in os.listdir(self.sprite_directory):
+        self.sprites = []
+        for filename in sorted(os.listdir(self.sprite_directory)):
             path = os.path.join(self.sprite_directory, filename)
-            sprites.append(pygame.image.load(path).convert_alpha())
-        return sprites
+            self.sprites.append(pygame.image.load(path).convert_alpha())
 
     def update_animation(self):
         self.animation_counter += 1
@@ -36,23 +37,18 @@ class NPC(pygame.sprite.Sprite):
             self.current_frame = (self.current_frame + 1) % len(self.sprites)
             self.image = self.sprites[self.current_frame]
 
-    def interact(self, inventory):
-        # Implement interaction logic here
-        pass
-
-    def talk(self, inventory, personaje):
-        # Implement dialogue logic here
-        pass
-
-    def talk2(self, dialogue, inventory,personaje):
-
-        if personaje == "don diego":
-            dialogue.activar_dialogo()
-            dialogue.dibujar_dialogo(inventory,"don diego")
-        elif personaje == "butanero":
-            dialogue.activar_dialogo()
-            dialogue.dibujar_dialogo(inventory,"butanero")
-            if inventory.get_dinero():
-                dialogue.set_opcion_escogida(True)
-            else:
-                dialogue.set_opcion_escogida(True)
+    def talk(self, dialogue, inventory, personaje):
+            if personaje == "don diego":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory, "don diego")
+            elif personaje == "butanero":
+                
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory, "butanero")
+                if inventory.get_dinero():
+                    dialogue.set_opcion_escogida(True)
+                else:
+                    dialogue.set_opcion_escogida(True)
+                    
+    def update(self, dt):
+        self.update_animation()
