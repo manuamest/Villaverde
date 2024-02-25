@@ -8,7 +8,8 @@ from npc import NPC
 from utils import import_folder
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_layer, soil_layer):
+    #Añadir capa tree_sprites
+    def __init__(self, pos, group, collision_layer, soil_layer, tree_sprites, inventory):
         super().__init__(group)
 
         self.import_assets()
@@ -29,8 +30,8 @@ class Player(pygame.sprite.Sprite):
         # Diálogo
         self.dialogue = Dialogue()
         self.personaje_actual = None
-       
-
+        
+        self.inventory = inventory
 
         self.timers = {
             'uso de herramienta': Timer(350, self.use_tool),
@@ -48,7 +49,8 @@ class Player(pygame.sprite.Sprite):
         self.tool_index = 0
         self.selected_tool = self.tools[self.tool_index]
 
-        self.inventory = Inventory()
+        
+        self.tree_sprites = tree_sprites
         self.inventario_abierto = False
 
     def use_tool(self):
@@ -56,7 +58,9 @@ class Player(pygame.sprite.Sprite):
             self.soil_layer.get_hit(self.target_pos)
         
         if self.selected_tool == 'hacha':
-            pass
+            for tree in self.tree_sprites.sprites():
+                if tree.rect.collidepoint(self.target_pos):
+                    tree.damage()
 
         if self.selected_tool == 'agua':
             pass

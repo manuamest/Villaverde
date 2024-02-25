@@ -12,6 +12,8 @@ class Level:
     def __init__(self):
         self.display_surface = pygame.display.get_surface()
         self.all_sprites = CameraGroup()
+        self.collision_sprites = pygame.sprite.Group()
+        self.tree_sprites = pygame.sprite.Group()
         self.camera = pygame.math.Vector2()
 
         # Dialogue
@@ -28,7 +30,7 @@ class Level:
         self.zoom = 4
         # Cargar el mapa de Tiled
         # Verano
-        self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
+        #self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
         # Otoño
         #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
@@ -37,6 +39,16 @@ class Level:
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
         # Entorno pruebas
         #self.tmx_map = load_pygame("./code/mapa/pruebas.tmx")
+        self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
+
+
+        #for layer in ['casa2']:
+        #    for x, y, surf in self.tmx_map.get_layer_by_name(layer).tiles():
+        #        Generic((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites)
+
+        # trees 
+        for obj in self.tmx_map.get_layer_by_name('arboles'):
+            Tree( pos = (obj.x * 4, obj.y * 4), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, player_add = self.player_add, inventory=self.inventory)
 
         # Obtener la capa de colisiones
         self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
@@ -49,7 +61,7 @@ class Level:
         player_start_x = map_width / 2
         player_start_y = map_height / 2
 
-        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer)
+        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory)
 
         # Crear instancias de objetos interactuables
 
@@ -80,9 +92,8 @@ class Level:
             obj.width *= self.zoom  # Aumentar el ancho
             obj.height *= self.zoom  # Aumentar la altura
 
-        # trees 
-        #for obj in tmx_data.get_layer_by_name('Trees'): 
-        #    Tree( pos = (obj.x, obj.y), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, player_add = self.player_add)
+    def player_add(self,item):
+        pass
 
     def run(self, dt):
         self.display_surface.fill('black')
@@ -102,7 +113,7 @@ class Level:
                         self.display_surface.blit(scaled_tile, (x * self.tmx_map.tilewidth * self.zoom - self.camera.x,
                                                                 y * self.tmx_map.tileheight * self.zoom - self.camera.y))
 
-        self.all_sprites.custom_draw(self.player, self.zoom)
+        self.all_sprites.custom_draw(self.player, self.zoom, self.tree_sprites)
         self.all_sprites.update(dt)
 
         # Verificar colisiones
@@ -129,44 +140,26 @@ class CameraGroup(pygame.sprite.Group):
         super().__init__()
         self.display_surface = pygame.display.get_surface()
         self.camera = pygame.math.Vector2()
-
-    def custom_draw(self, player, zoom):
-        # Camara sigue al jugador
+    def custom_draw(self, player, zoom, tree_sprites):
+        # Cámara sigue al jugador
         self.camera.x = player.rect.centerx - SCREEN_WIDTH / 2
         self.camera.y = player.rect.centery - SCREEN_HEIGHT / 2
 
-        # Obtener todos los sprites, excepto el jugador
-        sprites_without_player = [sprite for sprite in self.sprites() if sprite != player]
-
-        # Sortear sprites basados en su atributo z
-        sprites_sorted = sorted(sprites_without_player, key=lambda sprite: sprite.z)
-
-        # Dibujar sprites antes de la primera capa
-        for layer in range(LAYERS['main']):
-            # Dibujar los sprites
-            for sprite in sprites_sorted:
-                offset_rect = sprite.rect.copy()
-                offset_rect.center -= self.camera
-                if (sprite.z == 7   ):
+        for layer in LAYERS.values():
+            for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
+                if sprite.z == 7:
                     scaled_image = pygame.transform.scale(sprite.image, (int(sprite.rect.width) * zoom, int(sprite.rect.height) * zoom))
-                elif (sprite.z == 2):
-                    scaled_image = pygame.transform.scale(sprite.image, (int(sprite.rect.width) , int(sprite.rect.height) ))
-                else:
+                elif sprite.z == 6:
                     scaled_image = pygame.transform.scale(sprite.image, (int(sprite.rect.width) / zoom, int(sprite.rect.height) / zoom))
-                scaled_rect = scaled_image.get_rect(center=offset_rect.center)
-                self.display_surface.blit(scaled_image, scaled_rect.topleft)
-
-        # Dibujar al jugador
-        offset_rect = player.rect.copy()
-        offset_rect.center -= self.camera
-        scaled_image = pygame.transform.scale(player.image, (int(player.image.get_width() * zoom), int(player.image.get_height() * zoom)))
-        scaled_rect = scaled_image.get_rect(center=offset_rect.center)
-        self.display_surface.blit(scaled_image, scaled_rect.topleft)
-
-        # Dibujar sprites después de la primera capa
-        for layer in range(LAYERS['main'] + 1, len(LAYERS)):
-            for sprite in sprites_sorted:
+                else:
+                    scaled_image = pygame.transform.scale(sprite.image, (int(sprite.rect.width), int(sprite.rect.height)))
+                    
                 if sprite.z == layer:
                     offset_rect = sprite.rect.copy()
+                    
+                    if sprite in tree_sprites:
+                        offset_rect.centery -= sprite.rect.height * 0.9
+                    
                     offset_rect.center -= self.camera
-                    self.display_surface.blit(sprite.image, offset_rect)
+                    scaled_rect = scaled_image.get_rect(center=offset_rect.center)
+                    self.display_surface.blit(scaled_image, scaled_rect.topleft)
