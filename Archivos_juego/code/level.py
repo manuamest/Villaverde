@@ -7,6 +7,7 @@ import pytmx
 from pytmx.util_pygame import load_pygame
 from soil import SoilLayer
 from npc import NPC
+from tutorial import Tutorial
 
 class Level:
     def __init__(self):
@@ -23,6 +24,10 @@ class Level:
         
         # Overlay 
         self.overlay = Overlay(self.player)
+        
+        # Tutorial
+        self.tutorial = Tutorial()
+        self.tutorial.activar_tutorial()
 
     def setup(self):
         self.zoom = 4
@@ -113,7 +118,10 @@ class Level:
 
         # Para mostrar el overlay
         self.overlay.display()
-
+        
+        # Tutorial
+        self.tutorial.mostrar_tutorial()
+        
     def check_collision(self):
         player_rect = self.player.rect
 
@@ -123,6 +131,7 @@ class Level:
             if player_rect.colliderect(col_rect):
                 # Detener al jugador ante la colisión
                 self.player.stop()
+                
 
 class CameraGroup(pygame.sprite.Group):
     def __init__(self):
