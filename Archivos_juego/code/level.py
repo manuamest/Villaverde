@@ -8,6 +8,7 @@ from pytmx.util_pygame import load_pygame
 from soil import SoilLayer
 from npc import NPC
 from tutorial import Tutorial
+from objectives import Objectives
 
 class Level:
     def __init__(self):
@@ -28,6 +29,9 @@ class Level:
         # Tutorial
         self.tutorial = Tutorial()
         self.tutorial.activar_tutorial()
+        
+        # Objetives
+        self.objectives = Objectives()
 
     def setup(self):
         self.zoom = 4
@@ -121,6 +125,9 @@ class Level:
         
         # Tutorial
         self.tutorial.mostrar_tutorial()
+        
+        # Objetives
+        self.objectives.evaluate()
         
     def check_collision(self):
         player_rect = self.player.rect
