@@ -135,7 +135,7 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-            dt = self.clock.tick(FPS) / 1000
+            dt = self.clock.tick(FPS) / 700
             self.level.run(dt)
             pygame.display.update()
 

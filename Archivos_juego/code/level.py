@@ -28,7 +28,7 @@ class Level:
         self.zoom = 4
         # Cargar el mapa de Tiled
         # Verano
-        #self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
+        self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
         # Otoño
         #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
@@ -36,7 +36,7 @@ class Level:
         # Volcán
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
         # Entorno pruebas
-        self.tmx_map = load_pygame("./code/mapa/pruebas.tmx")
+        #self.tmx_map = load_pygame("./code/mapa/pruebas.tmx")
 
         # Obtener la capa de colisiones
         self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
