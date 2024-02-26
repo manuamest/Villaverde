@@ -9,6 +9,24 @@ class Generic(pygame.sprite.Sprite):
         self.z = z
         self.hitbox = self.rect.copy()
 
+class Particle(Generic):
+	def __init__(self, pos, surf, groups, z, duration = 200):
+		super().__init__(pos, surf, groups, z)
+		self.start_time = pygame.time.get_ticks()
+		self.duration = duration
+
+		# Crear la superficie de particulas
+		mask = pygame.mask.from_surface(self.image)
+		new_surf = mask.to_surface()
+		new_surf.set_colorkey((0,0,0))
+		self.image = new_surf
+
+	def update(self, dt):
+		time = pygame.time.get_ticks()
+		if time - self.start_time > self.duration:
+			self.kill()
+
+
 class Tree(Generic):
     def __init__(self, pos, surf, groups, name, player_add, inventory):
         super().__init__(pos, surf, groups)
