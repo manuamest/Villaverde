@@ -185,6 +185,10 @@ class Player(pygame.sprite.Sprite):
         self.direction = -self.direction
 
     def move(self, dt):
+        # Normalizar el vector de dirección si no está en reposo
+        if self.direction.magnitude() != 0:
+            self.direction = self.direction.normalize()
+        
         new_pos = self.pos + self.velocity * dt
         new_rect = self.rect.copy()
         new_rect.center = new_pos
@@ -193,6 +197,7 @@ class Player(pygame.sprite.Sprite):
             if not self.check_collision(new_rect):
                 self.pos = new_pos
                 self.rect.center = self.pos
+
 
     def check_collision(self, new_rect):
         # Check for collisions in the collision layer

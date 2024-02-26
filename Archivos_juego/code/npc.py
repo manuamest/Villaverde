@@ -21,7 +21,7 @@ class NPC(pygame.sprite.Sprite):
 
         # Animation variables
         self.current_frame = 0
-        self.animation_delay = 20
+        self.animation_delay = 13
         self.animation_counter = 0
 
         self.personaje= personaje 
