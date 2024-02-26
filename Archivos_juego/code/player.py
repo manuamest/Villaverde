@@ -130,6 +130,7 @@ class Player(pygame.sprite.Sprite):
             if self.dialogue.obtener_dialogo():
                 self.dialogue.dibujar_dialogo(self.inventory, self.personaje_actual)
                 dialogos_personaje = self.dialogue.obtener_dialogo_personaje(self.personaje_actual)
+                self.dialogue.procesar_dialogo(keys, dialogos_personaje,self.timers,self.personaje_actual)
                 
                 if keys[pygame.K_x] and not self.timers['dialogo'].active:
                     self.timers['dialogo'].activate()

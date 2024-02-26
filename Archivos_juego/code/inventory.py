@@ -17,7 +17,7 @@ class Inventory:
 
         # Variables del inventario
         self.inventario_abierto = False
-        self.inventario_items = {"Madera": 0, "Trigo": 0,"Bolsa de dinero":0}
+        self.inventario_items = {"Madera": 0, "Trigo": 0,"Bolsa de dinero":0,"Zapatillas":0,"Bufandas":0}
 
         # Cargar la imagen de fondo para el inventario y hacerla semi-transparente
         self.imagen_fondo_inventario = pygame.image.load('./code/sprites/inventario.png').convert_alpha()
@@ -28,10 +28,21 @@ class Inventory:
             "Madera": pygame.image.load('./code/sprites/madera.png'),
             "Trigo": pygame.image.load('./code/sprites/trigo.png'),
             "Bolsa de dinero": pygame.image.load('./code/sprites/dinero.png'),
+            'Bufandas': pygame.image.load('./code/sprites/bufanda.png'),
+            'Zapatillas': pygame.image.load('./code/sprites/bufanda.png'),
         }
 
     def añadir_madera(self):
         self.inventario_items["Madera"] += 1
+
+    def eliminar_madera(self,cantidad):
+        self.inventario_items["Madera"] -= cantidad
+    
+    def eliminar_trigo(self,cantidad):
+        self.inventario_items["Trigo"] -= cantidad
+
+    def añadir_dinero_mercader(self,cantidad):
+        self.inventario_items["Bolsa de dinero"] += cantidad
 
     def añadir_trigo(self):
         self.inventario_items["Trigo"] += 1
@@ -39,11 +50,31 @@ class Inventory:
     def añadir_dinero(self):
         self.inventario_items["Bolsa de dinero"] += 1
 
+    def añadir_zapatillas(self):
+        self.inventario_items["Zapatillas"] += 1
+    
+    def añadir_bufandas(self):
+        self.inventario_items["Bufandas"] += 1
+
+  
+
     def eliminar_dinero(self):
         self.inventario_items["Bolsa de dinero"] -= 1
 
+    def eliminar_dinero_modista(self,cantidad):
+        self.inventario_items["Bolsa de dinero"] -= cantidad
+
     def get_dinero(self):
-        return self.inventario_items["Bolsa de dinero"] > 0
+        return self.inventario_items["Bolsa de dinero"] 
+    
+    def get_trigo(self):
+        return self.inventario_items["Trigo"] 
+    
+    def get_madera(self):
+
+        return self.inventario_items["Madera"]
+    
+    
 
     # Función para dibujar el inventario
     def dibujar_inventario(self):
@@ -83,4 +114,3 @@ class Inventory:
             else:
                 # Ajustar la posición y de las siguientes barras si la cantidad actual es 0
                 ajuste_y += 50
-

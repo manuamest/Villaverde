@@ -35,7 +35,7 @@ class Level:
         # Verano
         self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
         # Otoño
-        #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
+        self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
         # self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
         # Volcán
@@ -77,6 +77,13 @@ class Level:
         
         NPC(pos=(SCREEN_WIDTH / 2 - 300 , SCREEN_HEIGHT / 2 + 600),
             group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,personaje="butanero")
+        
+        
+        NPC(pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 1500),
+            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Eva_la_modista",inventory=self.inventory, dialogue=self.dialogue,personaje="modista")
+        
+        NPC(pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 1700),
+            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader")
 
         # Ajustar la posición y el tamaño de los objetos en el mapa
         for obj in self.collision_layer:
@@ -156,7 +163,7 @@ class CameraGroup(pygame.sprite.Group):
             for sprite in sprites_sorted:
                 offset_rect = sprite.rect.copy()
                 offset_rect.center -= self.camera
-                if (sprite.z == 7   ):
+                if (sprite.z == 7   or sprite.z == 11):
                     scaled_image = pygame.transform.scale(sprite.image, (int(sprite.rect.width) * zoom, int(sprite.rect.height) * zoom))
                 elif (sprite.z == 2):
                     scaled_image = pygame.transform.scale(sprite.image, (int(sprite.rect.width) , int(sprite.rect.height) ))
