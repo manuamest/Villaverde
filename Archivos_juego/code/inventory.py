@@ -44,6 +44,10 @@ class Inventory:
 
     def get_dinero(self):
         return self.inventario_items["Bolsa de dinero"] > 0
+    
+    def is_empty(self):
+        print(sum(self.inventario_items.values()))
+        return sum(self.inventario_items.values()) == 0
 
     # Función para dibujar el inventario
     def dibujar_inventario(self):

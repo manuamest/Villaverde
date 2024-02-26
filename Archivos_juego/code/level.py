@@ -17,8 +17,8 @@ class Level:
         self.camera = pygame.math.Vector2()
 
         # Dialogue
-        self.dialogue = Dialogue()
         self.inventory = Inventory()
+        self.dialogue = Dialogue(self.inventory)
 
         self.soil_layer = SoilLayer(self.all_sprites)
         self.setup()
@@ -31,15 +31,15 @@ class Level:
         self.tutorial.activar_tutorial()
         
         # Objetives
-        self.objectives = Objectives()
+        self.objectives = Objectives(self.tutorial, self.inventory)
 
     def setup(self):
         self.zoom = 4
         # Cargar el mapa de Tiled
         # Verano
-        self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
+        # self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
         # Otoño
-        #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
+        self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
         # self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
         # Volcán
@@ -58,7 +58,7 @@ class Level:
         player_start_x = map_width / 2
         player_start_y = map_height / 2
 
-        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer)
+        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, self.dialogue, self.inventory)
 
         # Crear instancias de objetos interactuables
 

@@ -8,7 +8,7 @@ from npc import NPC
 from utils import import_folder
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_layer, soil_layer):
+    def __init__(self, pos, group, collision_layer, soil_layer, dialogue, inventory):
         super().__init__(group)
 
         self.import_assets()
@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = 100
 
         # Diálogo
-        self.dialogue = Dialogue()
+        self.dialogue = dialogue
         self.personaje_actual = None
        
 
@@ -48,7 +48,7 @@ class Player(pygame.sprite.Sprite):
         self.tool_index = 0
         self.selected_tool = self.tools[self.tool_index]
 
-        self.inventory = Inventory()
+        self.inventory = inventory
         self.inventario_abierto = False
 
     def use_tool(self):

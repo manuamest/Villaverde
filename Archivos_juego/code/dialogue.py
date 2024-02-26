@@ -5,7 +5,7 @@ from settings import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class Dialogue:
-    def __init__(self):
+    def __init__(self, inventory):
 
         # Pantalla
         self.pantalla_ancho = SCREEN_WIDTH
@@ -30,7 +30,7 @@ class Dialogue:
         self.definir_dialogos()
 
         # Atributos
-        self.inventory = Inventory()
+        self.inventory = inventory
         self.indice_dialogo = 0
         self.opcion_escogida = False
         self.opcion_seleccionada = 0

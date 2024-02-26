@@ -2,6 +2,7 @@ import pygame
 import time
 from settings import SCREEN_WIDTH, SCREEN_HEIGHT
 from timer import Timer
+from objectives import Objectives
 
 
 class Tutorial:
@@ -12,33 +13,35 @@ class Tutorial:
 
         self.imagen_fondo_tutorial = pygame.image.load(
             './code/sprites/tutorial/tutorial.png').convert_alpha()
-        self.imagen_fondo_tutorial.set_alpha(150)
+
 
         self.indice_tutorial = 0
         self.tutorial_mensajes = [
-            "¡Bienvenido a Villaverde! Usa las teclas A,W,S,D para mover al jugador. Dale a la 'Z' para seguir.",
+            "Bienvenido a Villaverde! Usa las teclas A,W,S,D para mover al jugador. Dale a la 'Z' para seguir.",
             "Ahora para cambiar de herramienta presiona la tecla 'Q' y para usarla dale al 'SPACE'.",
             "Para recoger objetos, simplemente camina sobre ellos y presiona la tecla 'E'.",
-            "¡Muy bien! Ahora, vamos a ver tu inventario. Presiona la tecla 'B' para abrirlo.",
-            "En el inventario, puedes ver los objetos que has recogido. ¡Ciérralo presionando 'B' de nuevo!",
-            "Vamos a hablar con el NPC. Acércate a él y presiona la tecla 'E'.",
-            "Usa la tecla 'X' para avanzar en el diálogo o seleccionar una opcion. Si necesitas escoger una opcion presiona 'UP' o 'DOWN'.",
-            "¡Felicidades! Has completado el tutorial. ¡Disfruta del juego!"
+            "Muy bien! Ahora, vamos a ver tu inventario. Presiona la tecla 'B' para abrirlo.",
+            "En el inventario, puedes ver los objetos que has recogido. ¡Cierralo presionando 'B' de nuevo!",
+            "Vamos a hablar con el NPC. Acercate a el y presiona la tecla 'E'.",
+            "Usa la tecla 'X' para avanzar en el dialogo o seleccionar una opcion. Si necesitas escoger una opcion presiona 'UP' o 'DOWN'.",
+            "Felicidades! Has completado el tutorial. ¡Disfruta del juego!"
         ]
         self.tutorial_on = False
         self.tutorial_surface = pygame.Surface((800, 100))
         self.tutorial_rect = self.tutorial_surface.get_rect(center=(400, 550))
 
         # Letra
-        self.MARRON = (128, 58, 58)
+        self.MARRON = (59, 31, 10)
         self.fuente = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 28)
         self.longitud_actual = 0
 
         self.velocidad_texto = 0.05
         self.update = time.time()
-        self.tiempo_espera = 1.5  # segundos de espera antes de cambiar al siguiente mensaje
-        self.timers = {'tutorial': Timer(1000)}
-
+        
+        # Continuar tutorial
+        self.next_step = False
+        
+        
     def activar_tutorial(self):
         self.tutorial_on = True
         self.indice_tutorial = 0
@@ -57,9 +60,9 @@ class Tutorial:
 
             texto = self.tutorial_mensajes[self.indice_tutorial]
             dialogo_ancho, dialogo_alto = 850, 180
-            dialogo_x = self.pantalla_ancho - dialogo_ancho
-            dialogo_y = (self.pantalla_alto // 2 -
-                         dialogo_alto // 2) - dialogo_alto
+            dialogo_x = (self.pantalla_ancho//6 - dialogo_ancho//4)
+            dialogo_y = (self.pantalla_alto // 3 -
+                         dialogo_alto // 3) - dialogo_alto
             inicio_texto_x, inicio_texto_y = dialogo_x + 30, dialogo_y + 30
 
             self.pantalla.blit(self.imagen_fondo_tutorial,
@@ -78,8 +81,9 @@ class Tutorial:
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.KEYUP:
-                    if event.key == pygame.K_z:
+                    if event.key == pygame.K_z and self.next_step:
                         self.indice_tutorial += 1
+                        self.next_step = False
                         if self.indice_tutorial >= len(self.tutorial_mensajes):
                             self.desactivar_tutorial()
                         else:
@@ -108,3 +112,7 @@ class Tutorial:
         if linea_actual:
             self.pantalla.blit(self.fuente.render(
                 linea_actual, True, self.MARRON), (inicio_texto_x, inicio_texto_y + y_offset))
+
+    def enable_next_step(self):
+        self.next_step = True
+        

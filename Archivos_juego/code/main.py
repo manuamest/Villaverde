@@ -29,7 +29,7 @@ class Game:
 
 	    # Cargar música de fondo
         pygame.mixer.music.load('./code/villaverde.mp3')
-        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.set_volume(0)
         pygame.mixer.music.play(-1)  # Repetir infinitamente
 
     def show_start_screen(self):
