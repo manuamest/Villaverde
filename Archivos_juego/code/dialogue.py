@@ -51,9 +51,6 @@ class Dialogue:
         "Bufandas": 0
         }
 
-        
- 
-
           #Sprites Diálogos
         self.definir_sprites()
 

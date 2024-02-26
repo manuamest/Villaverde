@@ -17,11 +17,11 @@ class NPC(pygame.sprite.Sprite):
         # Configuración inicial
         self.image = self.sprites[0]  # Use the first sprite as the initial image
         self.rect = self.image.get_rect(center=pos)
-        self.z = LAYERS['npc']
+        self.z = LAYERS['main']
 
         # Animation variables
         self.current_frame = 0
-        self.animation_delay = 5
+        self.animation_delay = 20
         self.animation_counter = 0
 
         self.personaje= personaje 
@@ -54,3 +54,6 @@ class NPC(pygame.sprite.Sprite):
             dialogue.set_opcion_dialogo(True)
             dialogue.dibujar_dialogo(inventory, "butanero")
           
+                    
+    def update(self, dt):
+        self.update_animation()
