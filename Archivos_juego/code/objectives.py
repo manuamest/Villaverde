@@ -12,10 +12,16 @@ class Objectives:
             return False
         
     def inventory_is_not_empty(inventory):
-        print(inventory.is_empty())
         return not inventory.is_empty()
+    
+    def interact_with_npc(dialogue):
+        return dialogue.obtener_dialogo() == True
+    
+    def last_step_tutorial(tutorial):
+        print(f'{tutorial.indice_tutorial} -> {(len(tutorial.tutorial_mensajes) - 1)}')
+        return (tutorial.indice_tutorial) == (len(tutorial.tutorial_mensajes) - 1)
             
-    def __init__(self, tutorial, inventory):
+    def __init__(self, tutorial, inventory, dialogue):
         self.objectives = [
             Objective([
                 Requirement(lambda state: Objectives.is_key_pressed(state, pygame.K_a), "1"),
@@ -32,6 +38,15 @@ class Objectives:
             ], (lambda : tutorial.enable_next_step())),
             Objective([
                 Requirement(lambda state: Objectives.is_key_pressed(state, pygame.K_b), "8")
+            ], (lambda : tutorial.enable_next_step())),
+            Objective([
+                Requirement(lambda state: Objectives.interact_with_npc(dialogue), "9")
+            ], (lambda : tutorial.enable_next_step())),
+            Objective([
+                Requirement(lambda state: Objectives.is_key_pressed(state, pygame.K_x), "10")
+            ], (lambda : tutorial.enable_next_step())),
+            Objective([
+                Requirement(lambda state: Objectives.last_step_tutorial(tutorial), "11")
             ], (lambda : tutorial.enable_next_step()))
         ]
         self.current_objective = 0

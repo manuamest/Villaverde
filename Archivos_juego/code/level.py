@@ -31,7 +31,7 @@ class Level:
         self.tutorial.activar_tutorial()
         
         # Objetives
-        self.objectives = Objectives(self.tutorial, self.inventory)
+        self.objectives = Objectives(self.tutorial, self.inventory, self.dialogue)
 
     def setup(self):
         self.zoom = 4
