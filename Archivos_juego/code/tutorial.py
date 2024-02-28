@@ -49,7 +49,7 @@ class Tutorial:
         self.longitud_actual = 0
         self.update = time.time()
 
-    def mostrar_tutorial(self):
+    def mostrar_tutorial(self, key_z_pressed):
         if self.tutorial_on:
             tiempo_actual = time.time()
             texto = self.tutorial_mensajes[self.indice_tutorial]
@@ -64,18 +64,13 @@ class Tutorial:
             texto_mostrado = texto[:self.longitud_actual]
             self.mostrar_texto(texto_mostrado, self.posicion)
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                elif event.type == pygame.KEYUP:
-                    if event.key == pygame.K_z and self.next_step:
-                        self.indice_tutorial += 1
-                        self.next_step = False
-                        if self.indice_tutorial >= len(self.tutorial_mensajes):
-                            self.desactivar_tutorial()
-                        else:
-                            self.reiniciar_letras()
+            if self.next_step and key_z_pressed:
+                self.indice_tutorial += 1
+                self.next_step = False
+                if self.indice_tutorial >= len(self.tutorial_mensajes):
+                    self.desactivar_tutorial()
+                else:
+                    self.reiniciar_letras()
 
     def mostrar_texto(self, texto_mostrado, posicion):
         max_ancho_linea = 350

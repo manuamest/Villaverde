@@ -93,7 +93,7 @@ class Level:
         #for obj in tmx_data.get_layer_by_name('Trees'): 
         #    Tree( pos = (obj.x, obj.y), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, player_add = self.player_add)
 
-    def run(self, dt):
+    def run(self, dt, key_z_pressed):
         self.display_surface.fill('black')
 
         # Centrar la cámara en el jugador
@@ -124,7 +124,7 @@ class Level:
         self.overlay.display()
         
         # Tutorial
-        self.tutorial.mostrar_tutorial()
+        self.tutorial.mostrar_tutorial(key_z_pressed)
         
         # Objetives
         self.objectives.evaluate()

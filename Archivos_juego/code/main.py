@@ -32,6 +32,9 @@ class Game:
         pygame.mixer.music.set_volume(0)
         pygame.mixer.music.play(-1)  # Repetir infinitamente
 
+        # Avanzar en el tutorial
+        self.key_z_pressed = False
+
     def show_start_screen(self):
         waiting = True
         text_flash_timer = 0
@@ -134,9 +137,13 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                elif event.type == pygame.KEYUP:
+                    if event.key == pygame.K_z:
+                        self.key_z_pressed = True
 
             dt = self.clock.tick(FPS) / 700
-            self.level.run(dt)
+            self.level.run(dt, self.key_z_pressed)
+            self.key_z_pressed = False
             pygame.display.update()
 
 if __name__ == '__main__':
