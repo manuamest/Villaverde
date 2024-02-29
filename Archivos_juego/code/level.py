@@ -8,7 +8,7 @@ from pytmx.util_pygame import load_pygame
 from soil import SoilLayer
 from npc import NPC
 from tutorial import Tutorial
-from objectives import Objectives
+from objectives import Objectives, Button, Dropdown
 
 class Level:
     def __init__(self):
@@ -39,9 +39,9 @@ class Level:
         # Verano
         # self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
         # Otoño
-        self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
+        # self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
-        # self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
+        self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
         # Volcán
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
         # Entorno pruebas
@@ -93,7 +93,7 @@ class Level:
         #for obj in tmx_data.get_layer_by_name('Trees'): 
         #    Tree( pos = (obj.x, obj.y), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, player_add = self.player_add)
 
-    def run(self, dt, key_z_pressed):
+    def run(self, dt, key_z_pressed, left_mouse_button_down, event_mouse):
         self.display_surface.fill('black')
 
         # Centrar la cámara en el jugador
@@ -128,6 +128,10 @@ class Level:
         
         # Objetives
         self.objectives.evaluate()
+
+        # Dropdown
+        self.objectives.show_dropdown(left_mouse_button_down, event_mouse)
+
         
     def check_collision(self):
         player_rect = self.player.rect

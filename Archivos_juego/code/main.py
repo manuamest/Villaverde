@@ -32,9 +32,6 @@ class Game:
         pygame.mixer.music.set_volume(0)
         pygame.mixer.music.play(-1)  # Repetir infinitamente
 
-        # Avanzar en el tutorial
-        self.key_z_pressed = False
-
     def show_start_screen(self):
         waiting = True
         text_flash_timer = 0
@@ -133,17 +130,23 @@ class Game:
 
         # Salir del menú y entrar al bucle principal del juego
         while True:
+            key_z_pressed = False   # Detecta la tecla z
+            left_mouse_button_down = False
+            event_mouse = None
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_z:
-                        self.key_z_pressed = True
+                        key_z_pressed = True
+                elif event.type == pygame.MOUSEBUTTONDOWN: # Clic del raton
+                    if event.button == 1:  # Clic izquierdo
+                        left_mouse_button_down = True
+                        event_mouse = event
 
             dt = self.clock.tick(FPS) / 700
-            self.level.run(dt, self.key_z_pressed)
-            self.key_z_pressed = False
+            self.level.run(dt, key_z_pressed, left_mouse_button_down, event_mouse)
             pygame.display.update()
 
 if __name__ == '__main__':
