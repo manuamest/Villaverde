@@ -37,11 +37,11 @@ class Level:
         self.zoom = 4
         # Cargar el mapa de Tiled
         # Verano
-        #self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
+        # self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
         # Otoño
-        self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
+        # self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
-        # self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
+        self.tmx_map = load_pygame("./code/mapa/mapa_invierno2.tmx")
         # Volcán
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
         # Entorno pruebas
@@ -52,19 +52,19 @@ class Level:
         #        Generic((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites)
 
         # trees 
-        #for obj in self.tmx_map.get_layer_by_name('arboles'):
-        #    Tree( pos = (obj.x * 4, obj.y * 4), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, player_add = self.player_add, inventory=self.inventory)
+        for obj in self.tmx_map.get_layer_by_name('arboles'):
+             Tree( pos = (obj.x * 4, obj.y * 4), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, player_add = self.player_add, inventory=self.inventory)
 
         # Obtener la capa de colisiones
         self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
 
-        # Obtener el tamaño del mapa
-        map_width = self.tmx_map.width * self.tmx_map.tilewidth
-        map_height = self.tmx_map.height * self.tmx_map.tileheight
+        #Obtener el tamaño del mapa
+        #map_width = self.tmx_map.width * self.tmx_map.tilewidth
+        #map_height = self.tmx_map.height * self.tmx_map.tileheight
 
-        # Crear el jugador en el centro del mapa
-        player_start_x = map_width / 2
-        player_start_y = map_height / 2
+        #Crear el jugador en la posición deseada
+        player_start_x = 3115
+        player_start_y = 4600 
 
         self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory)
 
@@ -76,6 +76,9 @@ class Level:
             obj.y *= self.zoom  # Aumentar la posición y
             obj.width *= self.zoom  # Aumentar el ancho
             obj.height *= self.zoom  # Aumentar la altura
+
+    def player_add():
+        pass
 
     def create_objects(self):
         # InteractableObject(
@@ -118,8 +121,6 @@ class Level:
         NPC(pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 - 300),
             group=self.all_sprites, sprite_directory="./code/sprites/animales/pollo",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader")
 
-
-
     def run(self, dt):
         self.display_surface.fill('black')
 
@@ -142,9 +143,6 @@ class Level:
         self.all_sprites.update(dt)
         self.plant_collision()
 
-        # Verificar colisiones
-        self.check_collision()
-
         # Mover al jugador
         self.player.move(dt)
 
@@ -153,16 +151,6 @@ class Level:
         
         # Tutorial
         #self.tutorial.mostrar_tutorial()
-        
-    def check_collision(self):
-        player_rect = self.player.rect
-
-        # Verificar colisiones en la capa de colisiones del mapa de Tiled
-        for obj in self.collision_layer:
-            col_rect = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
-            if player_rect.colliderect(col_rect):
-                # Detener al jugador ante la colisión
-                self.player.stop()
 
     def plant_collision(self):
         if self.soil_layer.plant_sprites:
@@ -184,7 +172,6 @@ class Level:
                             if water_sprite.rect.collidepoint((x * TILE_SIZE, y * TILE_SIZE)):
                                 water_sprite.kill()
                 
-
 class CameraGroup(pygame.sprite.Group):
     def __init__(self):
         super().__init__()

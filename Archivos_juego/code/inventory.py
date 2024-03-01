@@ -28,8 +28,8 @@ class Inventory:
             "Madera": pygame.image.load('./code/sprites/madera.png'),
             "Trigo": pygame.image.load('./code/sprites/trigo.png'),
             "Bolsa de dinero": pygame.image.load('./code/sprites/dinero.png'),
-            'Bufandas': pygame.image.load('./code/sprites/bufanda.png'),
-            'Zapatillas': pygame.image.load('./code/sprites/bufanda.png'),
+            'Bufandas': pygame.image.load('./code/sprites/bufanda_y_boina.png'),
+            'Zapatillas': pygame.image.load('./code/sprites/jordan.png'),
         }
 
     def añadir_madera(self):
