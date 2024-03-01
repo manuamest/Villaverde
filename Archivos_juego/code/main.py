@@ -2,9 +2,10 @@ import pygame
 import sys
 from settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
 from level import Level
+import argparse, sys
 
 class Game:
-    def __init__(self):
+    def __init__(self, objective_index):
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -13,7 +14,7 @@ class Game:
         pygame.display.set_icon(icon)
         pygame.display.set_caption('Villaverde')
         self.clock = pygame.time.Clock()
-        self.level = Level()
+        self.level = Level(objective_index)
         self.menu_options = ["Jugar", "Opciones", "Controles", "Salir"]
         self.selected_option = 0
 
@@ -150,5 +151,8 @@ class Game:
             pygame.display.update()
 
 if __name__ == '__main__':
-    game = Game()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--objective", help="Set start objective", type=int)
+    args = parser.parse_args()
+    game = Game(args.objective)
     game.run()

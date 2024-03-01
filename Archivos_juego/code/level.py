@@ -11,7 +11,7 @@ from tutorial import Tutorial
 from objectives import Objectives, Button, Dropdown
 
 class Level:
-    def __init__(self):
+    def __init__(self, objective_index):
         self.display_surface = pygame.display.get_surface()
         self.all_sprites = CameraGroup()
         self.camera = pygame.math.Vector2()
@@ -27,11 +27,11 @@ class Level:
         self.overlay = Overlay(self.player)
         
         # Tutorial
-        self.tutorial = Tutorial()
-        self.tutorial.activar_tutorial()
+        self.tutorial = Tutorial(objective_index)
+
         
         # Objetives
-        self.objectives = Objectives(self.tutorial, self.inventory, self.dialogue)
+        self.objectives = Objectives(self.tutorial, self.inventory, self.dialogue, objective_index)
 
     def setup(self):
         self.zoom = 4
@@ -126,8 +126,10 @@ class Level:
         # Tutorial
         self.tutorial.mostrar_tutorial(key_z_pressed)
         
-        # Objetives
-        self.objectives.evaluate()
+        if self.tutorial.is_tutorial_on() and not self.tutorial.next_step:
+            self.objectives.evaluate(key_z_pressed)
+        else:
+            self.objectives.evaluate()
 
         # Dropdown
         self.objectives.show_dropdown(left_mouse_button_down, event_mouse)

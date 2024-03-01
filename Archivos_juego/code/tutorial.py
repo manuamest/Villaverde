@@ -6,15 +6,14 @@ from objectives import Objectives
 
 
 class Tutorial:
-    def __init__(self):
-        self.pantalla_ancho, self.pantalla_alto = SCREEN_WIDTH, SCREEN_HEIGHT
-        self.pantalla = pygame.display.set_mode((self.pantalla_ancho, self.pantalla_alto))
+    def __init__(self, objective_index):
+        self.pantalla = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
         self.imagen_fondo_tutorial = pygame.image.load('./code/sprites/tutorial/tutorial.png').convert_alpha()
         self.posicion = self.imagen_fondo_tutorial.get_rect().topleft
         self.margen = 35
 
-        self.indice_tutorial = 0
+        self.indice_tutorial = 0 if objective_index == None else objective_index
         self.tutorial_mensajes = [
             "Bienvenido a Villaverde! Usa las teclas A,W,S,D para mover al jugador. Dale a la 'Z' para seguir.",
             "Ahora para cambiar de herramienta presiona la tecla 'Q' y para usarla dale al 'SPACE'.",
@@ -22,9 +21,13 @@ class Tutorial:
             "Muy bien! Ahora, vamos a ver tu inventario. Presiona la tecla 'B' para abrirlo. Cierralo presionando 'B' de nuevo!",
             "Vamos a hablar con el NPC. Acercate a el y presiona la tecla 'E'.",
             "Usa la tecla 'X' para avanzar en el dialogo o seleccionar una opcion. Si necesitas escoger una opcion presiona 'UP' o 'DOWN'.",
+            "Clica en la esquina superior derecha para ver los objetivos y vuelve a clicar para cerrar el desplegable",
             "Felicidades! Has completado el tutorial. Disfruta del juego!"
         ]
-        self.tutorial_on = False
+        if objective_index == None or objective_index < len(self.tutorial_mensajes):
+            self.tutorial_on = True
+        else:
+            self.tutorial_on = False
 
         # Letra
         self.MARRON = (59, 31, 10)
@@ -45,6 +48,9 @@ class Tutorial:
         self.tutorial_on = False
         self.indice_tutorial = 0
 
+    def is_tutorial_on(self):
+        return self.tutorial_on
+
     def reiniciar_letras(self):
         self.longitud_actual = 0
         self.update = time.time()
@@ -63,7 +69,6 @@ class Tutorial:
 
             texto_mostrado = texto[:self.longitud_actual]
             self.mostrar_texto(texto_mostrado, self.posicion)
-
             if self.next_step and key_z_pressed:
                 self.indice_tutorial += 1
                 self.next_step = False
