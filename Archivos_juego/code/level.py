@@ -39,21 +39,21 @@ class Level:
         # Verano
         # self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
         # Otoño
-        self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
+        #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
         self.tmx_map = load_pygame("./code/mapa/mapa_invierno2.tmx")
         # Volcán
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
         # Entorno pruebas
-        self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
+        #self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
 
         #for layer in ['casa2']:
         #    for x, y, surf in self.tmx_map.get_layer_by_name(layer).tiles():
         #        Generic((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites)
 
         # trees 
-        #for obj in self.tmx_map.get_layer_by_name('arboles'):
-        #    Tree( pos = (obj.x * 4, obj.y * 4), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, player_add = self.player_add, inventory=self.inventory)
+        for obj in self.tmx_map.get_layer_by_name('arboles'):
+            Tree( pos = (obj.x , obj.y ), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, inventory=self.inventory)
 
         # Obtener la capa de colisiones
         self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
@@ -68,9 +68,9 @@ class Level:
 
         self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory)
 
-        self.create_npcs()
-        self.create_objects()
-        self.create_animals()
+        #self.create_npcs()
+        #self.create_objects()
+        #self.create_animals()
 
         # Ajustar la posición y el tamaño de los objetos en el mapa
         for obj in self.collision_layer:
@@ -78,9 +78,6 @@ class Level:
             obj.y *= self.zoom  # Aumentar la posición y
             obj.width *= self.zoom  # Aumentar el ancho
             obj.height *= self.zoom  # Aumentar la altura
-
-    def player_add():
-        pass
 
     def create_objects(self):
         InteractableObject(
@@ -152,7 +149,7 @@ class Level:
         self.overlay.display()
         
         # Tutorial
-        self.tutorial.mostrar_tutorial()
+        #self.tutorial.mostrar_tutorial()
         
     def check_collision(self):
         player_rect = self.player.rect
@@ -208,8 +205,11 @@ class CameraGroup(pygame.sprite.Group):
                     offset_rect = sprite.rect.copy()
                     
                     if sprite in tree_sprites:
+                        scaled_rect = scaled_image.get_rect(center=offset_rect.center)
+                        scaled_rect.center = (sprite.rect.center[0] * zoom, sprite.rect.center[1] * zoom) - self.camera
                         offset_rect.centery -= sprite.rect.height * 0.9
-                    
-                    offset_rect.center -= self.camera
-                    scaled_rect = scaled_image.get_rect(center=offset_rect.center)
-                    self.display_surface.blit(scaled_image, scaled_rect.topleft)
+                        self.display_surface.blit(scaled_image, scaled_rect.topleft)
+                    else: 
+                        offset_rect.center -= self.camera
+                        scaled_rect = scaled_image.get_rect(center=offset_rect.center)
+                        self.display_surface.blit(scaled_image, scaled_rect.topleft)
