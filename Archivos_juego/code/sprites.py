@@ -28,10 +28,9 @@ class Particle(Generic):
 
 
 class Tree(Generic):
-    def __init__(self, pos, surf, groups, name, player_add, inventory):
+    def __init__(self, pos, surf, groups, name, inventory):
         super().__init__(pos, surf, groups)
         self.name = name
-        self.player_add = player_add
         self.inventory = inventory
         self.stump_surf = pygame.image.load(f'code/sprites/ambiente/ambiente_verano/{"tronco1" if name == "arbol1" else ("tronco2" if name == "arbol2" else "tronco3")}.png').convert_alpha()
         self.alive = True

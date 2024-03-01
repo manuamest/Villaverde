@@ -39,21 +39,21 @@ class Level:
         # Verano
         #self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
         # Otoño
-        self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
+        #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
         # self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
         # Volcán
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
         # Entorno pruebas
-        #self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
+        self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
 
         #for layer in ['casa2']:
         #    for x, y, surf in self.tmx_map.get_layer_by_name(layer).tiles():
         #        Generic((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites)
 
         # trees 
-        #for obj in self.tmx_map.get_layer_by_name('arboles'):
-        #    Tree( pos = (obj.x * 4, obj.y * 4), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, player_add = self.player_add, inventory=self.inventory)
+        for obj in self.tmx_map.get_layer_by_name('arboles'):
+            Tree( pos = (obj.x , obj.y ), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, inventory=self.inventory)
 
         # Obtener la capa de colisiones
         self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
@@ -154,7 +154,7 @@ class Level:
         self.overlay.display()
         
         # Tutorial
-        self.tutorial.mostrar_tutorial()
+        #self.tutorial.mostrar_tutorial()
         
     def check_collision(self):
         player_rect = self.player.rect

@@ -101,9 +101,9 @@
   <object id="13" x="372.682" y="175.976" width="5.98871" height="57.1231"/>
   <object id="14" x="369.918" y="218.358" width="8.75274" height="17.0448"/>
   <object id="15" x="187.493" y="174.594" width="185.65" height="1.38201"/>
-  <object id="272" x="139.545" y="157.364"/>
+  <object id="272" x="171.181" y="184.091"/>
  </objectgroup>
  <objectgroup id="7" name="arboles">
-  <object id="20" name="arbol1" gid="9953" x="105.292" y="180.833" width="75" height="112"/>
+  <object id="20" name="arbol1" gid="9953" x="137.292" y="206.651" width="75" height="112"/>
  </objectgroup>
 </map>
