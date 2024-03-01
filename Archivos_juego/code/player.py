@@ -1,7 +1,6 @@
 import pygame
 from settings import *
 from timer import Timer
-from inventory import Inventory
 from dialogue import Dialogue
 from interactuable import InteractableObject
 from npc import NPC
@@ -34,6 +33,7 @@ class Player(pygame.sprite.Sprite):
 
         self.timers = {
             'uso de herramienta': Timer(350, self.use_tool),
+            'uso de semilla': Timer(350, self.use_seed),
             'cambio de herramienta': Timer(200),
             'alternar inventario': Timer(1000),
             'interaccion': Timer(300),
@@ -44,11 +44,16 @@ class Player(pygame.sprite.Sprite):
         self.original_width = self.rect.width
         self.original_height = self.rect.height
 
+        # Herramientas
         self.tools = ['azada', 'hacha', 'agua']
         self.tool_index = 0
         self.selected_tool = self.tools[self.tool_index]
 
-        
+        # Semillas
+        self.seed = ['trigo']
+        self.seed_index = 0
+        self.selected_seed = self.seed[self.seed_index]
+     
         self.tree_sprites = tree_sprites
         self.inventario_abierto = False
 
@@ -62,7 +67,7 @@ class Player(pygame.sprite.Sprite):
                     tree.damage()
 
         if self.selected_tool == 'agua':
-            pass
+            self.soil_layer.water(self.target_pos)
 
     def use_seed(self):
         self.soil_layer.plant_seed(self.target_pos, self.selected_seed)
@@ -119,6 +124,11 @@ class Player(pygame.sprite.Sprite):
 
             if keys[pygame.K_SPACE]:
                 self.timers['uso de herramienta'].activate()
+                self.direction = pygame.math.Vector2()
+                self.frame_index = 0
+
+            if keys[pygame.K_f]:
+                self.timers['uso de semilla'].activate()
                 self.direction = pygame.math.Vector2()
                 self.frame_index = 0
 

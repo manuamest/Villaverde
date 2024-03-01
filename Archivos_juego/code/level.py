@@ -1,16 +1,17 @@
 import pygame
 from settings import *
-from player import Player, InteractableObject, Dialogue, Inventory
+from player import Player, InteractableObject, Dialogue
 from sprites import *
 from overlay import Overlay
 import pytmx
+from inventory import Inventory
 from pytmx.util_pygame import load_pygame
 from soil import SoilLayer
 from npc import NPC
 from tutorial import Tutorial
 
 class Level:
-    def __init__(self):
+    def __init__(self, soil_layer, all_sprites):
         self.display_surface = pygame.display.get_surface()
         self.all_sprites = CameraGroup()
         self.collision_sprites = pygame.sprite.Group()
@@ -21,7 +22,8 @@ class Level:
         self.dialogue = Dialogue()
         self.inventory = Inventory()
 
-        self.soil_layer = SoilLayer(self.all_sprites)
+        self.soil_layer = soil_layer
+        self.all_sprites = all_sprites
         self.setup()
         
         # Overlay 
@@ -140,6 +142,7 @@ class Level:
 
         self.all_sprites.custom_draw(self.player, self.zoom, self.tree_sprites)
         self.all_sprites.update(dt)
+        self.plant_collision()
 
         # Verificar colisiones
         self.check_collision()
@@ -162,14 +165,34 @@ class Level:
             if player_rect.colliderect(col_rect):
                 # Detener al jugador ante la colisión
                 self.player.stop()
-                
 
+    def plant_collision(self):
+        if self.soil_layer.plant_sprites:
+            for plant in self.soil_layer.plant_sprites.sprites():
+                if plant.harvestable and plant.rect.colliderect(self.player.rect):
+                    # Añadir una unidad de trigo al inventario
+                    self.player.inventory.añadir_trigo()
+                    plant.kill()
+                    #Particle(plant.rect.topleft, plant.image, self.all_sprites, z = LAYERS['main'])
+                    # Coordenadas del tile
+                    x = plant.rect.centerx // TILE_SIZE
+                    y = plant.rect.centery // TILE_SIZE
+                    if 'S' in self.soil_layer.grid[y][x]:
+                        self.soil_layer.grid[y][x].remove('S')
+                    if 'W' in self.soil_layer.grid[y][x]:
+                        self.soil_layer.grid[y][x].remove('W')
+                        # Eliminar el agua del tile
+                        for water_sprite in self.soil_layer.water_sprites.sprites():
+                            if water_sprite.rect.collidepoint((x * TILE_SIZE, y * TILE_SIZE)):
+                                water_sprite.kill()
+                
 
 class CameraGroup(pygame.sprite.Group):
     def __init__(self):
         super().__init__()
         self.display_surface = pygame.display.get_surface()
         self.camera = pygame.math.Vector2()
+
     def custom_draw(self, player, zoom, tree_sprites):
         # Cámara sigue al jugador
         self.camera.x = player.rect.centerx - SCREEN_WIDTH / 2
