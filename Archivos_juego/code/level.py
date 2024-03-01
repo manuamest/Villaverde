@@ -37,13 +37,13 @@ class Level:
         # Verano
         #self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
         # Otoño
-        #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
+        self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
         # self.tmx_map = load_pygame("./code/mapa/mapa_invierno.tmx")
         # Volcán
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
         # Entorno pruebas
-        self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
+        #self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
 
         #for layer in ['casa2']:
         #    for x, y, surf in self.tmx_map.get_layer_by_name(layer).tiles():
@@ -66,6 +66,8 @@ class Level:
 
         self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory)
 
+        self.create_npcs()
+        self.create_objects()
         self.create_animals()
 
         # Ajustar la posición y el tamaño de los objetos en el mapa
@@ -76,31 +78,31 @@ class Level:
             obj.height *= self.zoom  # Aumentar la altura
 
     def create_objects(self):
-        # InteractableObject(
-        #     pos=(SCREEN_WIDTH / 2 - 300, SCREEN_HEIGHT / 2 + 500),
-        #     group=self.all_sprites, color=(255, 255, 0),dialogue=self.dialogue, sprite="./code/sprites/trigo.png", interactable_type="trigo")
-        #
-        # InteractableObject(
-        #     pos=(SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 + 500),
-        #     group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera")
-        #
-        # InteractableObject(
-        #     pos=(SCREEN_WIDTH / 2  - 100, SCREEN_HEIGHT / 2 + 500),
-        #     group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero")
+        InteractableObject(
+            pos=(SCREEN_WIDTH / 2 - 300, SCREEN_HEIGHT / 2 + 500),
+            group=self.all_sprites, color=(255, 255, 0),dialogue=self.dialogue, sprite="./code/sprites/trigo.png", interactable_type="trigo")
+        
+        InteractableObject(
+            pos=(SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 + 500),
+            group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera")
+        
+        InteractableObject(
+            pos=(SCREEN_WIDTH / 2  - 100, SCREEN_HEIGHT / 2 + 500),
+            group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero")
         pass
 
     def create_npcs(self):
-        # NPC(pos=(SCREEN_WIDTH / 2 + -100 , SCREEN_HEIGHT / 2 + 600),
-        #     group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego")
-        #
-        # NPC(pos=(SCREEN_WIDTH / 2 - 300 , SCREEN_HEIGHT / 2 + 600),
-        #     group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,personaje="butanero")
-        #
-        # NPC(pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 1500),
-        #     group=self.all_sprites, sprite_directory="./code/sprites/NPC/Eva_la_modista",inventory=self.inventory, dialogue=self.dialogue,personaje="modista")
-        #
-        # NPC(pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 1700),
-        #     group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader")
+        NPC(pos=(SCREEN_WIDTH / 2 + -100 , SCREEN_HEIGHT / 2 + 600),
+            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego")
+        
+        NPC(pos=(SCREEN_WIDTH / 2 - 300 , SCREEN_HEIGHT / 2 + 600),
+            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,personaje="butanero")
+        
+        NPC(pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 1500),
+            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Eva_la_modista",inventory=self.inventory, dialogue=self.dialogue,personaje="modista")
+        
+        NPC(pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 1700),
+            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader")
         pass
 
     def create_animals(self):
@@ -149,7 +151,7 @@ class Level:
         self.overlay.display()
         
         # Tutorial
-        #self.tutorial.mostrar_tutorial()
+        self.tutorial.mostrar_tutorial()
         
     def check_collision(self):
         player_rect = self.player.rect
