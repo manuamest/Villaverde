@@ -654,7 +654,7 @@
   <object id="544" gid="24327" x="218.667" y="547" width="75" height="112"/>
   <object id="545" gid="24327" x="432.667" y="1323.33" width="75" height="112"/>
  </objectgroup>
- <objectgroup id="10" name="colisiones" visible="0">
+ <objectgroup id="10" name="colisiones">
   <object id="195" x="165" y="162" width="634" height="11.5"/>
   <object id="196" x="703" y="1379" width="97" height="64.3333"/>
   <object id="197" x="589.333" y="1393.33" width="117" height="46.6667"/>
@@ -693,10 +693,6 @@
   <object id="317" x="384.667" y="240" width="285.167" height="75.5"/>
   <object id="318" x="505.045" y="317.864" width="77.9545" height="40.4545"/>
   <object id="327" x="153" y="170.5" width="27.75" height="193"/>
-  <object id="346" x="653" y="911" width="9.5" height="19"/>
-  <object id="347" x="661.5" y="923" width="5" height="5.5"/>
-  <object id="348" x="651" y="924.5" width="2.5" height="2.5"/>
-  <object id="349" x="649.5" y="921.5" width="6" height="6.5"/>
   <object id="356" x="774.5" y="760" width="0.5"/>
   <object id="381" x="776.68" y="171.773" width="14.0909" height="397.636"/>
   <object id="403" x="160.25" y="1345.5" width="68" height="25.25"/>
@@ -760,8 +756,8 @@
   <object id="490" x="576.545" y="943.45" width="13.4545" height="9.45455"/>
   <object id="491" x="682.18" y="937.09" width="73.4545" height="13.4545"/>
   <object id="492" x="691.82" y="892.73" width="13.0909" height="13.2727"/>
-  <object id="493" x="686.18" y="875.82" width="70.9091" height="17.2727"/>
-  <object id="494" x="743.64" y="876.18" width="14.3636" height="67.0909"/>
+  <object id="493" x="686.18" y="880.153" width="68.9091" height="12.9394"/>
+  <object id="494" x="743.64" y="882.18" width="11.6969" height="61.0909"/>
   <object id="496" x="403" y="786.5" width="234" height="56.5"/>
   <object id="497" x="435.5" y="772" width="57.5" height="18"/>
   <object id="498" x="618" y="803" width="80" height="38"/>
