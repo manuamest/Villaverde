@@ -53,7 +53,7 @@ class Level:
 
         # trees 
         for obj in self.tmx_map.get_layer_by_name('arboles'):
-            Tree( pos = (obj.x , obj.y ), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, inventory=self.inventory)
+            Tree( pos = (obj.x *5 + obj.x/10, obj.y * 7 + obj.y/2.5), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, inventory=self.inventory)
 
         # Obtener la capa de colisiones
         self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
@@ -205,11 +205,10 @@ class CameraGroup(pygame.sprite.Group):
                     offset_rect = sprite.rect.copy()
                     
                     if sprite in tree_sprites:
-                        scaled_rect = scaled_image.get_rect(center=offset_rect.center)
-                        scaled_rect.center = (sprite.rect.center[0] * zoom, sprite.rect.center[1] * zoom) - self.camera
+                        # Ajustar la posición del árbol para dibujar correctamente
                         offset_rect.centery -= sprite.rect.height * 0.9
-                        self.display_surface.blit(scaled_image, scaled_rect.topleft)
-                    else: 
+                        scaled_rect = scaled_image.get_rect(center=(offset_rect.centerx - self.camera.x, offset_rect.centery - self.camera.y))
+                    else:
                         offset_rect.center -= self.camera
                         scaled_rect = scaled_image.get_rect(center=offset_rect.center)
-                        self.display_surface.blit(scaled_image, scaled_rect.topleft)
+                    self.display_surface.blit(scaled_image, scaled_rect.topleft)
