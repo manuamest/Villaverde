@@ -225,19 +225,35 @@ class Player(pygame.sprite.Sprite):
                 # Cambiar de nivel al colisionar con cierto objeto (puedes ajustar esta lógica)
                 if obj.name == "puertawuan":
                     # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
-                    self.level.change_map("./code/mapa/casawuan.tmx", False)
+                    self.level.change_map("./code/mapa/casawuan.tmx", False, "wuan")
                     return True
                 if obj.name == "salidawuan":
                     # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
-                    self.level.change_map("./code/mapa/mapa_invierno2.tmx", True)
+                    self.level.change_map("./code/mapa/mapa_invierno2.tmx", True, "exterior_wuan")
                     return True
                 elif obj.name == "puertaeva":
                     # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
-                    self.level.change_map("./code/mapa/mapa_invierno2.tmx")
+                    self.level.change_map("./code/mapa/tiendaeva.tmx", False, "eva")
+                    return True
+                elif obj.name == "salidaeva":
+                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/mapa_invierno2.tmx", True, "exterior_eva")
                     return True
                 elif obj.name == "puertaxoel":
                     # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
-                    self.level.change_map("./code/mapa/mapa_invierno2.tmx")
+                    self.level.change_map("./code/mapa/tiendaxoel.tmx", False, "xoel")
+                    return True
+                elif obj.name == "salidaxoel":
+                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/mapa_invierno2.tmx", True, "exterior_xoel")
+                    return True
+                if obj.name == "puertafinal":
+                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/final/final.tmx", False, "final1")
+                    return True
+                if obj.name == "puertafinal2":
+                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/final/final2.tmx", False, "final2")
                     return True
                 else:
                     # Detener al jugador ante la colisión

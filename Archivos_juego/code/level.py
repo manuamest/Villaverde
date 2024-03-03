@@ -80,7 +80,7 @@ class Level:
             obj.height *= self.zoom  # Aumentar la altura
 
 
-    def change_map(self, path, outside):
+    def change_map(self, path, outside, place):
 
         #Cargar el mapa de Tiled
         self.tmx_map = load_pygame(path)
@@ -100,10 +100,24 @@ class Level:
         #map_height = self.tmx_map.height * self.tmx_map.tileheight
 
         #Crear el jugador en la posición deseada
-        if(outside):
+        if(place == "exterior_wuan"):
             self.player.set_position(1800, 3850)
-        else:
+        elif(place == "wuan"):
             self.player.set_position(1150, 1290)
+        elif(place == "exterior_eva"):
+            self.player.set_position(1810, 1470)
+        elif(place == "eva"):
+            self.player.set_position(1280, 1100)
+        elif(place == "xoel"):
+            self.player.set_position(1090, 1280)
+        elif(place == "exterior_xoel"):
+            self.player.set_position(2180, 1470)
+        elif(place == "final1"):
+            self.player.set_position(1180, 1000)
+        elif(place == "final2"):
+            self.player.set_position(990, 1170)
+
+            
         self.player.set_collision_layer(self.collision_layer)
 
         #self.create_npcs()
