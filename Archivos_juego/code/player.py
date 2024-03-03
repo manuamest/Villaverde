@@ -4,6 +4,7 @@ from timer import Timer
 from dialogue import Dialogue
 from interactuable import InteractableObject
 from npc import NPC
+from animals import Animal
 from utils import import_folder
 
 class Player(pygame.sprite.Sprite):
@@ -35,7 +36,7 @@ class Player(pygame.sprite.Sprite):
             'uso de herramienta': Timer(350, self.use_tool),
             'uso de semilla': Timer(350, self.use_seed),
             'cambio de herramienta': Timer(200),
-            'alternar inventario': Timer(1000),
+            'alternar inventario': Timer(200),
             'interaccion': Timer(300),
             'dialogo': Timer(1000)
         }
@@ -167,10 +168,10 @@ class Player(pygame.sprite.Sprite):
                 self.timers['interaccion'].activate()
                 player_center = pygame.math.Vector2(self.rect.center)
                 for sprite in self.groups()[0].sprites():
-                    if isinstance(sprite, InteractableObject) or isinstance(sprite, NPC):  
+                    if isinstance(sprite, InteractableObject) or isinstance(sprite, NPC) or isinstance(sprite, Animal):  
                         obj_center = pygame.math.Vector2(sprite.rect.center)
                         distancia = player_center.distance_to(obj_center)
-                        if distancia < 110 and isinstance(sprite, NPC):
+                        if distancia < 110 and (isinstance(sprite, NPC) or isinstance(sprite, Animal)):
                             sprite.talk(self.dialogue, self.inventory, sprite.personaje)
                             self.personaje_actual = sprite.personaje
                         elif distancia < 50:  
@@ -214,11 +215,22 @@ class Player(pygame.sprite.Sprite):
         for obj in self.collision_layer:
             col_rect = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
             if new_rect.colliderect(col_rect):
-                # Collision detected, return True
+                # Collision detected with objects in the collision layer, return True
                 return True
+
+        # Check for collisions with animal sprites
+        for sprite in pygame.sprite.spritecollide(self, self.groups()[0], False):
+            if isinstance(sprite, Animal):  
+                if new_rect.colliderect(sprite.rect):
+                    # Collision detected with an animal sprite, take action based on collision
+                    sprite.talk(self.dialogue, self.inventory, sprite.personaje)
+                    self.personaje_actual = sprite.personaje
+                    # Return True to indicate collision
+                    return True
 
         # No collision detected, return False
         return False
+
 
     def update(self, dt):
         self.input()

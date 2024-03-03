@@ -9,6 +9,7 @@ from pytmx.util_pygame import load_pygame
 from soil import SoilLayer
 from npc import NPC
 from tutorial import Tutorial
+from animals import Animal
 
 class Level:
     def __init__(self, soil_layer, all_sprites):
@@ -41,11 +42,11 @@ class Level:
         # Otoño
         #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
-        self.tmx_map = load_pygame("./code/mapa/mapa_invierno2.tmx")
+        #self.tmx_map = load_pygame("./code/mapa/mapa_invierno2.tmx")
         # Volcán
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
         # Entorno pruebas
-        #self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
+        self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
 
         #for layer in ['casa2']:
         #    for x, y, surf in self.tmx_map.get_layer_by_name(layer).tiles():
@@ -59,18 +60,18 @@ class Level:
         self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
 
         #Obtener el tamaño del mapa
-        #map_width = self.tmx_map.width * self.tmx_map.tilewidth
-        #map_height = self.tmx_map.height * self.tmx_map.tileheight
+        map_width = self.tmx_map.width * self.tmx_map.tilewidth * self.zoom
+        map_height = self.tmx_map.height * self.tmx_map.tileheight * self.zoom
 
         #Crear el jugador en la posición deseada
-        player_start_x = 3115
-        player_start_y = 4600 
+        player_start_x = map_width/2 - 300
+        player_start_y = map_height/2
 
         self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory)
 
-        #self.create_npcs()
-        #self.create_objects()
-        #self.create_animals()
+        self.create_npcs()
+        self.create_objects()
+        self.create_animals()
 
         # Ajustar la posición y el tamaño de los objetos en el mapa
         for obj in self.collision_layer:
@@ -108,17 +109,15 @@ class Level:
         pass
 
     def create_animals(self):
-        NPC(pos=(SCREEN_WIDTH / 2 - 300 , SCREEN_HEIGHT / 2 - 300),
-            group=self.all_sprites, sprite_directory="./code/sprites/animales/cabra",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader")
+        Animal(pos=(SCREEN_WIDTH / 2 - 300 , SCREEN_HEIGHT / 2 - 300), group=self.all_sprites, animal_type="cabra", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", prime=False, walk=0)
 
-        NPC(pos=(SCREEN_WIDTH / 2  , SCREEN_HEIGHT / 2 - 300),
-            group=self.all_sprites, sprite_directory="./code/sprites/animales/vaca_blanca",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader")
+        Animal(pos=(SCREEN_WIDTH / 2  , SCREEN_HEIGHT / 2 - 300), group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", prime=True, walk=3)
 
-        NPC(pos=(SCREEN_WIDTH / 2 + 300 , SCREEN_HEIGHT / 2 - 300),
-            group=self.all_sprites, sprite_directory="./code/sprites/animales/oveja",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader")
+        Animal(pos=(SCREEN_WIDTH / 2 + 300 , SCREEN_HEIGHT / 2 - 300),
+            group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", walk=1)
 
-        NPC(pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 - 300),
-            group=self.all_sprites, sprite_directory="./code/sprites/animales/pollo",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader")
+        Animal(pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 - 300),
+            group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", prime=False, walk=2)
 
     def run(self, dt):
         self.display_surface.fill('black')

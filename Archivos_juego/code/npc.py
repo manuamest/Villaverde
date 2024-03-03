@@ -24,7 +24,7 @@ class NPC(pygame.sprite.Sprite):
         self.animation_delay = 13
         self.animation_counter = 0
 
-        self.personaje= personaje 
+        self.personaje = personaje 
 
     def load_sprites(self):
         sprites = []
