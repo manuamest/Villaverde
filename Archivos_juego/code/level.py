@@ -67,7 +67,59 @@ class Level:
         player_start_x = map_width/2 - 300
         player_start_y = map_height/2
 
-        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory)
+        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self)
+
+        #self.create_npcs()
+        #self.create_objects()
+        self.create_animals()
+
+        # Ajustar la posición y el tamaño de los objetos en el mapa
+        for obj in self.collision_layer:
+            obj.x *= self.zoom  # Aumentar la posición x
+            obj.y *= self.zoom  # Aumentar la posición y
+            obj.width *= self.zoom  # Aumentar el ancho
+            obj.height *= self.zoom  # Aumentar la altura
+
+
+    def change_map(self, path, outside, place):
+
+        #Cargar el mapa de Tiled
+        self.tmx_map = load_pygame(path)
+
+        if not outside:
+            for tree in self.tree_sprites.sprites():
+                tree.make_invisible()
+        else:
+            for tree in self.tree_sprites.sprites():
+                tree.make_visible()
+
+        # Obtener la capa de colisiones
+        self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
+
+        #Obtener el tamaño del mapa
+        #map_width = self.tmx_map.width * self.tmx_map.tilewidth
+        #map_height = self.tmx_map.height * self.tmx_map.tileheight
+
+        #Crear el jugador en la posición deseada
+        if(place == "exterior_wuan"):
+            self.player.set_position(1800, 3850)
+        elif(place == "wuan"):
+            self.player.set_position(1150, 1290)
+        elif(place == "exterior_eva"):
+            self.player.set_position(1810, 1470)
+        elif(place == "eva"):
+            self.player.set_position(1280, 1100)
+        elif(place == "xoel"):
+            self.player.set_position(1090, 1280)
+        elif(place == "exterior_xoel"):
+            self.player.set_position(2180, 1470)
+        elif(place == "final1"):
+            self.player.set_position(1180, 1000)
+        elif(place == "final2"):
+            self.player.set_position(990, 1170)
+
+            
+        self.player.set_collision_layer(self.collision_layer)
 
         self.create_npcs()
         self.create_objects()
@@ -109,7 +161,7 @@ class Level:
         pass
 
     def create_animals(self):
-        Animal(pos=(SCREEN_WIDTH / 2 - 300 , SCREEN_HEIGHT / 2 - 300), group=self.all_sprites, animal_type="cabra", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", prime=False, walk=0)
+        Animal(pos=(SCREEN_WIDTH / 2 - 300 , SCREEN_HEIGHT / 2 - 300), group=self.all_sprites, animal_type="cabra", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", prime=True, walk=0)
 
         Animal(pos=(SCREEN_WIDTH / 2  , SCREEN_HEIGHT / 2 - 300), group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", prime=True, walk=3)
 
@@ -117,7 +169,7 @@ class Level:
             group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", walk=1)
 
         Animal(pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 - 300),
-            group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", prime=False, walk=2)
+            group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", prime=True, walk=2)
 
     def run(self, dt):
         self.display_surface.fill('black')
@@ -149,16 +201,6 @@ class Level:
         
         # Tutorial
         #self.tutorial.mostrar_tutorial()
-        
-    def check_collision(self):
-        player_rect = self.player.rect
-
-        # Verificar colisiones en la capa de colisiones del mapa de Tiled
-        for obj in self.collision_layer:
-            col_rect = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
-            if player_rect.colliderect(col_rect):
-                # Detener al jugador ante la colisión
-                self.player.stop()
 
     def plant_collision(self):
         if self.soil_layer.plant_sprites:

@@ -8,7 +8,7 @@ from animals import Animal
 from utils import import_folder
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_layer, soil_layer, tree_sprites, inventory):
+    def __init__(self, pos, group, collision_layer, soil_layer, tree_sprites, inventory, level):
         super().__init__(group)
 
         self.import_assets()
@@ -31,6 +31,7 @@ class Player(pygame.sprite.Sprite):
         self.personaje_actual = None
         
         self.inventory = inventory
+        self.level = level
 
         self.timers = {
             'uso de herramienta': Timer(350, self.use_tool),
@@ -209,6 +210,13 @@ class Player(pygame.sprite.Sprite):
                 self.pos = new_pos
                 self.rect.center = self.pos
 
+    def set_position(self, x, y):
+        self.pos.x = x
+        self.pos.y = y
+        self.rect.topleft = self.pos
+
+    def set_collision_layer(self, collision_layer):
+        self.collision_layer = collision_layer
 
     def check_collision(self, new_rect):
         # Check for collisions in the collision layer
@@ -217,7 +225,44 @@ class Player(pygame.sprite.Sprite):
             if new_rect.colliderect(col_rect):
                 # Collision detected with objects in the collision layer, return True
                 return True
-
+        
+                # Cambiar de nivel al colisionar con cierto objeto (puedes ajustar esta lógica)
+                if obj.name == "puertawuan":
+                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/casawuan.tmx", False, "wuan")
+                    return True
+                if obj.name == "salidawuan":
+                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/mapa_invierno2.tmx", True, "exterior_wuan")
+                    return True
+                elif obj.name == "puertaeva":
+                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/tiendaeva.tmx", False, "eva")
+                    return True
+                elif obj.name == "salidaeva":
+                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/mapa_invierno2.tmx", True, "exterior_eva")
+                    return True
+                elif obj.name == "puertaxoel":
+                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/tiendaxoel.tmx", False, "xoel")
+                    return True
+                elif obj.name == "salidaxoel":
+                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/mapa_invierno2.tmx", True, "exterior_xoel")
+                    return True
+                if obj.name == "puertafinal":
+                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/final/final.tmx", False, "final1")
+                    return True
+                if obj.name == "puertafinal2":
+                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/final/final2.tmx", False, "final2")
+                    return True
+                else:
+                    # Detener al jugador ante la colisión
+                    self.stop()
+                    return True
         # Check for collisions with animal sprites
         for sprite in pygame.sprite.spritecollide(self, self.groups()[0], False):
             if isinstance(sprite, Animal):  
