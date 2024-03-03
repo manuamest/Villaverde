@@ -63,10 +63,48 @@ class Level:
         #map_height = self.tmx_map.height * self.tmx_map.tileheight
 
         #Crear el jugador en la posición deseada
-        player_start_x = 3115
-        player_start_y = 4600 
+        player_start_x = 1800
+        player_start_y = 4000 
 
-        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory)
+        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self)
+
+        #self.create_npcs()
+        #self.create_objects()
+        #self.create_animals()
+
+        # Ajustar la posición y el tamaño de los objetos en el mapa
+        for obj in self.collision_layer:
+            obj.x *= self.zoom  # Aumentar la posición x
+            obj.y *= self.zoom  # Aumentar la posición y
+            obj.width *= self.zoom  # Aumentar el ancho
+            obj.height *= self.zoom  # Aumentar la altura
+
+
+    def change_map(self, path, outside):
+
+        #Cargar el mapa de Tiled
+        self.tmx_map = load_pygame(path)
+
+        if not outside:
+            for tree in self.tree_sprites.sprites():
+                tree.make_invisible()
+        else:
+            for tree in self.tree_sprites.sprites():
+                tree.make_visible()
+
+        # Obtener la capa de colisiones
+        self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
+
+        #Obtener el tamaño del mapa
+        #map_width = self.tmx_map.width * self.tmx_map.tilewidth
+        #map_height = self.tmx_map.height * self.tmx_map.tileheight
+
+        #Crear el jugador en la posición deseada
+        if(outside):
+            self.player.set_position(1800, 3850)
+        else:
+            self.player.set_position(1150, 1290)
+        self.player.set_collision_layer(self.collision_layer)
 
         #self.create_npcs()
         #self.create_objects()
@@ -150,16 +188,6 @@ class Level:
         
         # Tutorial
         #self.tutorial.mostrar_tutorial()
-        
-    def check_collision(self):
-        player_rect = self.player.rect
-
-        # Verificar colisiones en la capa de colisiones del mapa de Tiled
-        for obj in self.collision_layer:
-            col_rect = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
-            if player_rect.colliderect(col_rect):
-                # Detener al jugador ante la colisión
-                self.player.stop()
 
     def plant_collision(self):
         if self.soil_layer.plant_sprites:

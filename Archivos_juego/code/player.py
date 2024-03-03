@@ -7,7 +7,7 @@ from npc import NPC
 from utils import import_folder
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_layer, soil_layer, tree_sprites, inventory):
+    def __init__(self, pos, group, collision_layer, soil_layer, tree_sprites, inventory, level):
         super().__init__(group)
 
         self.import_assets()
@@ -30,6 +30,7 @@ class Player(pygame.sprite.Sprite):
         self.personaje_actual = None
         
         self.inventory = inventory
+        self.level = level
 
         self.timers = {
             'uso de herramienta': Timer(350, self.use_tool),
@@ -208,15 +209,40 @@ class Player(pygame.sprite.Sprite):
                 self.pos = new_pos
                 self.rect.center = self.pos
 
+    def set_position(self, x, y):
+        self.pos.x = x
+        self.pos.y = y
+        self.rect.topleft = self.pos
+
+    def set_collision_layer(self, collision_layer):
+        self.collision_layer = collision_layer
 
     def check_collision(self, new_rect):
         # Check for collisions in the collision layer
         for obj in self.collision_layer:
             col_rect = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
             if new_rect.colliderect(col_rect):
-                # Collision detected, return True
-                return True
-
+                # Cambiar de nivel al colisionar con cierto objeto (puedes ajustar esta lógica)
+                if obj.name == "puertawuan":
+                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/casawuan.tmx", False)
+                    return True
+                if obj.name == "salidawuan":
+                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/mapa_invierno2.tmx", True)
+                    return True
+                elif obj.name == "puertaeva":
+                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/mapa_invierno2.tmx")
+                    return True
+                elif obj.name == "puertaxoel":
+                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/mapa_invierno2.tmx")
+                    return True
+                else:
+                    # Detener al jugador ante la colisión
+                    self.stop()
+                    return True
         # No collision detected, return False
         return False
 
