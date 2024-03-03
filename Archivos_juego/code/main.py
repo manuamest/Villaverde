@@ -1,8 +1,11 @@
 import pygame
 import sys
-from settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
+from settings import *
 from level import Level
 import argparse, sys
+from soil import SoilLayer
+import time
+from level import CameraGroup
 
 class Game:
     def __init__(self, objective_index):
@@ -14,7 +17,10 @@ class Game:
         pygame.display.set_icon(icon)
         pygame.display.set_caption('Villaverde')
         self.clock = pygame.time.Clock()
-        self.level = Level(objective_index)
+        self.all_sprites = CameraGroup()
+        self.soil_layer = SoilLayer(self.all_sprites)
+        self.last_growth_time = time.time()  # Tiempo de la última fase de crecimiento
+        self.level = Level(self.soil_layer, self.all_sprites, objective_index)
         self.menu_options = ["Jugar", "Opciones", "Controles", "Salir"]
         self.selected_option = 0
 
@@ -145,6 +151,13 @@ class Game:
                     if event.button == 1:  # Clic izquierdo
                         left_mouse_button_down = True
                         event_mouse = event
+
+            current_time = time.time()
+            elapsed_time = current_time - self.last_growth_time
+
+            if elapsed_time >= 5:
+                self.soil_layer.update_plants() 
+                self.last_growth_time = current_time  
 
             dt = self.clock.tick(FPS) / 700
             self.level.run(dt, key_z_pressed, left_mouse_button_down, event_mouse)

@@ -1,14 +1,14 @@
 import pygame
 from settings import *
 from timer import Timer
-from inventory import Inventory
 from dialogue import Dialogue
 from interactuable import InteractableObject
 from npc import NPC
+from animals import Animal
 from utils import import_folder
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_layer, soil_layer, dialogue, inventory):
+    def __init__(self, pos, group, collision_layer, soil_layer, tree_sprites, inventory, level, dialogue):
         super().__init__(group)
 
         self.import_assets()
@@ -29,13 +29,15 @@ class Player(pygame.sprite.Sprite):
         # Diálogo
         self.dialogue = dialogue
         self.personaje_actual = None
-       
-
+        
+        self.inventory = inventory
+        self.level = level
 
         self.timers = {
             'uso de herramienta': Timer(350, self.use_tool),
+            'uso de semilla': Timer(350, self.use_seed),
             'cambio de herramienta': Timer(200),
-            'alternar inventario': Timer(1000),
+            'alternar inventario': Timer(200),
             'interaccion': Timer(300),
             'dialogo': Timer(1000)
         }
@@ -44,11 +46,17 @@ class Player(pygame.sprite.Sprite):
         self.original_width = self.rect.width
         self.original_height = self.rect.height
 
+        # Herramientas
         self.tools = ['azada', 'hacha', 'agua']
         self.tool_index = 0
         self.selected_tool = self.tools[self.tool_index]
 
-        self.inventory = inventory
+        # Semillas
+        self.seed = ['trigo']
+        self.seed_index = 0
+        self.selected_seed = self.seed[self.seed_index]
+     
+        self.tree_sprites = tree_sprites
         self.inventario_abierto = False
 
     def use_tool(self):
@@ -56,10 +64,12 @@ class Player(pygame.sprite.Sprite):
             self.soil_layer.get_hit(self.target_pos)
         
         if self.selected_tool == 'hacha':
-            pass
+            for tree in self.tree_sprites.sprites():
+                if tree.rect.collidepoint(self.target_pos):
+                    tree.damage()
 
         if self.selected_tool == 'agua':
-            pass
+            self.soil_layer.water(self.target_pos)
 
     def use_seed(self):
         self.soil_layer.plant_seed(self.target_pos, self.selected_seed)
@@ -119,6 +129,11 @@ class Player(pygame.sprite.Sprite):
                 self.direction = pygame.math.Vector2()
                 self.frame_index = 0
 
+            if keys[pygame.K_f]:
+                self.timers['uso de semilla'].activate()
+                self.direction = pygame.math.Vector2()
+                self.frame_index = 0
+
             if keys[pygame.K_b] and not self.timers['alternar inventario'].active and not self.dialogue.obtener_dialogo():
                 self.timers['alternar inventario'].activate()
                 self.inventario_abierto = not self.inventario_abierto
@@ -130,6 +145,8 @@ class Player(pygame.sprite.Sprite):
             if self.dialogue.obtener_dialogo():
                 self.dialogue.dibujar_dialogo(self.inventory, self.personaje_actual)
                 dialogos_personaje = self.dialogue.obtener_dialogo_personaje(self.personaje_actual)
+                self.dialogue.procesar_dialogo(keys, dialogos_personaje,self.timers,self.personaje_actual)
+
                 
                 if keys[pygame.K_x] and not self.timers['dialogo'].active:
                     self.timers['dialogo'].activate()
@@ -152,10 +169,10 @@ class Player(pygame.sprite.Sprite):
                 self.timers['interaccion'].activate()
                 player_center = pygame.math.Vector2(self.rect.center)
                 for sprite in self.groups()[0].sprites():
-                    if isinstance(sprite, InteractableObject) or isinstance(sprite, NPC):  
+                    if isinstance(sprite, InteractableObject) or isinstance(sprite, NPC) or isinstance(sprite, Animal):  
                         obj_center = pygame.math.Vector2(sprite.rect.center)
                         distancia = player_center.distance_to(obj_center)
-                        if distancia < 110 and isinstance(sprite, NPC):
+                        if distancia < 110 and (isinstance(sprite, NPC) or isinstance(sprite, Animal)):
                             sprite.talk(self.dialogue, self.inventory, sprite.personaje)
                             self.personaje_actual = sprite.personaje
                         elif distancia < 50:  
@@ -180,6 +197,10 @@ class Player(pygame.sprite.Sprite):
         self.direction = -self.direction
 
     def move(self, dt):
+        # Normalizar el vector de dirección si no está en reposo
+        if self.direction.magnitude() != 0:
+            self.direction = self.direction.normalize()
+        
         new_pos = self.pos + self.velocity * dt
         new_rect = self.rect.copy()
         new_rect.center = new_pos
@@ -189,16 +210,72 @@ class Player(pygame.sprite.Sprite):
                 self.pos = new_pos
                 self.rect.center = self.pos
 
+    def set_position(self, x, y):
+        self.pos.x = x
+        self.pos.y = y
+        self.rect.topleft = self.pos
+
+    def set_collision_layer(self, collision_layer):
+        self.collision_layer = collision_layer
+
     def check_collision(self, new_rect):
         # Check for collisions in the collision layer
         for obj in self.collision_layer:
             col_rect = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
             if new_rect.colliderect(col_rect):
-                # Collision detected, return True
+                # Collision detected with objects in the collision layer, return True
                 return True
+        
+                # Cambiar de nivel al colisionar con cierto objeto (puedes ajustar esta lógica)
+                if obj.name == "puertawuan":
+                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/casawuan.tmx", False, "wuan")
+                    return True
+                if obj.name == "salidawuan":
+                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/mapa_invierno2.tmx", True, "exterior_wuan")
+                    return True
+                elif obj.name == "puertaeva":
+                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/tiendaeva.tmx", False, "eva")
+                    return True
+                elif obj.name == "salidaeva":
+                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/mapa_invierno2.tmx", True, "exterior_eva")
+                    return True
+                elif obj.name == "puertaxoel":
+                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/tiendaxoel.tmx", False, "xoel")
+                    return True
+                elif obj.name == "salidaxoel":
+                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/mapa_invierno2.tmx", True, "exterior_xoel")
+                    return True
+                if obj.name == "puertafinal":
+                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/final/final.tmx", False, "final1")
+                    return True
+                if obj.name == "puertafinal2":
+                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
+                    self.level.change_map("./code/mapa/final/final2.tmx", False, "final2")
+                    return True
+                else:
+                    # Detener al jugador ante la colisión
+                    self.stop()
+                    return True
+        # Check for collisions with animal sprites
+        for sprite in pygame.sprite.spritecollide(self, self.groups()[0], False):
+            if isinstance(sprite, Animal):  
+                if new_rect.colliderect(sprite.rect):
+                    # Collision detected with an animal sprite, take action based on collision
+                    sprite.talk(self.dialogue, self.inventory, sprite.personaje)
+                    self.personaje_actual = sprite.personaje
+                    # Return True to indicate collision
+                    return True
 
         # No collision detected, return False
         return False
+
 
     def update(self, dt):
         self.input()

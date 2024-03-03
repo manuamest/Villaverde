@@ -1,5 +1,6 @@
 from os import walk
 import pygame
+import os
 
 def import_folder(path):
 	surface_list = []
@@ -11,3 +12,8 @@ def import_folder(path):
 			surface_list.append(image_surf)
 
 	return surface_list
+
+def load_frames(dir):      
+        frame_files = sorted(os.listdir(dir), key=lambda x: int(x.split('.')[0]))
+        frames = [pygame.image.load(os.path.join(dir, file)) for file in frame_files]
+        return frames
