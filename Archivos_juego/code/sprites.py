@@ -29,6 +29,7 @@ class Particle(Generic):
 class Tree(Generic):
     def __init__(self, pos, surf, groups, name, inventory):
         super().__init__(pos, surf, groups)
+        self.visible = True
         self.name = name
         self.inventory = inventory
         self.visible_image = surf  # Almacena la imagen original
@@ -37,22 +38,25 @@ class Tree(Generic):
         self.health = 1
 
     def damage(self):
-        self.health -= 1
+        if self.visible == True:
+            self.health -= 1
 
     def check_death(self):
-        if self.health <= 0:
-            # Ajustar posición inicial del sprite  
-            self.rect.y += 20
-            self.rect.x -= 20
-            self.image = self.stump_surf
-            self.visible_image = self.stump_surf
-            # Ajustar el rectángulo para el tocón
-            self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
-            self.hitbox = self.rect.copy()
-            self.alive = False
-            self.inventory.añadir_madera()
+        if self.visible == True:
+            if self.health <= 0:
+                # Ajustar posición inicial del sprite  
+                self.rect.y += 20
+                self.rect.x -= 20
+                self.image = self.stump_surf
+                self.visible_image = self.stump_surf
+                # Ajustar el rectángulo para el tocón
+                self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
+                self.hitbox = self.rect.copy()
+                self.alive = False
+                self.inventory.añadir_madera()
 
     def make_invisible(self):
+        self.visible = False
         self.image = pygame.image.load('code/sprites/invisible.png')
 
     def make_visible(self):
