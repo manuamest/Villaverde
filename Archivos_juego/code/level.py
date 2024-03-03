@@ -38,7 +38,7 @@ class Level:
         self.zoom = 4
         # Cargar el mapa de Tiled
         # Verano
-        # self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
+        self.tmx_map = load_pygame("./code/mapa/mapa_verano22.tmx")
         # Otoño
         #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
@@ -46,7 +46,7 @@ class Level:
         # Volcán
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
         # Entorno pruebas
-        self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
+        #self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
 
         #for layer in ['casa2']:
         #    for x, y, surf in self.tmx_map.get_layer_by_name(layer).tiles():
@@ -64,7 +64,7 @@ class Level:
         map_height = self.tmx_map.height * self.tmx_map.tileheight * self.zoom
 
         #Crear el jugador en la posición deseada
-        player_start_x = map_width/2 - 300
+        player_start_x = map_width/2 - 400
         player_start_y = map_height/2
 
         self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self)
