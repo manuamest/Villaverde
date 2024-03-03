@@ -69,7 +69,7 @@ class Level:
 
         self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self)
 
-        #self.create_npcs()
+        self.create_npcs()
         #self.create_objects()
         self.create_animals()
 
