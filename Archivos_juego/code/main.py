@@ -1,11 +1,10 @@
 import pygame
 import sys
 from settings import *
-from level import Level
 import argparse, sys
 from soil import SoilLayer
 import time
-from level import CameraGroup
+from level import *
 
 class Game:
     def __init__(self, objective_index):

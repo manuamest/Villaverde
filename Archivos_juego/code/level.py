@@ -15,7 +15,6 @@ from objectives import Objectives
 class Level:
     def __init__(self, soil_layer, all_sprites, objective_index):
         self.display_surface = pygame.display.get_surface()
-        self.all_sprites = CameraGroup()
         self.collision_sprites = pygame.sprite.Group()
         self.tree_sprites = pygame.sprite.Group()
         self.camera = pygame.math.Vector2()
@@ -34,19 +33,18 @@ class Level:
         # Tutorial
         self.tutorial = Tutorial(objective_index)
 
-        
         # Objetives
-        self.objectives = Objectives(self.tutorial, self.inventory, self.dialogue, objective_index)
+        self.objectives = Objectives(self.tutorial, self.inventory, self.dialogue, self.player, objective_index)
 
     def setup(self):
         self.zoom = 4
         # Cargar el mapa de Tiled
         # Verano
-        # self.tmx_map = load_pygame("./code/mapa/mapa_verano.tmx")
+        # self.tmx_map = load_pygame("./code/mapa/mapa_verano22.tmx")
         # Otoño
-        # self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
+        # self.tmx_map = load_pygame("./code/mapa/mapa_otoño2.tmx")
         # Invierno
-        #self.tmx_map = load_pygame("./code/mapa/mapa_invierno2.tmx")
+        # self.tmx_map = load_pygame("./code/mapa/mapa_invierno2.tmx")
         # Volcán
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
         # Entorno pruebas
@@ -70,11 +68,13 @@ class Level:
         #Crear el jugador en la posición deseada
         player_start_x = map_width/2 - 300
         player_start_y = map_height/2
+        # player_start_x = 3115
+        # player_start_y = 4600
 
-        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, self.dialogue)
+        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue)
 
         self.create_npcs()
-        #self.create_objects()
+        self.create_objects()
         self.create_animals()
 
         # Ajustar la posición y el tamaño de los objetos en el mapa

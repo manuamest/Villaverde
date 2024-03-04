@@ -23,8 +23,9 @@ class Objectives:
     
     def last_step_tutorial(tutorial):
         return tutorial.indice_tutorial == (len(tutorial.tutorial_mensajes) - 1)
+
             
-    def __init__(self, tutorial, inventory, dialogue, objective_index):
+    def __init__(self, tutorial, inventory, dialogue, player, objective_index):
         self.objectives = [
             # Objectives del tutorial
             Objective([
@@ -55,20 +56,52 @@ class Objectives:
             Objective([
                 Requirement(lambda state: Objectives.last_step_tutorial(tutorial), "12")
             ], (lambda : tutorial.enable_next_step())),
-            # Objectives mapa nivel 1
+            # Objectives (mapa verano) nivel 1
             Objective([
-                Requirement(lambda state: inventory.get_dinero() == True, "13")
-            ], (lambda : self.dropdown.set_check_button(0)))
+                Requirement(lambda state: player.is_cut_down_tree() == True, "13")
+            ], (lambda : self.dropdown.set_check_button(0))),
+            Objective([
+                Requirement(lambda state: inventory.get_madera() == 3, "14"),
+            ], (lambda : self.dropdown.set_check_button(1))),
+            Objective([
+                Requirement(lambda state: player.talk_with_fun("mercader") == True, "15")
+            ], (lambda : self.dropdown.set_check_button(2))),
+            Objective([
+                Requirement(lambda state: inventory.get_dinero() == 10, "16")
+            ], (lambda : self.dropdown.set_check_button(3))),
+            Objective([
+                Requirement(lambda state: player.talk_with_fun("butanero") == True, "17")
+            ], (lambda : self.dropdown.set_check_button(4))),
+            Objective([
+                Requirement(lambda state: dialogue.obtener_dinero_dado() == True, "18")
+            ], (lambda : self.dropdown.set_check_button(5))),
+            Objective([
+                Requirement(lambda state: player.talk_with_fun("don diego") == True, "19")
+            ], (lambda : self.dropdown.set_check_button(6)))
+            # Objective([
+            #     Requirement(lambda state: inventory.get_dinero() > 0, "14")
+            # ], (lambda : self.dropdown.set_check_button(2)))
         ]
         # Indice del objetivo actual
         self.objective_index = objective_index
         self.current_objective = 0 if self.objective_index == None else self.objective_index
+        print(self.current_objective)
         
         # Dropdown
         objetivos = [
-            ("Recoge 1 moneda", False),
-            ("Recoge 1 de madera", False),
-            ("Habla con Don Diego", False)]
+            ("Tala un arbol usando el hacha", False),   # Nivel 1
+            ("Consigue 3 de madera", False),
+            ("Habla con Xoel el Mercader", False),
+            ("Consigue 10 moneda", False),
+            ("Habla con Jordi, el obrero", False),
+            ("Dale dinero a Jordi", False),
+            ("Habla con Don Diego", False)
+            # ("Consigue las botas de Daniel", False),    #Nivel 2
+            # ("Consigue las gafas y bufanda de Isabel", False),
+            # ("Consigue la gorra y bufanda de Oscar", False),
+            # ("Consigue la gorrita Kimoa de Fer", False)
+            ]
+
         self.button = Button()
         self.dropdown = Dropdown(self.button.rect, objetivos)
         self.hide_dropdown = False
@@ -125,7 +158,7 @@ class Requirement:
 
 class Button:
     def __init__(self):
-        self.button_objetivos = pygame.image.load('./code/sprites/tutorial/objetivos.png')
+        self.button_objetivos = pygame.image.load('./code/sprites/objetivos/objetivos.png')
         self.rect = self.button_objetivos.get_rect(topright=(SCREEN_WIDTH, 0))
 
     def draw(self, screen):
@@ -136,10 +169,10 @@ class Dropdown:
         self.button_rect = button_rect
         self.objectives = objectives
         self.str_objectives = [obj for (obj,check_button) in objectives]
-        self.dropdown_image = pygame.image.load('./code/sprites/tutorial/dropdown.png')
+        self.dropdown_image = pygame.image.load('./code/sprites/objetivos/dropdown.png')
         self.rect_dropdown = self.dropdown_image.get_rect()
         self.font = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 20)
-        self.image_check_button = pygame.image.load('./code/sprites/tutorial/boton_lila.png')
+        self.image_check_button = pygame.image.load('./code/sprites/objetivos/boton_lila.png')
         self.update_dimensions()
 
     def update_dimensions(self):
@@ -163,7 +196,7 @@ class Dropdown:
     def draw(self, screen):
         screen.blit(self.dropdown_image, self.rect_dropdown.topleft)
         for i, (obj,check_button) in enumerate(self.objectives):
-            self.image_check_button = pygame.image.load(f'./code/sprites/tutorial/{"boton_lila_ok" if check_button else "boton_lila"}.png')
+            self.image_check_button = pygame.image.load(f'./code/sprites/objetivos/{"boton_lila_ok" if check_button else "boton_lila"}.png')
             text_surface = self.font.render(self.str_objectives[i], True, (33, 10, 37))
             text_rect = text_surface.get_rect(topleft=(self.rect_dropdown.x + self.image_check_button.get_width() + 10, self.rect_dropdown.y + 5 + i * 30))
             screen.blit(self.image_check_button, (self.rect_dropdown.x + 5, text_rect.y))  # Dibujar el botón a la izquierda

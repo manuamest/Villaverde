@@ -37,7 +37,7 @@ class Dialogue:
         self.confirmacion_abierta = False
         self.valor = 0
         self.mensaje_confirmacion = ""
-        self.cantidades = {"Madera": 0, "Trigo": 0}
+        # self.cantidades = {"Madera": 0, "Trigo": 0}
         self.cantidad_seleccionada = 0
         self.item_seleccionado = None
         self.pago = 0
@@ -51,10 +51,10 @@ class Dialogue:
         "Bufandas": 0
         }
 
-          #Sprites Diálogos
+        # Sprites Diálogos
         self.definir_sprites()
 
-        #Diálogos personajes
+        # Diálogos personajes
         self.definir_dialogos()
 
         self.definir_indices()
@@ -525,7 +525,7 @@ class Dialogue:
     def dibujar_frases(self, texto_mostrado, inicio_texto_x, inicio_texto_y, max_ancho_linea=450, color_texto=None, texto_inicio_especial='\u200B', texto_fin_especial='\u00A0'):
 
         if texto_mostrado.startswith(texto_inicio_especial):
-            self.sonido_letra.set_volume(5)
+            self.sonido_letra.set_volume(0)
             self.sonido_letra.play()
 
         if texto_mostrado.endswith(texto_fin_especial):
