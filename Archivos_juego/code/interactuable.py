@@ -19,7 +19,6 @@ class InteractableObject(pygame.sprite.Sprite):
         self.z = LAYERS['ground plant']
 
     def interact(self, inventory):
-       
         if self.interactable_type == "trigo":
             inventory.añadir_trigo()
             self.kill()

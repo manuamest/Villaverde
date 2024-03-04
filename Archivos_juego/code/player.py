@@ -58,10 +58,14 @@ class Player(pygame.sprite.Sprite):
      
         self.tree_sprites = tree_sprites
         self.cut_down_tree = False
-        self.talk_with_list = {"don diego": False,
+        self.talk_with_list = { "don diego": False,
                                 "mercader": False,
                                 "modista": False,
-                                "butanero": False }
+                                "butanero": False,
+                                "cabra": False,
+                                "oveja": False,
+                                "pollo": False,
+                                "vaca marron": False}
         self.inventario_abierto = False
 
     def use_tool(self):
@@ -278,6 +282,7 @@ class Player(pygame.sprite.Sprite):
                     # Collision detected with an animal sprite, take action based on collision
                     sprite.talk(self.dialogue, self.inventory, sprite.personaje)
                     self.personaje_actual = sprite.personaje
+                    self.set_talk_with(self.personaje_actual)
                     # Return True to indicate collision
                     return True
 
@@ -300,6 +305,6 @@ class Player(pygame.sprite.Sprite):
     def set_talk_with(self, personaje):
         self.talk_with_list[personaje] = True
 
-    def talk_with_fun(self, personaje):
+    def talk_with(self, personaje):
         if personaje in self.talk_with_list:
             return self.talk_with_list[personaje]

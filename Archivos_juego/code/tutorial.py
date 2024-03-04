@@ -6,8 +6,8 @@ from objectives import Objectives
 
 
 class Tutorial:
-    def __init__(self, objective_index):
-        self.pantalla = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    def __init__(self, screen, objective_index):
+        self.pantalla = screen
 
         self.imagen_fondo_tutorial = pygame.image.load('./code/sprites/tutorial/tutorial.png').convert_alpha()
         self.posicion = self.imagen_fondo_tutorial.get_rect().topleft

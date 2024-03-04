@@ -71,6 +71,10 @@ class SoilLayer:
         self.surf_water = import_folder("./code/sprites/suelo/agua")
         # Escalar la imagen del suelo al tamaño del TILE_SIZE
         self.soil_surf = pygame.transform.scale(self.soil_surf, (TILE_SIZE, TILE_SIZE))
+        # Fases del trigo
+        self.fases_cultivo = {  "plantar": False,
+                                "sembrar": False,
+                                "regar": False}
 
         self.create_farm_grid()
         self.create_hit_rects()
@@ -106,7 +110,7 @@ class SoilLayer:
                 # print("Coordenadas de la cuadrícula: x =", x, ", y =", y)
                 # print("Contenido de self.grid en la posición (", x, ",", y, "):", self.grid[y][x])
                 if 'F' in self.grid[y][x]:
-                    #print('farmable')
+                    # print('farmable')
                     self.grid[y][x].append('C') # Tile cultivado
                     self.create_soil_tiles()
 
@@ -116,7 +120,7 @@ class SoilLayer:
                 x = soil_sprite.rect.x // TILE_SIZE
                 y = soil_sprite.rect.y // TILE_SIZE
                 self.grid[y][x].append('W') # Tile regado
-
+                self.set_fase_cultivo("regar")
                 WaterTile(
                     soil_sprite.rect.topleft,
                     choice(self.surf_water), 
@@ -137,6 +141,7 @@ class SoilLayer:
                 y = soil_sprite.rect.y // TILE_SIZE
                 if 'S' not in self.grid[y][x]:
                     self.grid[y][x].append('S') # Tile con una semilla plantada
+                    self.set_fase_cultivo("plantar")
                     Plant(seed, [self.all_sprites, self.plant_sprites], soil_sprite, self.check_watered)
                     #print("Nueva planta creada:", new_plant)
                     #print("Tamaño del grupo de plantas:", len(self.plant_sprites.sprites()))
@@ -162,4 +167,8 @@ class SoilLayer:
                         groups=[self.all_sprites, self.soil_sprites]
                     )
 
-
+    def set_fase_cultivo(self, fase):
+        self.fases_cultivo[fase] = True
+    
+    def get_fase_cultivo(self, fase):
+        return self.fases_cultivo[fase]

@@ -2,10 +2,8 @@ import pygame
 from settings import *
 
 class Inventory:
-    def __init__(self):
-        self.pantalla_ancho = SCREEN_WIDTH
-        self.pantalla_alto = SCREEN_HEIGHT
-        self.pantalla = pygame.display.set_mode((self.pantalla_ancho, self.pantalla_alto))
+    def __init__(self, screen):
+        self.pantalla = screen
 
         # Cargar fuentes
         self.fuente = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 24)
@@ -17,7 +15,11 @@ class Inventory:
 
         # Variables del inventario
         self.inventario_abierto = False
-        self.inventario_items = {"Madera": 0, "Trigo": 0,"Bolsa de dinero":0,"Zapatillas":0,"Bufandas":0}
+        self.inventario_items = {   "Madera": 0, 
+                                    "Trigo": 0,
+                                    "Bolsa de dinero":0,
+                                    "Zapatillas":0,
+                                    "Bufandas":0}
 
         # Cargar la imagen de fondo para el inventario y hacerla semi-transparente
         self.imagen_fondo_inventario = pygame.image.load('./code/sprites/inventario.png').convert_alpha()
@@ -71,8 +73,10 @@ class Inventory:
         return self.inventario_items["Trigo"] 
     
     def get_madera(self):
-
         return self.inventario_items["Madera"]
+
+    def get_zapatillas(self):
+        return self.inventario_items["Zapatillas"]
     
     def is_empty(self):
         return sum(self.inventario_items.values()) == 0
@@ -82,8 +86,8 @@ class Inventory:
     def dibujar_inventario(self):
         inventario_ancho = 400
         inventario_alto = 300
-        inventario_x = self.pantalla_ancho // 2 - inventario_ancho // 2
-        inventario_y = self.pantalla_alto // 2 - inventario_alto // 2
+        inventario_x = SCREEN_WIDTH // 2 - inventario_ancho // 2
+        inventario_y = SCREEN_HEIGHT // 2 - inventario_alto // 2
 
         # Dibujar la imagen de fondo para el inventario
         self.pantalla.blit(self.imagen_fondo_inventario, (inventario_x, inventario_y))

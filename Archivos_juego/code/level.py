@@ -6,22 +6,21 @@ from overlay import Overlay
 import pytmx
 from inventory import Inventory
 from pytmx.util_pygame import load_pygame
-from soil import SoilLayer
 from npc import NPC
 from tutorial import Tutorial
 from animals import Animal
 from objectives import Objectives
 
 class Level:
-    def __init__(self, soil_layer, all_sprites, objective_index):
+    def __init__(self, soil_layer, all_sprites, screen, objective_index):
         self.display_surface = pygame.display.get_surface()
         self.collision_sprites = pygame.sprite.Group()
         self.tree_sprites = pygame.sprite.Group()
         self.camera = pygame.math.Vector2()
 
         # Dialogue
-        self.inventory = Inventory()
-        self.dialogue = Dialogue(self.inventory)
+        self.inventory = Inventory(screen)
+        self.dialogue = Dialogue(screen, self.inventory)
 
         self.soil_layer = soil_layer
         self.all_sprites = all_sprites
@@ -31,10 +30,10 @@ class Level:
         self.overlay = Overlay(self.player)
         
         # Tutorial
-        self.tutorial = Tutorial(objective_index)
+        self.tutorial = Tutorial(screen, objective_index)
 
         # Objetives
-        self.objectives = Objectives(self.tutorial, self.inventory, self.dialogue, self.player, objective_index)
+        self.objectives = Objectives(screen, self.tutorial, self.inventory, self.dialogue, self.player, self.soil_layer, objective_index)
 
     def setup(self):
         self.zoom = 4
@@ -48,7 +47,7 @@ class Level:
         # Volcán
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
         # Entorno pruebas
-        #self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
+        # self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
 
         #for layer in ['casa2']:
         #    for x, y, surf in self.tmx_map.get_layer_by_name(layer).tiles():

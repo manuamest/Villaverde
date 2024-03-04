@@ -25,7 +25,7 @@ class Objectives:
         return tutorial.indice_tutorial == (len(tutorial.tutorial_mensajes) - 1)
 
             
-    def __init__(self, tutorial, inventory, dialogue, player, objective_index):
+    def __init__(self, screen, tutorial, inventory, dialogue, player, soil_layer, objective_index):
         self.objectives = [
             # Objectives del tutorial
             Objective([
@@ -64,25 +64,37 @@ class Objectives:
                 Requirement(lambda state: inventory.get_madera() == 3, "14"),
             ], (lambda : self.dropdown.set_check_button(1))),
             Objective([
-                Requirement(lambda state: player.talk_with_fun("mercader") == True, "15")
+                Requirement(lambda state: player.talk_with("mercader") == True, "15")
             ], (lambda : self.dropdown.set_check_button(2))),
             Objective([
                 Requirement(lambda state: inventory.get_dinero() == 10, "16")
             ], (lambda : self.dropdown.set_check_button(3))),
             Objective([
-                Requirement(lambda state: player.talk_with_fun("butanero") == True, "17")
+                Requirement(lambda state: player.talk_with("butanero") == True, "17")
             ], (lambda : self.dropdown.set_check_button(4))),
             Objective([
                 Requirement(lambda state: dialogue.obtener_dinero_dado() == True, "18")
             ], (lambda : self.dropdown.set_check_button(5))),
             Objective([
-                Requirement(lambda state: player.talk_with_fun("don diego") == True, "19")
+                Requirement(lambda state: player.talk_with("don diego") == True, "19")
             ], (lambda : self.dropdown.set_check_button(6))),
             # Objectives (mapa otoño) nivel 2
-            # Objective([
-            #     Requirement(lambda state:  == True, "20"),
-            #     Requirement(lambda state:  == True, "21", ["20"])
-            # ], (lambda : self.dropdown.set_check_button(7))),
+            Objective([
+                Requirement(lambda state: soil_layer.get_fase_cultivo("plantar") == True, "20"),
+                Requirement(lambda state: soil_layer.get_fase_cultivo("regar") == True, "21", ["20"])
+            ], (lambda : self.dropdown.set_check_button(7))),
+            Objective([
+                Requirement(lambda state: inventory.get_trigo() >= 5 , "22")
+            ], (lambda : self.dropdown.set_check_button(8))),
+            Objective([
+                Requirement(lambda state: player.talk_with("modista") == True, "23")
+            ], (lambda : self.dropdown.set_check_button(9))),
+            Objective([
+                Requirement(lambda state: player.talk_with("gallina") == True, "24")
+            ], (lambda : self.dropdown.set_check_button(10))),
+            Objective([
+                Requirement(lambda state: inventory.get_zapatillas() == 1, "25")
+            ], (lambda : self.dropdown.set_check_button(11))),
             # Objectives (mapa invierno) nivel 3
             # Objectives (mapa lava) nivel 4
             # Objective([
@@ -102,11 +114,11 @@ class Objectives:
             ("Habla con Jordi, el obrero", False),
             ("Dale dinero a Jordi", False),
             ("Habla con Don Diego", False),
-            # ("Planta trigo y riegalo", False),    # Nivel 2
-            # ("Recoge 5 de trigo", False),
-            # ("Habla con Eva la modista", False),
-            # ("Habla con la gallina Daniel", False),
-            # ("Consigue las botas de Daniel", False),
+            ("Planta trigo y riegalo", False),    # Nivel 2
+            ("Recoge 5 de trigo", False),
+            ("Habla con Eva la modista", False),
+            ("Habla con la gallina Daniel", False),
+            ("Consigue las zapatillas de Daniel", False),
             # ("Consigue las gafas y bufanda de Isabel", False),
             # ("Consigue la gorra y bufanda de Oscar", False),
             # ("Consigue la gorrita Kimoa de Fer", False),
@@ -116,7 +128,7 @@ class Objectives:
         self.button = Button()
         self.dropdown = Dropdown(self.button.rect, objetivos)
         self.hide_dropdown = False
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.screen = screen
         self.click_on_objectives_button = False
 
     def evaluate(self, allow_next_objective = True):

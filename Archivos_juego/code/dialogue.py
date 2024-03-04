@@ -5,12 +5,12 @@ from settings import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class Dialogue:
-    def __init__(self, inventory):
+    def __init__(self, screen, inventory):
 
         # Pantalla
         self.pantalla_ancho = SCREEN_WIDTH
         self.pantalla_alto = SCREEN_HEIGHT
-        self.pantalla = pygame.display.set_mode((self.pantalla_ancho, self.pantalla_alto))
+        self.pantalla = screen
 
         # Sonido diálogos
         pygame.mixer.init()
@@ -44,12 +44,11 @@ class Dialogue:
         self.material_dado = False
         self.final_dialogo = False
         self.dinero_dado = False
-        self.cantidades = {
-        "Madera": 0,
-        "Trigo": 0,
-        "Zapatillas": 0,
-        "Bufandas": 0
-        }
+        self.cantidades = { "Madera": 0,
+                            "Trigo": 0,
+                            "Zapatillas": 0,
+                            "Bufandas": 0
+                            }
 
         # Sprites Diálogos
         self.definir_sprites()
