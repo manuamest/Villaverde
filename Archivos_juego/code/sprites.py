@@ -27,13 +27,20 @@ class Particle(Generic):
 			self.kill()
 
 class Tree(Generic):
-    def __init__(self, pos, surf, groups, name, inventory):
+    def __init__(self, pos, surf, groups, name, inventory, season=0):
         super().__init__(pos, surf, groups)
         self.visible = True
         self.name = name
         self.inventory = inventory
         self.visible_image = surf  # Almacena la imagen original
-        self.stump_surf = pygame.image.load(f'code/sprites/ambiente/ambiente_verano/{"tronco1" if name == "arbol1" else ("tronco2" if name == "arbol2" else "tronco3")}.png').convert_alpha()
+        if season == 0:
+            self.stump_surf = pygame.image.load(f'code/sprites/ambiente/ambiente_primavera/{"tronco1" if name == "arbol1" else ("tronco2" if name == "arbol2" else "tronco3")}.png').convert_alpha()
+        elif season == 1:
+            self.stump_surf = pygame.image.load(f'code/sprites/ambiente/ambiente_verano/{"tronco1" if name == "arbol1" else ("tronco2" if name == "arbol2" else "tronco3")}.png').convert_alpha()
+        elif season == 2:
+            self.stump_surf = pygame.image.load(f'code/sprites/ambiente/ambiente_otoño/{"tronco1" if name == "arbol1" else ("tronco2" if name == "arbol2" else "tronco3")}.png').convert_alpha()
+        else:
+            self.stump_surf = pygame.image.load(f'code/sprites/ambiente/ambiente_invierno/{"tronco1" if name == "arbol1" else ("tronco2" if name == "arbol2" else "tronco3")}.png').convert_alpha()
         self.alive = True
         self.health = 1
 
