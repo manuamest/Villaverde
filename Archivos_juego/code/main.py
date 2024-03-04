@@ -117,9 +117,9 @@ class Game:
                     sys.exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_DOWN:
-                        self.selected_option = (self.selected_option + 1) % (len(self.menu_options) + 1)
+                        self.selected_option = (self.selected_option + 1) % (len(self.menu_options) )
                     elif event.key == pygame.K_UP:
-                        self.selected_option = (self.selected_option - 1) % (len(self.menu_options) + 1)
+                        self.selected_option = (self.selected_option - 1) % (len(self.menu_options) )
                     elif event.key == pygame.K_RETURN:
                         if self.selected_option == 0:  # Jugar
                             in_menu = False
