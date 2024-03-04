@@ -124,11 +124,6 @@ class Player(pygame.sprite.Sprite):
                 self.direction.x = -1
                 self.status = 'izquierda'
 
-            if keys[pygame.K_SPACE]:
-                self.timers['uso de herramienta'].activate()
-                self.direction = pygame.math.Vector2()
-                self.frame_index = 0
-
             if keys[pygame.K_f]:
                 self.timers['uso de semilla'].activate()
                 self.direction = pygame.math.Vector2()
@@ -140,7 +135,10 @@ class Player(pygame.sprite.Sprite):
 
             if self.inventario_abierto:
                 self.inventory.dibujar_inventario()
-
+            elif keys[pygame.K_SPACE]:
+                self.timers['uso de herramienta'].activate()
+                self.direction = pygame.math.Vector2()
+                self.frame_index = 0
             
             if self.dialogue.obtener_dialogo():
                 self.dialogue.dibujar_dialogo(self.inventory, self.personaje_actual)
@@ -223,8 +221,6 @@ class Player(pygame.sprite.Sprite):
         for obj in self.collision_layer:
             col_rect = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
             if new_rect.colliderect(col_rect):
-                # Collision detected with objects in the collision layer, return True
-                return True
         
                 # Cambiar de nivel al colisionar con cierto objeto (puedes ajustar esta lógica)
                 if obj.name == "puertawuan":
