@@ -77,7 +77,14 @@ class Objectives:
             ], (lambda : self.dropdown.set_check_button(5))),
             Objective([
                 Requirement(lambda state: player.talk_with_fun("don diego") == True, "19")
-            ], (lambda : self.dropdown.set_check_button(6)))
+            ], (lambda : self.dropdown.set_check_button(6))),
+            # Objectives (mapa otoño) nivel 2
+            # Objective([
+            #     Requirement(lambda state:  == True, "20"),
+            #     Requirement(lambda state:  == True, "21", ["20"])
+            # ], (lambda : self.dropdown.set_check_button(7))),
+            # Objectives (mapa invierno) nivel 3
+            # Objectives (mapa lava) nivel 4
             # Objective([
             #     Requirement(lambda state: inventory.get_dinero() > 0, "14")
             # ], (lambda : self.dropdown.set_check_button(2)))
@@ -85,7 +92,6 @@ class Objectives:
         # Indice del objetivo actual
         self.objective_index = objective_index
         self.current_objective = 0 if self.objective_index == None else self.objective_index
-        print(self.current_objective)
         
         # Dropdown
         objetivos = [
@@ -95,11 +101,16 @@ class Objectives:
             ("Consigue 10 moneda", False),
             ("Habla con Jordi, el obrero", False),
             ("Dale dinero a Jordi", False),
-            ("Habla con Don Diego", False)
-            # ("Consigue las botas de Daniel", False),    #Nivel 2
+            ("Habla con Don Diego", False),
+            # ("Planta trigo y riegalo", False),    # Nivel 2
+            # ("Recoge 5 de trigo", False),
+            # ("Habla con Eva la modista", False),
+            # ("Habla con la gallina Daniel", False),
+            # ("Consigue las botas de Daniel", False),
             # ("Consigue las gafas y bufanda de Isabel", False),
             # ("Consigue la gorra y bufanda de Oscar", False),
-            # ("Consigue la gorrita Kimoa de Fer", False)
+            # ("Consigue la gorrita Kimoa de Fer", False),
+            # ("Resuelve el puzzle", False)         # Nivel4
             ]
 
         self.button = Button()
