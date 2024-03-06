@@ -16,56 +16,52 @@ class Objectives:
     def last_step_tutorial(tutorial):
         return tutorial.indice_tutorial == (len(tutorial.tutorial_mensajes) - 1)
 
-    def __init__(self, screen, inventory, dialogue, player, soil_layer, objective_index):
+    def __init__(self, screen, inventory, dialogue, player, soil_layer):
         self.objectives = [
             # Objectives (mapa verano) nivel 1
             Objective([
-                Requirement(lambda state: player.is_cut_down_tree() == True, "13")
+                Requirement(lambda state: player.is_cut_down_tree() == True, "0")
             ], (lambda : self.dropdown.set_check_button(0))),
             Objective([
-                Requirement(lambda state: inventory.get_madera() == 3, "14"),
+                Requirement(lambda state: inventory.get_madera() == 3, "1"),
             ], (lambda : self.dropdown.set_check_button(1))),
             Objective([
-                Requirement(lambda state: player.talk_with("mercader") == True, "15")
+                Requirement(lambda state: player.talk_with("mercader") == True, "2")
             ], (lambda : self.dropdown.set_check_button(2))),
             Objective([
-                Requirement(lambda state: inventory.get_dinero() == 10, "16")
+                Requirement(lambda state: inventory.get_dinero() == 10, "3")
             ], (lambda : self.dropdown.set_check_button(3))),
             Objective([
-                Requirement(lambda state: player.talk_with("butanero") == True, "17")
+                Requirement(lambda state: player.talk_with("butanero") == True, "4")
             ], (lambda : self.dropdown.set_check_button(4))),
             Objective([
-                Requirement(lambda state: dialogue.obtener_dinero_dado() == True, "18")
+                Requirement(lambda state: dialogue.obtener_dinero_dado() == True, "5")
             ], (lambda : self.dropdown.set_check_button(5))),
             Objective([
-                Requirement(lambda state: player.talk_with("don diego") == True, "19")
+                Requirement(lambda state: player.talk_with("don diego") == True, "8")
             ], (lambda : self.dropdown.set_check_button(6))),
             # Objectives (mapa otoño) nivel 2
             Objective([
-                Requirement(lambda state: soil_layer.get_fase_cultivo("plantar") == True, "20"),
-                Requirement(lambda state: soil_layer.get_fase_cultivo("regar") == True, "21", ["20"])
+                Requirement(lambda state: soil_layer.get_fase_cultivo("plantar") == True, "9"),
+                Requirement(lambda state: soil_layer.get_fase_cultivo("regar") == True, "10", ["9"])
             ], (lambda : self.dropdown.set_check_button(7))),
             Objective([
-                Requirement(lambda state: inventory.get_trigo() >= 5 , "22")
+                Requirement(lambda state: inventory.get_trigo() >= 5 , "11")
             ], (lambda : self.dropdown.set_check_button(8))),
             Objective([
-                Requirement(lambda state: player.talk_with("modista") == True, "23")
+                Requirement(lambda state: player.talk_with("modista") == True, "12")
             ], (lambda : self.dropdown.set_check_button(9))),
             Objective([
-                Requirement(lambda state: player.talk_with("gallina") == True, "24")
+                Requirement(lambda state: player.talk_with("gallina") == True, "13")
             ], (lambda : self.dropdown.set_check_button(10))),
             Objective([
-                Requirement(lambda state: inventory.get_zapatillas() == 1, "25")
+                Requirement(lambda state: inventory.get_zapatillas() == 1, "14")
             ], (lambda : self.dropdown.set_check_button(11))),
             # Objectives (mapa invierno) nivel 3
             # Objectives (mapa lava) nivel 4
-            # Objective([
-            #     Requirement(lambda state: inventory.get_dinero() > 0, "14")
-            # ], (lambda : self.dropdown.set_check_button(2)))
         ]
         # Indice del objetivo actual
-        self.objective_index = objective_index
-        self.current_objective = 0 if self.objective_index == None else self.objective_index
+        self.current_objective = 0
         
         # Dropdown
         objetivos = [

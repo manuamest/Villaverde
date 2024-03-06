@@ -12,7 +12,7 @@ from animals import Animal
 from objectives import Objectives
 
 class Level:
-    def __init__(self, soil_layer, all_sprites, screen, objective_index):
+    def __init__(self, soil_layer, all_sprites, screen):
         self.display_surface = pygame.display.get_surface()
         self.collision_sprites = pygame.sprite.Group()
         self.tree_sprites = pygame.sprite.Group()
@@ -30,15 +30,15 @@ class Level:
         self.overlay = Overlay(self.player)
         
         # Tutorial
-        self.tutorial = Tutorial(screen, objective_index)
+        self.tutorial = Tutorial(screen)
 
         # Objetives
-        self.objectives = Objectives(screen, self.inventory, self.dialogue, self.player, self.soil_layer, objective_index)
+        self.objectives = Objectives(screen, self.inventory, self.dialogue, self.player, self.soil_layer)
 
     def setup(self):
         self.zoom = 4
         # Cargar el mapa de Tiled
-        self.opcion_mapa = ""
+        self.opcion_mapa = "verano"   # Cambiar este string para cambiar de mapa
         maps = {"verano": "mapa_verano22", "otoño": "mapa_otoño2", "invierno": "mapa_invierno2", "volcan": "volcan"}
         extension = maps.get(self.opcion_mapa, "pruebas2")
         self.tmx_map = load_pygame(f'./code/mapa/{extension}.tmx')
@@ -168,7 +168,7 @@ class Level:
         Animal(pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 - 300),
             group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", prime=True, walk=2)
 
-    def run(self, dt, key_z_pressed, left_mouse_button_down, event_mouse):
+    def run(self, dt, key_z_pressed, left_mouse_button_down, event_mouse, tutorial_enabled):
         self.display_surface.fill('black')
 
         # Centrar la cámara en el jugador
@@ -197,7 +197,9 @@ class Level:
         self.overlay.display()
         
         # Tutorial
-        # self.tutorial.mostrar_tutorial(key_z_pressed)
+        if tutorial_enabled:
+            self.tutorial.activar_tutorial()
+            self.tutorial.mostrar_tutorial(key_z_pressed)
         
         self.objectives.evaluate()
 

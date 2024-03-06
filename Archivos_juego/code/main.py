@@ -8,7 +8,7 @@ from soil import SoilLayer
 from menu import Menu
 
 class Game:
-    def __init__(self, objective_index):
+    def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -20,17 +20,14 @@ class Game:
         self.all_sprites = CameraGroup()
         self.soil_layer = SoilLayer(self.all_sprites)
         self.last_growth_time = time.time()  # Tiempo de la última fase de crecimiento
-        self.level = Level(self.soil_layer, self.all_sprites, self.screen, objective_index)
+        self.level = Level(self.soil_layer, self.all_sprites, self.screen)
 
     def run(self, menu):
         menu.show_start_screen()
         menu.run()
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--objective", help="Set start objective", type=int)
-    args = parser.parse_args()
-    game = Game(args.objective)
+    game = Game()
     menu = Menu(game.screen, game.clock, game.level, game.soil_layer, game.last_growth_time)
-    game.run(menu=menu)
+    game.run(menu)
 

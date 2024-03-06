@@ -94,8 +94,8 @@ class Menu(MenuBase):
         if self.selected_option == 0:  # Jugar
             self.in_menu = False
         elif self.selected_option == 1:  # Opciones
+            self.options = Options(self.screen, self.clock, self.background_image, self.background_rect)
             print("Mostrar Opciones")  # Agrega lógica de opciones aquí
-            self.options_menu = OptionsMenu(self.screen, self.clock, self.background_image, self.background_rect)
         elif self.selected_option == 2:  # Controles
             print("Mostrar Controles")  # Agrega lógica de controles aquí
         elif self.selected_option == 3:  # Salir
@@ -104,7 +104,8 @@ class Menu(MenuBase):
 
     def run(self):
         self.in_menu = True
-        self.options_menu = None
+        self.options = None
+        self.tutorial_enabled = True
 
         while self.in_menu:
             for event in pygame.event.get():
@@ -119,16 +120,17 @@ class Menu(MenuBase):
                     elif event.key == pygame.K_RETURN:
                         self.handle_key_return()
 
-            if self.options_menu:
-                self.options_menu.run()
-                if self.options_menu.get_should_return():
-                    self.options_menu = None
+            if self.options:
+                self.options.run()
+                self.tutorial_enabled = self.options.get_tutorial_enabled()
+                if self.options.get_should_return():
+                    self.options = None
 
             self.show_menu()
             self.clock.tick(FPS)
 
         while True:
-            key_z_pressed = False   # Detecta la tecla z
+            self.key_z_pressed = False   # Detecta la tecla z
             left_mouse_button_down = False
             event_mouse = None
             for event in pygame.event.get():
@@ -137,7 +139,7 @@ class Menu(MenuBase):
                     sys.exit()
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_z:
-                        key_z_pressed = True
+                        self.key_z_pressed = True
                 elif event.type == pygame.MOUSEBUTTONDOWN: # Clic del raton
                     if event.button == 1:  # Clic izquierdo
                         left_mouse_button_down = True
@@ -145,7 +147,7 @@ class Menu(MenuBase):
 
             self._update_plants()
             dt = self.clock.tick(FPS) / 700
-            self.level.run(dt, key_z_pressed, left_mouse_button_down, event_mouse)
+            self.level.run(dt, self.key_z_pressed, left_mouse_button_down, event_mouse, self.tutorial_enabled)
             pygame.display.update()
 
     def _update_plants(self):
@@ -157,28 +159,34 @@ class Menu(MenuBase):
             self.last_growth_time = current_time
 
 
-class OptionsMenu(MenuBase):
+class Options(MenuBase):
     def __init__(self, screen, clock, background_image, background_rect):
         self.screen = screen
         self.clock = clock
         self.background_image = background_image 
         self.background_rect = background_rect
-        menu_options = ["Activar Tutorial", "Desactivar Tutorial", "Volver"]
+        self.tutorial_enabled = True
+        self.tutorial_option_text = "Desactivar Tutorial"
+        menu_options = [self.tutorial_option_text, "Volver"]
         super().__init__(screen, menu_options, self.background_image, self.background_rect)
 
     def handle_key_return(self):
-        if self.selected_option == 0:  # Activar Tutorial
-            print("Activar Tutorial")  # Agrega lógica para activar el tutorial
-        elif self.selected_option == 1:  # Desactivar Tutorial
-            print("Desactivar Tutorial")  # Agrega lógica para desactivar el tutorial
-        elif self.selected_option == 2:  # Volver
-            self.in_options_menu = False
+        if self.selected_option == 0:  # Activar o Desactivar Tutorial
+            self.tutorial_enabled = not self.tutorial_enabled
+            self.tutorial_option_text = "Desactivar Tutorial" if self.tutorial_enabled else "Activar Tutorial"
+            print(f'El tutorial esta a: {self.tutorial_enabled}')
+        elif self.selected_option == 1:  # Volver
+            self.in_options = False
             self.should_return_flag = True
 
-    def run(self):
-        self.in_options_menu = True
+    def show_menu(self):
+        super().show_menu()
+        self.menu_options[0] = self.tutorial_option_text
 
-        while self.in_options_menu:
+    def run(self):
+        self.in_options = True
+
+        while self.in_options:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -193,3 +201,6 @@ class OptionsMenu(MenuBase):
 
             self.show_menu()
             self.clock.tick(FPS)
+
+    def get_tutorial_enabled(self):
+        return self.tutorial_enabled
