@@ -33,12 +33,12 @@ class Level:
         self.tutorial = Tutorial(screen)
 
         # Objetives
-        self.objectives = Objectives(screen, self.inventory, self.dialogue, self.player, self.soil_layer)
+        self.objectives = Objectives(screen, self.inventory, self.dialogue, self.player, self.soil_layer, self.opcion_mapa)
 
     def setup(self):
         self.zoom = 4
         # Cargar el mapa de Tiled
-        self.opcion_mapa = "verano"   # Cambiar este string para cambiar de mapa
+        self.opcion_mapa = "otoño"   # Cambiar este string para cambiar de mapa
         maps = {"verano": "mapa_verano22", "otoño": "mapa_otoño2", "invierno": "mapa_invierno2", "volcan": "volcan"}
         extension = maps.get(self.opcion_mapa, "pruebas2")
         self.tmx_map = load_pygame(f'./code/mapa/{extension}.tmx')
@@ -197,9 +197,7 @@ class Level:
         self.overlay.display()
         
         # Tutorial
-        if tutorial_enabled:
-            self.tutorial.activar_tutorial()
-            self.tutorial.mostrar_tutorial(key_z_pressed)
+        self.tutorial.mostrar_tutorial(key_z_pressed, tutorial_enabled)
         
         self.objectives.evaluate()
 

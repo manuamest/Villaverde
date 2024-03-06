@@ -24,7 +24,7 @@ class Tutorial:
             "Felicidades! Has completado el tutorial. Disfruta del juego!"
         ]
         
-        self.tutorial_on = False
+        self.tutorial_on = True
 
         # Letra
         self.MARRON = (59, 31, 10)
@@ -34,21 +34,24 @@ class Tutorial:
         self.velocidad_texto = 0.05
         self.update = time.time()
 
-    def activar_tutorial(self):
-        self.tutorial_on = True
-        # self.indice_tutorial = 0
+    # def activar_tutorial(self):
+    #     self.tutorial_on = True
+    #     self.indice_tutorial = 0
 
     def desactivar_tutorial(self):
         self.tutorial_on = False
         self.indice_tutorial = 0
+    
+    def get_tutorial_on(self):
+        return self.tutorial_on
 
     def reiniciar_letras(self):
         self.longitud_actual = 0
         self.update = time.time()
 
-    def mostrar_tutorial(self, key_z_pressed):
+    def mostrar_tutorial(self, key_z_pressed, tutorial_enabled):
         self.key_z_pressed = key_z_pressed
-        if self.tutorial_on:
+        if self.tutorial_on and tutorial_enabled:
             tiempo_actual = time.time()
             texto = self.tutorial_mensajes[self.indice_tutorial]
 
