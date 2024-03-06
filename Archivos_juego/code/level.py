@@ -33,21 +33,15 @@ class Level:
         self.tutorial = Tutorial(screen, objective_index)
 
         # Objetives
-        self.objectives = Objectives(screen, self.tutorial, self.inventory, self.dialogue, self.player, self.soil_layer, objective_index)
+        self.objectives = Objectives(screen, self.inventory, self.dialogue, self.player, self.soil_layer, objective_index)
 
     def setup(self):
         self.zoom = 4
         # Cargar el mapa de Tiled
-        # Verano
-        self.tmx_map = load_pygame("./code/mapa/mapa_verano22.tmx")
-        # Otoño
-        # self.tmx_map = load_pygame("./code/mapa/mapa_otoño2.tmx")
-        # Invierno
-        # self.tmx_map = load_pygame("./code/mapa/mapa_invierno2.tmx")
-        # Volcán
-        #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
-        # Entorno pruebas
-        # self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
+        self.opcion_mapa = ""
+        maps = {"verano": "mapa_verano22", "otoño": "mapa_otoño2", "invierno": "mapa_invierno2", "volcan": "volcan"}
+        extension = maps.get(self.opcion_mapa, "pruebas2")
+        self.tmx_map = load_pygame(f'./code/mapa/{extension}.tmx')
 
         #for layer in ['casa2']:
         #    for x, y, surf in self.tmx_map.get_layer_by_name(layer).tiles():
@@ -203,12 +197,9 @@ class Level:
         self.overlay.display()
         
         # Tutorial
-        self.tutorial.mostrar_tutorial(key_z_pressed)
+        # self.tutorial.mostrar_tutorial(key_z_pressed)
         
-        if self.tutorial.is_tutorial_on() and not self.tutorial.next_step:
-            self.objectives.evaluate(key_z_pressed)
-        else:
-            self.objectives.evaluate()
+        self.objectives.evaluate()
 
         # Dropdown
         self.objectives.show_dropdown(left_mouse_button_down, event_mouse)

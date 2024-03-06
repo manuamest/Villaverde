@@ -20,7 +20,7 @@ class Game:
         self.all_sprites = CameraGroup()
         self.soil_layer = SoilLayer(self.all_sprites)
         self.last_growth_time = time.time()  # Tiempo de la última fase de crecimiento
-        self.level = Level(self.soil_layer, self.all_sprites)
+        self.level = Level(self.soil_layer, self.all_sprites, self.screen, objective_index)
 
     def run(self, menu):
         menu.show_start_screen()

@@ -2,15 +2,7 @@ import pygame
 from settings import *
 
 class Objectives:
-    def is_key_pressed(state, key):
-        keys = pygame.key.get_pressed()
-        if state:
-            return True
-        elif keys[key]:
-            return True
-        else:
-            return False
-        
+
     def inventory_is_not_empty(state, inventory):
         if state:
             return True
@@ -24,38 +16,8 @@ class Objectives:
     def last_step_tutorial(tutorial):
         return tutorial.indice_tutorial == (len(tutorial.tutorial_mensajes) - 1)
 
-            
-    def __init__(self, screen, tutorial, inventory, dialogue, player, soil_layer, objective_index):
+    def __init__(self, screen, inventory, dialogue, player, soil_layer, objective_index):
         self.objectives = [
-            # Objectives del tutorial
-            Objective([
-                Requirement(lambda state: Objectives.is_key_pressed(state, pygame.K_a), "1"),
-                Requirement(lambda state: Objectives.is_key_pressed(state, pygame.K_w), "2"),
-                Requirement(lambda state: Objectives.is_key_pressed(state, pygame.K_s), "3"),
-                Requirement(lambda state: Objectives.is_key_pressed(state, pygame.K_d), "4")
-            ], (lambda : tutorial.enable_next_step())),
-            Objective([
-                Requirement(lambda state: Objectives.is_key_pressed(state, pygame.K_q), "5"),
-                Requirement(lambda state: Objectives.is_key_pressed(state, pygame.K_SPACE), "6"),
-            ], (lambda : tutorial.enable_next_step())),
-            Objective([
-                Requirement(lambda state: Objectives.inventory_is_not_empty(state, inventory), "7")
-            ], (lambda : tutorial.enable_next_step())),
-            Objective([
-                Requirement(lambda state: Objectives.is_key_pressed(state, pygame.K_b), "8")
-            ], (lambda : tutorial.enable_next_step())),
-            Objective([
-                Requirement(lambda state: Objectives.interact_with_npc(dialogue), "9")
-            ], (lambda : tutorial.enable_next_step())),
-            Objective([
-                Requirement(lambda state: Objectives.is_key_pressed(state, pygame.K_x), "10")
-            ], (lambda : tutorial.enable_next_step())),
-            Objective([
-                Requirement(lambda state: self.click_on_objectives_button == True, "11")
-            ], (lambda : tutorial.enable_next_step())),
-            Objective([
-                Requirement(lambda state: Objectives.last_step_tutorial(tutorial), "12")
-            ], (lambda : tutorial.enable_next_step())),
             # Objectives (mapa verano) nivel 1
             Objective([
                 Requirement(lambda state: player.is_cut_down_tree() == True, "13")
@@ -131,9 +93,9 @@ class Objectives:
         self.screen = screen
         self.click_on_objectives_button = False
 
-    def evaluate(self, allow_next_objective = True):
-        if self.current_objective < len(self.objectives) and self.objectives[self.current_objective].evaluate() and allow_next_objective:
-            self.current_objective += 1
+    def evaluate(self):
+        for i in range(len(self.objectives)):
+            self.objectives[i].evaluate()
 
     def show_dropdown(self, left_mouse_button_down, event):
         if left_mouse_button_down and self.button.rect.collidepoint(event.pos):
