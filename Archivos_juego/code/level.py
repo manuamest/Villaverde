@@ -38,23 +38,10 @@ class Level:
     def setup(self):
         self.zoom = 4
         # Cargar el mapa de Tiled
-<<<<<<< HEAD
-        # Verano
-        #self.tmx_map = load_pygame("./code/mapa/mapa_verano22.tmx")
-        # Otoño
-        #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
-        # Invierno
-        #self.tmx_map = load_pygame("./code/mapa/mapa_invierno2.tmx")
-        # Volcán
-        #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
-        # Entorno pruebas
-        self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
-=======
         self.opcion_mapa = "otoño"   # Cambiar este string para cambiar de mapa
         maps = {"verano": "mapa_verano22", "otoño": "mapa_otoño2", "invierno": "mapa_invierno2", "volcan": "volcan"}
         extension = maps.get(self.opcion_mapa, "pruebas2")
         self.tmx_map = load_pygame(f'./code/mapa/{extension}.tmx')
->>>>>>> refs/remotes/origin/main
 
         #for layer in ['casa2']:
         #    for x, y, surf in self.tmx_map.get_layer_by_name(layer).tiles():
@@ -210,9 +197,6 @@ class Level:
         self.overlay.display()
         
         # Tutorial
-<<<<<<< HEAD
-        self.tutorial.mostrar_tutorial()
-=======
         self.tutorial.mostrar_tutorial(key_z_pressed, tutorial_enabled)
         
         self.objectives.evaluate()
@@ -223,7 +207,6 @@ class Level:
         
     def check_collision(self):
         player_rect = self.player.rect
->>>>>>> refs/remotes/origin/main
 
     def plant_collision(self):
         if self.soil_layer.plant_sprites:
