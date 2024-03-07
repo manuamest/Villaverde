@@ -29,7 +29,7 @@ class Director:
         self.all_sprites = CameraGroup()
         self.soil_layer = SoilLayer(self.all_sprites)
         self.last_growth_time = time.time()  # Tiempo de la última fase de crecimiento
-        self.level = Level(self.soil_layer, self.all_sprites)
+        self.level = Level(self.soil_layer, self.all_sprites, self.screen)
         self.menu = Menu(self.screen, self.clock, self.level, self.soil_layer, self.last_growth_time)
 
     def run(self):
