@@ -41,8 +41,11 @@ class Level:
         self.opcion_mapa = "otoño"   # Cambiar este string para cambiar de mapa
         maps = {"verano": "mapa_verano22", "otoño": "mapa_otoño2", "invierno": "mapa_invierno2", "volcan": "volcan"}
         extension = maps.get(self.opcion_mapa, "pruebas2")
-        self.tmx_map = load_pygame(f'./code/mapa/{extension}.tmx')
+        #self.tmx_map = load_pygame(f'./code/mapa/{extension}.tmx')
 
+        self.main_tmx_map = "./code/mapa/otoño/mapa_otoño.tmx"
+        self.tmx_map = load_pygame(self.main_tmx_map)
+        
         #for layer in ['casa2']:
         #    for x, y, surf in self.tmx_map.get_layer_by_name(layer).tiles():
         #        Generic((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites)
@@ -79,55 +82,73 @@ class Level:
 
 
     def change_map(self, path, outside, place):
-
-        #Cargar el mapa de Tiled
-        self.tmx_map = load_pygame(path)
-
-        if not outside:
-            for tree in self.tree_sprites.sprites():
-                tree.make_invisible()
-        else:
-            for tree in self.tree_sprites.sprites():
-                tree.make_visible()
-
-        # Obtener la capa de colisiones
-        self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
-
-        #Obtener el tamaño del mapa
-        #map_width = self.tmx_map.width * self.tmx_map.tilewidth
-        #map_height = self.tmx_map.height * self.tmx_map.tileheight
-
-        #Crear el jugador en la posición deseada
-        if(place == "exterior_wuan"):
-            self.player.set_position(1800, 3850)
-        elif(place == "wuan"):
-            self.player.set_position(1150, 1290)
-        elif(place == "exterior_eva"):
-            self.player.set_position(1810, 1470)
-        elif(place == "eva"):
-            self.player.set_position(1280, 1100)
-        elif(place == "xoel"):
-            self.player.set_position(1090, 1280)
-        elif(place == "exterior_xoel"):
-            self.player.set_position(2180, 1470)
-        elif(place == "final1"):
-            self.player.set_position(1180, 1000)
-        elif(place == "final2"):
-            self.player.set_position(990, 1170)
-
-            
-        self.player.set_collision_layer(self.collision_layer)
-
-        self.create_npcs()
-        self.create_objects()
-        self.create_animals()
-
-        # Ajustar la posición y el tamaño de los objetos en el mapa
-        for obj in self.collision_layer:
-            obj.x *= self.zoom  # Aumentar la posición x
-            obj.y *= self.zoom  # Aumentar la posición y
-            obj.width *= self.zoom  # Aumentar el ancho
-            obj.height *= self.zoom  # Aumentar la altura
+    
+            #Cargar el mapa de Tiled
+            self.tmx_map = load_pygame(path)
+    
+            if not outside:
+                for tree in self.tree_sprites.sprites():
+                    tree.make_invisible()
+            else:
+                for tree in self.tree_sprites.sprites():
+                    tree.make_visible()
+    
+            # Obtener la capa de colisiones
+            self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
+    
+            #Obtener el tamaño del mapa
+            #map_width = self.tmx_map.width * self.tmx_map.tilewidth
+            #map_height = self.tmx_map.height * self.tmx_map.tileheight
+    
+            #Crear el jugador en la posición deseada
+            if(place == "exterior_wuan"):
+                self.player.set_position(1800, 3850)
+            elif(place == "wuan"):
+                self.player.set_position(1150, 1290)
+    
+            elif(place == "exterior_eva"):
+                self.player.set_position(1810, 1470)
+            elif(place == "eva"):
+                self.player.set_position(1280, 1100)
+    
+            elif(place == "xoel"):
+                self.player.set_position(1090, 1280)
+            elif(place == "exterior_xoel"):
+                self.player.set_position(2180, 1470)
+    
+            elif(place == "parking"):
+                self.player.set_position(1090, 1280)
+            elif(place == "exterior_parking"):
+                self.player.set_position(710, 2570)
+    
+            elif(place == "playa"):
+                self.player.set_position(600, 1480)
+            elif(place == "exterior_playa"):
+                self.player.set_position(3100, 4430)
+    
+            elif(place == "cementerio"):
+                self.player.set_position(1090, 1280)
+            elif(place == "exterior_cementerio"):
+                self.player.set_position(3100, 2570)
+    
+            elif(place == "final1"):
+                self.player.set_position(1180, 1000)
+            elif(place == "final2"):
+                self.player.set_position(990, 1170)
+    
+                
+            self.player.set_collision_layer(self.collision_layer)
+    
+            #self.create_npcs()
+            #self.create_objects()
+            #self.create_animals()
+    
+            # Ajustar la posición y el tamaño de los objetos en el mapa
+            for obj in self.collision_layer:
+                obj.x *= self.zoom  # Aumentar la posición x
+                obj.y *= self.zoom  # Aumentar la posición y
+                obj.width *= self.zoom  # Aumentar el ancho
+                obj.height *= self.zoom  # Aumentar la altura
 
     def create_objects(self):
         InteractableObject(
