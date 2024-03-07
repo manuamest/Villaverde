@@ -38,7 +38,7 @@ class Level:
         self.zoom = 4
         # Cargar el mapa de Tiled
         # Verano
-        self.tmx_map = load_pygame("./code/mapa/mapa_verano22.tmx")
+        #self.tmx_map = load_pygame("./code/mapa/mapa_verano22.tmx")
         # Otoño
         #self.tmx_map = load_pygame("./code/mapa/mapa_otoño.tmx")
         # Invierno
@@ -46,7 +46,7 @@ class Level:
         # Volcán
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
         # Entorno pruebas
-        #self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
+        self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
 
         #for layer in ['casa2']:
         #    for x, y, surf in self.tmx_map.get_layer_by_name(layer).tiles():
@@ -200,7 +200,7 @@ class Level:
         self.overlay.display()
         
         # Tutorial
-        #self.tutorial.mostrar_tutorial()
+        self.tutorial.mostrar_tutorial()
 
     def plant_collision(self):
         if self.soil_layer.plant_sprites:

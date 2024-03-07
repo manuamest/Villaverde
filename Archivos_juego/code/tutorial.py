@@ -7,6 +7,7 @@ class Tutorial:
     def __init__(self):
         self.pantalla_ancho, self.pantalla_alto = SCREEN_WIDTH, SCREEN_HEIGHT
         self.pantalla = pygame.display.set_mode((self.pantalla_ancho, self.pantalla_alto))
+
         
         self.imagen_fondo_tutorial = pygame.image.load('./code/sprites/tutorial/tutorial.png').convert_alpha()
         self.imagen_fondo_tutorial.set_alpha(150)
