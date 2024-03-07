@@ -6,22 +6,21 @@ from overlay import Overlay
 import pytmx
 from inventory import Inventory
 from pytmx.util_pygame import load_pygame
-from soil import SoilLayer
 from npc import NPC
 from tutorial import Tutorial
 from animals import Animal
+from objectives import Objectives
 
 class Level:
-    def __init__(self, soil_layer, all_sprites):
+    def __init__(self, soil_layer, all_sprites, screen):
         self.display_surface = pygame.display.get_surface()
-        self.all_sprites = CameraGroup()
         self.collision_sprites = pygame.sprite.Group()
         self.tree_sprites = pygame.sprite.Group()
         self.camera = pygame.math.Vector2()
 
         # Dialogue
-        self.dialogue = Dialogue()
-        self.inventory = Inventory()
+        self.inventory = Inventory(screen)
+        self.dialogue = Dialogue(screen, self.inventory)
 
         self.soil_layer = soil_layer
         self.all_sprites = all_sprites
@@ -31,12 +30,15 @@ class Level:
         self.overlay = Overlay(self.player)
         
         # Tutorial
-        self.tutorial = Tutorial()
-        self.tutorial.activar_tutorial()
+        self.tutorial = Tutorial(screen)
+
+        # Objetives
+        self.objectives = Objectives(screen, self.inventory, self.dialogue, self.player, self.soil_layer, self.opcion_mapa)
 
     def setup(self):
         self.zoom = 4
         # Cargar el mapa de Tiled
+<<<<<<< HEAD
         # Verano
         #self.tmx_map = load_pygame("./code/mapa/mapa_verano22.tmx")
         # Otoño
@@ -47,6 +49,12 @@ class Level:
         #self.tmx_map = load_pygame("./code/mapa/volcan.tmx")
         # Entorno pruebas
         self.tmx_map = load_pygame("./code/mapa/pruebas2.tmx")
+=======
+        self.opcion_mapa = "otoño"   # Cambiar este string para cambiar de mapa
+        maps = {"verano": "mapa_verano22", "otoño": "mapa_otoño2", "invierno": "mapa_invierno2", "volcan": "volcan"}
+        extension = maps.get(self.opcion_mapa, "pruebas2")
+        self.tmx_map = load_pygame(f'./code/mapa/{extension}.tmx')
+>>>>>>> refs/remotes/origin/main
 
         #for layer in ['casa2']:
         #    for x, y, surf in self.tmx_map.get_layer_by_name(layer).tiles():
@@ -66,11 +74,13 @@ class Level:
         #Crear el jugador en la posición deseada
         player_start_x = map_width/2 - 400
         player_start_y = map_height/2
+        # player_start_x = 3115
+        # player_start_y = 4600
 
-        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self)
+        self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue)
 
         self.create_npcs()
-        #self.create_objects()
+        self.create_objects()
         self.create_animals()
 
         # Ajustar la posición y el tamaño de los objetos en el mapa
@@ -171,7 +181,7 @@ class Level:
         Animal(pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 - 300),
             group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", prime=True, walk=2)
 
-    def run(self, dt):
+    def run(self, dt, key_z_pressed, left_mouse_button_down, event_mouse, tutorial_enabled):
         self.display_surface.fill('black')
 
         # Centrar la cámara en el jugador
@@ -200,7 +210,20 @@ class Level:
         self.overlay.display()
         
         # Tutorial
+<<<<<<< HEAD
         self.tutorial.mostrar_tutorial()
+=======
+        self.tutorial.mostrar_tutorial(key_z_pressed, tutorial_enabled)
+        
+        self.objectives.evaluate()
+
+        # Dropdown
+        self.objectives.show_dropdown(left_mouse_button_down, event_mouse)
+
+        
+    def check_collision(self):
+        player_rect = self.player.rect
+>>>>>>> refs/remotes/origin/main
 
     def plant_collision(self):
         if self.soil_layer.plant_sprites:

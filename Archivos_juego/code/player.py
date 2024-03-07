@@ -8,7 +8,7 @@ from animals import Animal
 from utils import import_folder
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_layer, soil_layer, tree_sprites, inventory, level):
+    def __init__(self, pos, group, collision_layer, soil_layer, tree_sprites, inventory, level, dialogue):
         super().__init__(group)
 
         self.import_assets()
@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = 100
 
         # Diálogo
-        self.dialogue = Dialogue()
+        self.dialogue = dialogue
         self.personaje_actual = None
         
         self.inventory = inventory
@@ -57,6 +57,15 @@ class Player(pygame.sprite.Sprite):
         self.selected_seed = self.seed[self.seed_index]
      
         self.tree_sprites = tree_sprites
+        self.cut_down_tree = False
+        self.talk_with_list = { "don diego": False,
+                                "mercader": False,
+                                "modista": False,
+                                "butanero": False,
+                                "cabra": False,
+                                "oveja": False,
+                                "pollo": False,
+                                "vaca marron": False}
         self.inventario_abierto = False
 
     def use_tool(self):
@@ -65,8 +74,9 @@ class Player(pygame.sprite.Sprite):
         
         if self.selected_tool == 'hacha':
             for tree in self.tree_sprites.sprites():
-                if tree.rect.collidepoint(self.target_pos):
+                if tree.rect.collidepoint(self.target_pos) and tree.alive:
                     tree.damage()
+                    self.cut_down_tree = True
 
         if self.selected_tool == 'agua':
             self.soil_layer.water(self.target_pos)
@@ -173,6 +183,8 @@ class Player(pygame.sprite.Sprite):
                         if distancia < 110 and (isinstance(sprite, NPC) or isinstance(sprite, Animal)):
                             sprite.talk(self.dialogue, self.inventory, sprite.personaje)
                             self.personaje_actual = sprite.personaje
+                            self.set_talk_with(self.personaje_actual)
+                            
                         elif distancia < 50:  
                             if isinstance(sprite, InteractableObject):
                                 sprite.interact(self.inventory)
@@ -266,12 +278,12 @@ class Player(pygame.sprite.Sprite):
                     # Collision detected with an animal sprite, take action based on collision
                     sprite.talk(self.dialogue, self.inventory, sprite.personaje)
                     self.personaje_actual = sprite.personaje
+                    self.set_talk_with(self.personaje_actual)
                     # Return True to indicate collision
                     return True
 
         # No collision detected, return False
         return False
-
 
     def update(self, dt):
         self.input()
@@ -281,3 +293,14 @@ class Player(pygame.sprite.Sprite):
         self.velocity = self.direction * self.speed  # Actualizar la velocidad basada en la dirección
         self.move(dt)
         self.animate(dt)
+
+    # Funciones que podran accederse desde Objectives
+    def is_cut_down_tree(self):
+        return self.cut_down_tree
+
+    def set_talk_with(self, personaje):
+        self.talk_with_list[personaje] = True
+
+    def talk_with(self, personaje):
+        if personaje in self.talk_with_list:
+            return self.talk_with_list[personaje]

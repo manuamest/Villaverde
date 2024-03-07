@@ -45,17 +45,18 @@ class Tree(Generic):
         self.health = 1
 
     def damage(self):
-        if self.visible == True:
+        if self.visible:
             self.health -= 1
 
     def check_death(self):
-        if self.visible == True:
+        if self.visible and self.alive:
             if self.health <= 0:
                 # Ajustar posición inicial del sprite  
                 self.rect.y += 20
                 self.rect.x -= 20
                 self.image = self.stump_surf
                 self.visible_image = self.stump_surf
+
                 # Ajustar el rectángulo para el tocón
                 self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
                 self.hitbox = self.rect.copy()

@@ -5,12 +5,12 @@ from settings import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class Dialogue:
-    def __init__(self):
+    def __init__(self, screen, inventory):
 
         # Pantalla
         self.pantalla_ancho = SCREEN_WIDTH
         self.pantalla_alto = SCREEN_HEIGHT
-        self.pantalla = pygame.display.set_mode((self.pantalla_ancho, self.pantalla_alto))
+        self.pantalla = screen
 
         # Sonido diálogos
         pygame.mixer.init()
@@ -25,7 +25,7 @@ class Dialogue:
 
       
         # Atributos
-        self.inventory = Inventory()
+        self.inventory = inventory
         self.indice_dialogo = 0
         self.opcion_escogida = False
         self.opcion_seleccionada = 0
@@ -37,24 +37,23 @@ class Dialogue:
         self.confirmacion_abierta = False
         self.valor = 0
         self.mensaje_confirmacion = ""
-        self.cantidades = {"Madera": 0, "Trigo": 0}
+        # self.cantidades = {"Madera": 0, "Trigo": 0}
         self.cantidad_seleccionada = 0
         self.item_seleccionado = None
         self.pago = 0
         self.material_dado = False
         self.final_dialogo = False
         self.dinero_dado = False
-        self.cantidades = {
-        "Madera": 0,
-        "Trigo": 0,
-        "Zapatillas": 0,
-        "Bufandas": 0
-        }
+        self.cantidades = { "Madera": 0,
+                            "Trigo": 0,
+                            "Zapatillas": 0,
+                            "Bufandas": 0
+                            }
 
-          #Sprites Diálogos
+        # Sprites Diálogos
         self.definir_sprites()
 
-        #Diálogos personajes
+        # Diálogos personajes
         self.definir_dialogos()
 
         self.definir_indices()
@@ -525,7 +524,7 @@ class Dialogue:
     def dibujar_frases(self, texto_mostrado, inicio_texto_x, inicio_texto_y, max_ancho_linea=450, color_texto=None, texto_inicio_especial='\u200B', texto_fin_especial='\u00A0'):
 
         if texto_mostrado.startswith(texto_inicio_especial):
-            self.sonido_letra.set_volume(5)
+            self.sonido_letra.set_volume(0)
             self.sonido_letra.play()
 
         if texto_mostrado.endswith(texto_fin_especial):
