@@ -7,8 +7,12 @@ import pytmx
 from inventory import Inventory
 from pytmx.util_pygame import load_pygame
 from npc import NPC
+from draw import Draw
 from tutorial import Tutorial
 from animals import Animal
+import time
+import os
+from dialogue_strategy import Dialogue_Strategy
 from objectives import Objectives
 
 class Level:
@@ -19,8 +23,10 @@ class Level:
         self.camera = pygame.math.Vector2()
 
         # Dialogue
+        self.dialogue = Dialogue(screen)
         self.inventory = Inventory(screen)
-        self.dialogue = Dialogue(screen, self.inventory)
+        self.draw = Draw(screen)
+        self.dialogue_strategy = Dialogue_Strategy(self.draw)
 
         self.soil_layer = soil_layer
         self.all_sprites = all_sprites
@@ -43,7 +49,7 @@ class Level:
         extension = maps.get(self.opcion_mapa, "pruebas2")
         #self.tmx_map = load_pygame(f'./code/mapa/{extension}.tmx')
 
-        self.main_tmx_map = "./code/mapa/otoño/mapa_otoño.tmx"
+        self.main_tmx_map = "./code/mapa/mapa_invierno2.tmx"
         self.tmx_map = load_pygame(self.main_tmx_map)
         
         #for layer in ['casa2']:
@@ -68,10 +74,10 @@ class Level:
         # player_start_y = 4600
 
         self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue)
-
-        self.create_npcs()
-        self.create_objects()
-        self.create_animals()
+      
+        self.npcs = self.create_npcs()
+        self.objects = self.create_objects()
+        self.animals = self.create_animals()
 
         # Ajustar la posición y el tamaño de los objetos en el mapa
         for obj in self.collision_layer:
@@ -102,40 +108,41 @@ class Level:
     
             #Crear el jugador en la posición deseada
             if(place == "exterior_wuan"):
+                for npc in self.npcs:
+                    npc.make_invisible("fuera")
+        
                 self.player.set_position(1800, 3850)
             elif(place == "wuan"):
+                for npc in self.npcs:
+                    npc.make_invisible("wuan")
+            
                 self.player.set_position(1150, 1290)
-    
             elif(place == "exterior_eva"):
+                for npc in self.npcs:
+                    npc.make_invisible("fuera")
+            
                 self.player.set_position(1810, 1470)
             elif(place == "eva"):
+                for npc in self.npcs:
+                    npc.make_invisible("eva")
+                #self.show_loading_screen()
                 self.player.set_position(1280, 1100)
-    
-            elif(place == "xoel"):
+            elif(place == "xoel"):      
+                for npc in self.npcs:
+                    npc.make_invisible("xoel")
+                #self.show_loading_screen()
                 self.player.set_position(1090, 1280)
+                
             elif(place == "exterior_xoel"):
+                for npc in self.npcs:
+                    npc.make_invisible("fuera")
+                #self.show_loading_screen()
                 self.player.set_position(2180, 1470)
-    
-            elif(place == "parking"):
-                self.player.set_position(1090, 1280)
-            elif(place == "exterior_parking"):
-                self.player.set_position(710, 2570)
-    
-            elif(place == "playa"):
-                self.player.set_position(600, 1480)
-            elif(place == "exterior_playa"):
-                self.player.set_position(3100, 4430)
-    
-            elif(place == "cementerio"):
-                self.player.set_position(1090, 1280)
-            elif(place == "exterior_cementerio"):
-                self.player.set_position(3100, 2570)
-    
             elif(place == "final1"):
                 self.player.set_position(1180, 1000)
             elif(place == "final2"):
                 self.player.set_position(990, 1170)
-    
+        
                 
             self.player.set_collision_layer(self.collision_layer)
     
@@ -151,43 +158,88 @@ class Level:
                 obj.height *= self.zoom  # Aumentar la altura
 
     def create_objects(self):
-        InteractableObject(
+        objects_list = []
+        
+        objects_list.append(InteractableObject(
             pos=(SCREEN_WIDTH / 2 - 300, SCREEN_HEIGHT / 2 + 500),
-            group=self.all_sprites, color=(255, 255, 0),dialogue=self.dialogue, sprite="./code/sprites/trigo.png", interactable_type="trigo")
+            group=self.all_sprites, color=(255, 255, 0),dialogue=self.dialogue, sprite="./code/sprites/trigo.png", interactable_type="trigo"))
         
-        InteractableObject(
+        objects_list.append(InteractableObject(
             pos=(SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 + 500),
-            group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera")
+            group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera"))
         
-        InteractableObject(
-            pos=(SCREEN_WIDTH / 2  - 100, SCREEN_HEIGHT / 2 + 500),
-            group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero")
-        pass
+        objects_list.append(InteractableObject(
+            pos=(SCREEN_WIDTH / 2  + 500, SCREEN_HEIGHT / 2 + 2200),
+            group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero"))
+        
+        return objects_list
 
     def create_npcs(self):
-        NPC(pos=(SCREEN_WIDTH / 2 + -100 , SCREEN_HEIGHT / 2 + 600),
-            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego")
+        npcs_list = []
         
-        NPC(pos=(SCREEN_WIDTH / 2 - 300 , SCREEN_HEIGHT / 2 + 600),
-            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,personaje="butanero")
+        npcs_list.append(NPC(
+            pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 2100),
+            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego", location="wuan"))
         
-        NPC(pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 1500),
-            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Eva_la_modista",inventory=self.inventory, dialogue=self.dialogue,personaje="modista")
+        npcs_list.append(NPC(
+            pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 2000),
+            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,personaje="butanero", location="fuera"))
         
-        NPC(pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 1700),
-            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader")
-        pass
+        npcs_list.append(NPC(
+            pos=(SCREEN_WIDTH / 2 + 680 , SCREEN_HEIGHT / 2 + 505),
+            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Eva_la_modista",inventory=self.inventory, dialogue=self.dialogue,personaje="modista", location="eva"))
+        
+        npcs_list.append(NPC(
+            pos=(SCREEN_WIDTH / 2 + 550 , SCREEN_HEIGHT / 2 + 570),
+            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", location="xoel"))
+        
+        npcs_list.append(NPC(
+            pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 1900),
+            group=self.all_sprites, sprite_directory="./code/sprites/NPC/Pablo_y_Manu",inventory=self.inventory, dialogue=self.dialogue,personaje="hermanos", location="fuera"))
+        
+        return npcs_list
 
     def create_animals(self):
-        Animal(pos=(SCREEN_WIDTH / 2 - 300 , SCREEN_HEIGHT / 2 - 300), group=self.all_sprites, animal_type="cabra", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", prime=True, walk=0)
+        animals_list = []
+        
+        animals_list.append(Animal(
+            pos=(SCREEN_WIDTH / 2 + 300  , SCREEN_HEIGHT / 2 + 2500), group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue,personaje="oveja", prime=True, walk=3, location="playa"))
+        
+        
+        animals_list.append(Animal(
+            pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 2000),
+            group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue,personaje="pollo", walk=1, location="cementerio"))
+        
+        
+        animals_list.append(Animal(
+            pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 1200),
+            group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", prime=True, walk=2, location="parking"))
+        
+        
+        return animals_list
+        
+    def show_loading_screen(self):
+        # Directorio donde se encuentran las imágenes del GIF
+        gif_folder = './code/sprites/pantalla_carga/gif_cargando'
 
-        Animal(pos=(SCREEN_WIDTH / 2  , SCREEN_HEIGHT / 2 - 300), group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", prime=True, walk=3)
+        # Obtener la lista de archivos en el directorio
+        gif_files = sorted(os.listdir(gif_folder))
 
-        Animal(pos=(SCREEN_WIDTH / 2 + 300 , SCREEN_HEIGHT / 2 - 300),
-            group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", walk=1)
+        # Cargar y mostrar cada imagen en la carpeta
+        for file_name in gif_files:
+            file_path = os.path.join(gif_folder, file_name)
+            image = pygame.image.load(file_path).convert_alpha()
 
-        Animal(pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 - 300),
-            group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", prime=True, walk=2)
+            # Escalar la imagen para que encaje en la pantalla
+            original_width, original_height = image.get_size()
+            new_height = SCREEN_HEIGHT
+            new_width = int((new_height / original_height) * original_width)
+            image = pygame.transform.scale(image, (new_width, new_height))
+
+            # Mostrar la imagen en la pantalla de carga
+            self.display_surface.blit(image, (0, 0))
+            pygame.display.flip()
+            time.sleep(5)
 
     def run(self, dt, key_z_pressed, left_mouse_button_down, event_mouse, tutorial_enabled):
         self.display_surface.fill('black')

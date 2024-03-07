@@ -5,12 +5,13 @@ import random
 from settings import LAYERS
 
 class Animal(pygame.sprite.Sprite):
-    def __init__(self, pos, group, animal_type, inventory, dialogue, personaje, prime=False, walk=4):
+    def __init__(self, pos, group, animal_type, inventory, dialogue, personaje, prime=False, walk=4,location="fuera"):
         super().__init__(group)
         self.animal_type = animal_type
         self.sprite_directory = os.path.join("./code/sprites/animales/", animal_type)
         self.dialogue = dialogue
         self.prime = prime
+        self.location = location
 
         # Load sprite images for walking and inactive states
         if self.prime:  # Comprueba si está en estado cabraprime
@@ -87,11 +88,19 @@ class Animal(pygame.sprite.Sprite):
     def set_state(self, state):
         self.state = state
 
-    def talk(self, dialogue, inventory, personaje):
-        print("Muu")
-        # Cuando se habla con el animal, se congela durante 1 segundo y luego reanuda su recorrido
+    def talk_animal(self, dialogue, inventory, personaje):
         self.set_state("inactivo")
-        self.stop_counter = 0  # Reiniciar el contador de parada
+        self.stop_counter = 20
+        if personaje == "pollo":
+            dialogue.set_opcion_dialogo(True)
+            dialogue.dibujar_dialogo(inventory, "pollo")
+        elif personaje == "oveja":
+            dialogue.set_opcion_dialogo(True)
+            dialogue.dibujar_dialogo(inventory, "oveja")     
+        elif personaje == "vaca":
+            dialogue.set_opcion_dialogo(True)
+            dialogue.dibujar_dialogo(inventory, "vaca")
+
           
     def update(self, dt):
         if self.state == "inactivo":
@@ -132,3 +141,15 @@ class Animal(pygame.sprite.Sprite):
                     self.direction = -1
                 else:
                     self.direction = 1
+    
+    def make_invisible(self, location):
+        if self.location != location:
+            self.visible = False
+            for i in range(len(self.sprites)):
+                    self.sprites[i] = pygame.image.load('code/sprites/invisible.png')
+
+    def make_visible(self, location):
+        if self.location == location:
+            self.visible = True
+            for i in range(len(self.sprites)):
+                self.sprites[i] = self.original_sprites[i]  
