@@ -202,10 +202,6 @@ class Player(pygame.sprite.Sprite):
         for timer in self.timers.values():
             timer.update()
 
-    def stop(self):
-        self.velocity = pygame.math.Vector2(0, 0)
-        self.direction = -self.direction
-
     def move(self, dt):
         # Normalizar el vector de dirección si no está en reposo
         if self.direction.magnitude() != 0:
@@ -228,49 +224,64 @@ class Player(pygame.sprite.Sprite):
     def set_collision_layer(self, collision_layer):
         self.collision_layer = collision_layer
 
+   # Verifica las colisiones y los cambios de escenario.
     def check_collision(self, new_rect):
-        # Check for collisions in the collision layer
         for obj in self.collision_layer:
             col_rect = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
             if new_rect.colliderect(col_rect):
-        
-                # Cambiar de nivel al colisionar con cierto objeto (puedes ajustar esta lógica)
+
                 if obj.name == "puertawuan":
-                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
                     self.level.change_map("./code/mapa/casawuan.tmx", False, "wuan")
                     return True
                 if obj.name == "salidawuan":
-                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
-                    self.level.change_map("./code/mapa/mapa_invierno2.tmx", True, "exterior_wuan")
+                    self.level.change_map(self.level.main_tmx_map, True, "exterior_wuan")
                     return True
+                
                 elif obj.name == "puertaeva":
-                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
                     self.level.change_map("./code/mapa/tiendaeva.tmx", False, "eva")
                     return True
                 elif obj.name == "salidaeva":
-                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
-                    self.level.change_map("./code/mapa/mapa_invierno2.tmx", True, "exterior_eva")
+                    self.level.change_map(self.level.main_tmx_map, True, "exterior_eva")
                     return True
+                
                 elif obj.name == "puertaxoel":
-                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
                     self.level.change_map("./code/mapa/tiendaxoel.tmx", False, "xoel")
                     return True
                 elif obj.name == "salidaxoel":
-                    # Cambiar al nivel anterior (puedes ajustar la lógica según tus necesidades)
-                    self.level.change_map("./code/mapa/mapa_invierno2.tmx", True, "exterior_xoel")
+                    self.level.change_map(self.level.main_tmx_map, True, "exterior_xoel")
                     return True
+                
+                elif obj.name == "parking":
+                    self.level.change_map("./code/mapa/parking/parking.tmx", False, "parking")
+                    return True
+                elif obj.name == "salida_parking":
+                    self.level.change_map(self.level.main_tmx_map, True, "exterior_parking")
+                    return True
+                
+                elif obj.name == "playa":
+                    self.level.change_map("./code/mapa/playa/playa.tmx", False, "playa")
+                    return True
+                elif obj.name == "salida_playa":
+                    self.level.change_map(self.level.main_tmx_map, True, "exterior_playa")
+                    return True
+                
+                elif obj.name == "cementerio":
+                    self.level.change_map("./code/mapa/cementerio/cementerio.tmx", False, "cementerio")
+                    return True
+                elif obj.name == "salida_cementerio":
+                    self.level.change_map(self.level.main_tmx_map, True, "exterior_cementerio")
+                    return True
+
                 if obj.name == "puertafinal":
-                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
                     self.level.change_map("./code/mapa/final/final.tmx", False, "final1")
                     return True
                 if obj.name == "puertafinal2":
-                    # Cambiar al nivel siguiente (puedes ajustar la lógica según tus necesidades)
                     self.level.change_map("./code/mapa/final/final2.tmx", False, "final2")
                     return True
+                
                 else:
-                    # Detener al jugador ante la colisión
-                    self.stop()
                     return True
+        """        
         # Check for collisions with animal sprites
         for sprite in pygame.sprite.spritecollide(self, self.groups()[0], False):
             if isinstance(sprite, Animal):  
@@ -281,8 +292,8 @@ class Player(pygame.sprite.Sprite):
                     self.set_talk_with(self.personaje_actual)
                     # Return True to indicate collision
                     return True
-
-        # No collision detected, return False
+        """
+        # Si no se detectan colisiones, se devuelve False
         return False
 
     def update(self, dt):
