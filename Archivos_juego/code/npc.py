@@ -9,6 +9,10 @@ class NPC(pygame.sprite.Sprite):
         self.sprite_directory = sprite_directory
         self.dialogue = dialogue
         self.visible = True
+        if location=="fuera":
+            self.visible == True
+        else:
+            self.visible == False
         self.location = location
 
         # Load sprite images

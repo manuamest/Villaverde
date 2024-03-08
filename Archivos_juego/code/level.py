@@ -79,7 +79,7 @@ class Level:
             # Cargar el mapa de Tiled
             self.opcion_mapa = "otoño"   # Cambiar este string para cambiar de mapa
             extension = maps.get(self.opcion_mapa, "pruebas2")
-            self.main_tmx_map = "./code/mapa/mapa_otoño2.tmx"
+            self.main_tmx_map = "./code/mapa/otoño/mapa_otoño.tmx"
             self.tmx_map = load_pygame(self.main_tmx_map)
 
             # trees 
@@ -160,119 +160,68 @@ class Level:
     """
         
     def change_map(self, path, outside, place):
-    
+
+        #Cargar el mapa de Tiled
+        self.tmx_map = load_pygame(path)
+
         if not outside:
             for tree in self.tree_sprites.sprites():
                 tree.make_invisible()
         else:
             for tree in self.tree_sprites.sprites():
                 tree.make_visible()
-                    
-    
-            #Crear el jugador en la posición deseada
-        if(place == "exterior_wuan"):
-            for npc in self.npcs:
-                npc.make_invisible("fuera")
 
-            for animal in self.animals:
-                animal.make_invisible("fuera")
-
-            for object in self.objects:
-                object.make_invisible("fuera")
-                
-                self.player.set_position(1800, 3850)
-        elif(place == "wuan"):
-                for npc in self.npcs:
-                    npc.make_invisible("wuan")
-                
-                for animal in self.animals:
-                    animal.make_invisible("wuan")
-
-                for object in self.objects:
-                    object.make_invisible("wuan")
-            
-                self.player.set_position(1150, 1290)
-        elif(place == "exterior_eva"):
-                for npc in self.npcs:
-                    npc.make_invisible("fuera")
-
-                for animal in self.animals:
-                    animal.make_invisible("fuera")
-
-                for object in self.objects:
-                    object.make_invisible("fuera")
-            
-                self.player.set_position(1810, 1470)
-        elif(place == "eva"):
-            
-                for npc in self.npcs:
-                    npc.make_invisible("eva")
-
-                for animal in self.animals:
-                    animal.make_invisible("eva")
-
-                for object in self.objects:
-                    object.make_invisible("eva")
-                
-                #self.show_loading_screen()
-                self.player.set_position(1280, 1100)
-        elif(place == "xoel"):      
-                for npc in self.npcs:
-                    npc.make_invisible("xoel")
-
-                for animal in self.animals:
-                    animal.make_invisible("xoel")
-
-                for object in self.objects:
-                    object.make_invisible("xoel")
-
-                #self.show_loading_screen()
-                self.player.set_position(1090, 1280)        
-        elif(place == "exterior_xoel"):
-                for npc in self.npcs:
-                    npc.make_invisible("fuera")
-
-                for animal in self.animals:
-                    animal.make_invisible("fuera")
-
-                for object in self.objects:
-                    object.make_invisible("fuera")
-                    
-                #self.show_loading_screen()
-                self.player.set_position(2180, 1470)
-        elif(place == "final1"):
-                for npc in self.npcs:
-                    npc.make_invisible("final1")
-
-                for animal in self.animals:
-                    animal.make_invisible("final1")
-
-                for object in self.objects:
-                    object.make_invisible("final1")
-
-                self.player.set_position(1180, 1000)
-        elif(place == "final2"):
-                for npc in self.npcs:
-                    npc.make_invisible("final2")
-
-                for animal in self.animals:
-                    animal.make_invisible("final2")
-
-                for object in self.objects:
-                    object.make_invisible("final2")
-
-                self.player.set_position(990, 1170)
-        
-            # Mostrar pantalla de carga
-        self.show_loading_screen()
-
-        #Cargar el mapa de Tiled
-        self.tmx_map = load_pygame(path)
         # Obtener la capa de colisiones
         self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
+
+        #Obtener el tamaño del mapa
+        #map_width = self.tmx_map.width * self.tmx_map.tilewidth
+        #map_height = self.tmx_map.height * self.tmx_map.tileheight
+
+        #Crear el jugador en la posición deseada
+        if(place == "exterior_wuan"):
+            self.player.set_position(1800, 3850)
+        elif(place == "wuan"):
+            self.player.set_position(1150, 1290)
+
+        elif(place == "exterior_eva"):
+            self.player.set_position(1810, 1470)
+        elif(place == "eva"):
+            self.player.set_position(1280, 1100)
+
+        elif(place == "xoel"):
+            self.player.set_position(1090, 1280)
+        elif(place == "exterior_xoel"):
+            self.player.set_position(2180, 1470)
+
+        elif(place == "parking"):
+            self.player.set_position(2400, 1470)
+        elif(place == "exterior_parking"):
+            self.player.set_position(710, 2570)
+
+        elif(place == "playa"):
+            self.player.set_position(1100, 1480)
+        elif(place == "exterior_playa"):
+            self.player.set_position(3100, 4430)
+
+        elif(place == "cementerio"):
+            self.player.set_position(1560, 1430)
+        elif(place == "exterior_cementerio"):
+            self.player.set_position(3100, 2570)
+
+        elif(place == "final1"):
+            self.player.set_position(1180, 1000)
+        elif(place == "final2"):
+            self.player.set_position(990, 1170)
+
+            
         self.player.set_collision_layer(self.collision_layer)
-    
-            # Ajustar la posición y el tamaño de los objetos en el mapa
+
+        #self.create_npcs()
+        #self.create_objects()
+        #self.create_animals()
+
+        # Ajustar la posición y el tamaño de los objetos en el mapa
         for obj in self.collision_layer:
             obj.x *= self.zoom  # Aumentar la posición x
             obj.y *= self.zoom  # Aumentar la posición y
