@@ -3,14 +3,14 @@ import sys
 import time
 from soil import SoilLayer
 from level import Level, CameraGroup
-from settings import SCREEN_HEIGHT, SCREEN_WIDTH
+from settings import *
 from menu import Menu
 
 class Director:
     def __init__(self):
         
         # Inicializamos la pantalla, con un icono y el modo grafico
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
         icon_path = "./code/sprites/icono.png"
         icon = pygame.image.load(icon_path)
         pygame.display.set_icon(icon)
@@ -28,13 +28,23 @@ class Director:
         # Ajustes necesarios en el futuro para los levels
         self.all_sprites = CameraGroup()
         self.soil_layer = SoilLayer(self.all_sprites)
-        self.last_growth_time = time.time()  # Tiempo de la última fase de crecimiento
-        self.level = Level(self.soil_layer, self.all_sprites, self.screen)
-        self.menu = Menu(self.screen, self.clock, self.level, self.soil_layer, self.last_growth_time)
+        self.last_growth_time = time.time()
+        self.level = Level(self.soil_layer, self.all_sprites, self.screen, "Nivel3")
+        #self.menu = Menu(self.screen, self.clock, self.level, self.soil_layer, self.last_growth_time)
 
     def run(self):
-        self.menu.show_start_screen()
-        self.menu.run()
+        escena1 = 1
+        self.bucle(escena=escena1)
+        #self.menu.show_start_screen()
+        #self.menu.run()
+
+    def _update_plants(self):
+        current_time = time.time()
+        elapsed_time = current_time - self.last_growth_time
+
+        if elapsed_time >= 5:
+            self.soil_layer.update_plants() 
+            self.last_growth_time = current_time
 
     def bucle(self, escena):
         self.salir_escena = False
@@ -44,18 +54,25 @@ class Director:
 
         # El bucle del juego, las acciones que se realicen se harán en cada escena
         while not self.salir_escena:
-            # Sincronizar a 60 fps
-            tiempo_pasado = self.reloj.tick(60)
+            self.key_z_pressed = False   # Detecta la tecla z
+            left_mouse_button_down = False
+            event_mouse = None
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYUP:
+                    if event.key == pygame.K_z:
+                        self.key_z_pressed = True
+                elif event.type == pygame.MOUSEBUTTONDOWN: # Clic del raton
+                    if event.button == 1:  # Clic izquierdo
+                        left_mouse_button_down = True
+                        event_mouse = event
 
-            # Eventos a escena
-            escena.eventos(pygame.event.get())
-
-            # Actualiza la escena
-            escena.update(tiempo_pasado)
-
-            # Se dibuja en pantalla
-            escena.dibujar(self.screen)
-            pygame.display.flip()
+            self._update_plants()
+            dt = self.clock.tick(FPS) / 700
+            self.level.run(dt, self.key_z_pressed, left_mouse_button_down, event_mouse, True)
+            pygame.display.update()
 
     def ejecutar(self):
 
