@@ -11,6 +11,7 @@ class Director:
         
         # Inicializamos la pantalla, con un icono y el modo grafico
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+        #self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         icon_path = "./code/sprites/icono.png"
         icon = pygame.image.load(icon_path)
         pygame.display.set_icon(icon)
@@ -29,7 +30,7 @@ class Director:
         self.all_sprites = CameraGroup()
         self.soil_layer = SoilLayer(self.all_sprites)
         self.last_growth_time = time.time()
-        self.level = Level(self.soil_layer, self.all_sprites, self.screen, "Nivel3")
+        self.level = Level(self.soil_layer, self.all_sprites, self.screen, "Nivel1")
         #self.menu = Menu(self.screen, self.clock, self.level, self.soil_layer, self.last_growth_time)
 
     def run(self):

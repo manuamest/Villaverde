@@ -5,12 +5,13 @@ import random
 from settings import LAYERS
 
 class Animal(pygame.sprite.Sprite):
-    def __init__(self, pos, group, animal_type, inventory, dialogue, personaje, prime=False, walk=4):
+    def __init__(self, pos, group, animal_type, inventory, dialogue, personaje, prime=False, walk=4,location="fuera"):
         super().__init__(group)
         self.animal_type = animal_type
         self.sprite_directory = os.path.join("./code/sprites/animales/", animal_type)
         self.dialogue = dialogue
         self.prime = prime
+        self.location = location
 
         # Load sprite images for walking and inactive states
         if self.prime:  # Comprueba si está en estado cabraprime
@@ -87,11 +88,20 @@ class Animal(pygame.sprite.Sprite):
     def set_state(self, state):
         self.state = state
 
-    def talk(self, dialogue, inventory, personaje):
-        print("Muu")
-        # Cuando se habla con el animal, se congela durante 1 segundo y luego reanuda su recorrido
-        self.set_state("inactivo")
-        self.stop_counter = 0  # Reiniciar el contador de parada
+    def talk_animal(self, dialogue, inventory, personaje):
+        if self.visible == True:
+            self.set_state("inactivo")
+            self.stop_counter = 20
+            if personaje == "pollo":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory, "pollo")
+            elif personaje == "oveja":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory, "oveja")     
+            elif personaje == "vaca":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory, "vaca")
+
           
     def update(self, dt):
         if self.state == "inactivo":
@@ -132,3 +142,19 @@ class Animal(pygame.sprite.Sprite):
                     self.direction = -1
                 else:
                     self.direction = 1
+    
+    def make_invisible(self, location):
+        if self.location != location:
+            self.visible = False
+            for i in range(len(self.sprites_caminando)):
+                self.sprites_caminando[i] = pygame.image.load('code/sprites/invisible.png')
+            for i in range(len(self.sprites_inactivo)):
+                self.sprites_inactivo[i] = pygame.image.load('code/sprites/invisible.png')
+        else:
+            self.visible = True
+            if self.prime:  # Comprueba si está en estado cabraprime
+                self.sprites_caminando = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_caminando_prime"))
+                self.sprites_inactivo = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_inactivo_prime"))
+            else:
+                self.sprites_caminando = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_caminando"))
+                self.sprites_inactivo = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_inactivo"))

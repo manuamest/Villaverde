@@ -2,6 +2,7 @@ import pygame
 from settings import *
 from timer import Timer
 from dialogue import Dialogue
+from inventory import Inventory
 from interactuable import InteractableObject
 from npc import NPC
 from animals import Animal
@@ -15,6 +16,8 @@ class Player(pygame.sprite.Sprite):
         self.frame_index = 0
         self.status = 'abajo'
 
+        self.inventory = inventory
+
         self.collision_layer = collision_layer
         self.soil_layer = soil_layer
         self.image = self.animations[self.status][self.frame_index]
@@ -27,10 +30,10 @@ class Player(pygame.sprite.Sprite):
         self.speed = 100
 
         # Diálogo
-        self.dialogue = dialogue
+        self.dialogue = Dialogue(self.inventory.pantalla)
         self.personaje_actual = None
         
-        self.inventory = inventory
+      
         self.level = level
 
         self.timers = {
@@ -134,7 +137,7 @@ class Player(pygame.sprite.Sprite):
                 self.direction.x = -1
                 self.status = 'izquierda'
 
-            if keys[pygame.K_f]:
+            if keys[pygame.K_f] and not self.dialogue.obtener_dialogo():
                 self.timers['uso de semilla'].activate()
                 self.direction = pygame.math.Vector2()
                 self.frame_index = 0
@@ -145,7 +148,7 @@ class Player(pygame.sprite.Sprite):
 
             if self.inventario_abierto:
                 self.inventory.dibujar_inventario()
-            elif keys[pygame.K_SPACE]:
+            elif keys[pygame.K_SPACE] and not self.dialogue.obtener_dialogo():
                 self.timers['uso de herramienta'].activate()
                 self.direction = pygame.math.Vector2()
                 self.frame_index = 0
@@ -154,25 +157,14 @@ class Player(pygame.sprite.Sprite):
                 self.dialogue.dibujar_dialogo(self.inventory, self.personaje_actual)
                 dialogos_personaje = self.dialogue.obtener_dialogo_personaje(self.personaje_actual)
                 self.dialogue.procesar_dialogo(keys, dialogos_personaje,self.timers,self.personaje_actual)
-
-                
-                if keys[pygame.K_x] and not self.timers['dialogo'].active:
-                    self.timers['dialogo'].activate()
-                    self.dialogue.indice_dialogo += 1
-                    self.dialogue.set_indice_dialogo(self.dialogue.indice_dialogo)
-                    self.dialogue.reiniciar_letras()
                     
-                    if self.dialogue.indice_dialogo >= len(dialogos_personaje):
-                        self.dialogue.set_opcion_dialogo(False)
-                        self.personaje_actual = None
-                        self.dialogue.set_indice_dialogo(0)      
 
             if keys[pygame.K_q] and not self.timers['cambio de herramienta'].active and not self.dialogue.obtener_dialogo():
                 self.timers['cambio de herramienta'].activate()
                 self.tool_index = (self.tool_index + 1) % len(self.tools)
                 self.selected_tool = self.tools[self.tool_index]
                 print(f'Cambiando a herramienta [{self.selected_tool}] ')
-
+  
             if keys[pygame.K_e] and not self.timers['interaccion'].active:
                 self.timers['interaccion'].activate()
                 player_center = pygame.math.Vector2(self.rect.center)
@@ -180,11 +172,15 @@ class Player(pygame.sprite.Sprite):
                     if isinstance(sprite, InteractableObject) or isinstance(sprite, NPC) or isinstance(sprite, Animal):  
                         obj_center = pygame.math.Vector2(sprite.rect.center)
                         distancia = player_center.distance_to(obj_center)
-                        if distancia < 110 and (isinstance(sprite, NPC) or isinstance(sprite, Animal)):
+                        if distancia < 110 and (isinstance(sprite, NPC)):
                             sprite.talk(self.dialogue, self.inventory, sprite.personaje)
                             self.personaje_actual = sprite.personaje
                             self.set_talk_with(self.personaje_actual)
-                            
+                        elif distancia < 110 and (isinstance(sprite, Animal)):
+                            sprite.talk_animal(self.dialogue, self.inventory, sprite.personaje)
+                            self.personaje_actual = sprite.personaje
+                            self.set_talk_with(self.personaje_actual)
+
                         elif distancia < 50:  
                             if isinstance(sprite, InteractableObject):
                                 sprite.interact(self.inventory)
@@ -201,10 +197,6 @@ class Player(pygame.sprite.Sprite):
     def update_timers(self):
         for timer in self.timers.values():
             timer.update()
-
-    def stop(self):
-        self.velocity = pygame.math.Vector2(0, 0)
-        self.direction = -self.direction
 
     def move(self, dt):
         # Normalizar el vector de dirección si no está en reposo
@@ -228,7 +220,7 @@ class Player(pygame.sprite.Sprite):
     def set_collision_layer(self, collision_layer):
         self.collision_layer = collision_layer
 
-    # Verifica las colisiones y los cambios de escenario.
+   # Verifica las colisiones y los cambios de escenario.
     def check_collision(self, new_rect):
         for obj in self.collision_layer:
             col_rect = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
@@ -285,18 +277,18 @@ class Player(pygame.sprite.Sprite):
                 
                 else:
                     return True
-        """        
+            
         # Check for collisions with animal sprites
         for sprite in pygame.sprite.spritecollide(self, self.groups()[0], False):
             if isinstance(sprite, Animal):  
                 if new_rect.colliderect(sprite.rect):
                     # Collision detected with an animal sprite, take action based on collision
-                    sprite.talk(self.dialogue, self.inventory, sprite.personaje)
+                    sprite.talk_animal(self.dialogue, self.inventory, sprite.personaje)
                     self.personaje_actual = sprite.personaje
-                    self.set_talk_with(self.personaje_actual)
+                    #self.set_talk_with(self.personaje_actual)
                     # Return True to indicate collision
                     return True
-        """
+        
         # Si no se detectan colisiones, se devuelve False
         return False
 

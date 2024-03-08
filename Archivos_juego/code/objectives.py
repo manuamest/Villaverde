@@ -55,7 +55,7 @@ class Objectives:
                 Requirement(lambda state: player.talk_with("gallina") == True, "11")
             ], (lambda : self.dropdown.set_check_button(10))),
             Objective([
-                Requirement(lambda state: inventory.get_zapatillas() == 1, "12")
+                Requirement(lambda state: inventory.get_jordan() == 1, "12")
             ], (lambda : self.dropdown.set_check_button(11))),
             # Objective([
             #     Requirement(lambda state: inventory.get_collar() == 1, "13")

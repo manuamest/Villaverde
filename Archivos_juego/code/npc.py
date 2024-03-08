@@ -4,13 +4,16 @@ import os
 from settings import LAYERS
 
 class NPC(pygame.sprite.Sprite):
-    def __init__(self, pos, group, sprite_directory,inventory,dialogue, personaje):
+    def __init__(self, pos, group, sprite_directory,inventory,dialogue, personaje,location):
         super().__init__(group)
         self.sprite_directory = sprite_directory
         self.dialogue = dialogue
+        self.visible = True
+        self.location = location
 
         # Load sprite images
         self.sprites = self.load_sprites()
+        self.original_sprites = self.sprites
         self.dialogo_abierto = False 
        
 
@@ -41,18 +44,34 @@ class NPC(pygame.sprite.Sprite):
             self.image = self.sprites[self.current_frame]
 
     def talk(self, dialogue, inventory, personaje):
-        if personaje == "don diego":
-            dialogue.set_opcion_dialogo(True)
-            dialogue.dibujar_dialogo(inventory, "don diego")
-        elif personaje == "mercader":
-            dialogue.set_opcion_dialogo(True)
-            dialogue.dibujar_dialogo(inventory,"mercader")
-        elif personaje == "modista":
-            dialogue.set_opcion_dialogo(True)
-            dialogue.dibujar_dialogo(inventory,"modista")
-        elif personaje == "butanero":
-            dialogue.set_opcion_dialogo(True)
-            dialogue.dibujar_dialogo(inventory, "butanero")
+        if self.visible == True:
+            if personaje == "don diego":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory, "don diego")
+            elif personaje == "mercader":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory,"mercader")
+            elif personaje == "modista":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory,"modista")
+            elif personaje == "butanero":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory, "butanero")
+            elif personaje == "hermanos":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory, "hermanos")
+
+    def make_invisible(self, location):
+        if self.location != location:
+            self.visible = False
+            for i in range(len(self.sprites)):
+                self.sprites[i] = pygame.image.load('code/sprites/invisible.png')
+        else:
+            self.visible = True
+            self.sprites = self.load_sprites()
+                    
+    def update(self, dt):
+        self.update_animation()
           
                     
     def update(self, dt):
