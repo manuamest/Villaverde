@@ -47,3 +47,16 @@ PURCHASE_PRICES = {
 	'corn': 4,
 	'tomato': 5
 }
+
+#Puzle
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+DARKGREY = (40, 40, 40)
+LIGHTGREY = (100, 100, 100)
+# game settings
+WIDTH = 800
+HEIGHT = 641
+FPS = 60
+title = "Resuelve el puzle para acceder a la mazmorra"
+TILESIZE = 72
+GAME_SIZE = 3

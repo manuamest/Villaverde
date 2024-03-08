@@ -7,6 +7,7 @@ from interactuable import InteractableObject
 from npc import NPC
 from animals import Animal
 from utils import import_folder
+from puzle import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group, collision_layer, soil_layer, tree_sprites, inventory, level, dialogue):
@@ -29,11 +30,12 @@ class Player(pygame.sprite.Sprite):
         self.pos = pygame.math.Vector2(self.rect.center)
         self.speed = 100
 
+        self.puzle = Puzle()
         # Diálogo
         self.dialogue = Dialogue(self.inventory.pantalla)
         self.personaje_actual = None
         
-      
+
         self.level = level
 
         self.timers = {
@@ -272,7 +274,8 @@ class Player(pygame.sprite.Sprite):
                     self.level.change_map("./code/mapa/final/final.tmx", False, "final1")
                     return True
                 if obj.name == "puertafinal2":
-                    self.level.change_map("./code/mapa/final/final2.tmx", False, "final2")
+                    self.puzle.start_puzle()     
+                    self.level.change_map("./code/mapa/final/final2.tmx", True, "final2")              
                     return True
                 
                 else:

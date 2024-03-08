@@ -73,6 +73,7 @@ class Level:
 
             self.npcs = self.create_npcs()
             self.objects = self.create_objects()
+            self.animals = []
 
         elif self.escene == "Nivel2":
 
