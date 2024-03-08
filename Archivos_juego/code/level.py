@@ -87,10 +87,41 @@ class Level:
             obj.height *= self.zoom  # Aumentar la altura
 
 
+    def show_loading_screen(self):
+        # Directorio donde se encuentran las imágenes del GIF
+        gif_folder = './code/sprites/pantalla_carga/gif_cargando'
+
+        # Obtener la lista de archivos en el directorio
+        gif_files = sorted(os.listdir(gif_folder))
+
+        # Cargar y mostrar cada imagen en la carpeta
+        for file_name in gif_files:
+            file_path = os.path.join(gif_folder, file_name)
+            image = pygame.image.load(file_path).convert_alpha()
+
+            # Escalar la imagen para que encaje en la pantalla
+            original_width, original_height = image.get_size()
+            new_height = SCREEN_HEIGHT
+            new_width = int((new_height / original_height) * original_width)
+            image = pygame.transform.scale(image, (new_width, new_height))
+
+            # Mostrar la imagen en la pantalla de carga
+            self.display_surface.blit(image, (0, 0))
+            pygame.display.flip()
+
+    """
+    def show_loading_screen(self):
+        loading_gif = pygame.image.load("cargando.gif") 
+        loading_rect = loading_gif.get_rect(center=self.screen.get_rect().center)
+
+        self.screen.fill((255, 255, 255))  # Rellenar la pantalla de blanco (o el color que prefieras)
+        self.screen.blit(loading_gif, loading_rect)
+        pygame.display.flip()
+    """
+        
     def change_map(self, path, outside, place):
     
-            #Cargar el mapa de Tiled
-            self.tmx_map = load_pygame(path)
+        
     
             if not outside:
                 for tree in self.tree_sprites.sprites():
@@ -99,8 +130,7 @@ class Level:
                 for tree in self.tree_sprites.sprites():
                     tree.make_visible()
     
-            # Obtener la capa de colisiones
-            self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
+            
     
             #Obtener el tamaño del mapa
             #map_width = self.tmx_map.width * self.tmx_map.tilewidth
@@ -110,40 +140,103 @@ class Level:
             if(place == "exterior_wuan"):
                 for npc in self.npcs:
                     npc.make_invisible("fuera")
-        
+
+                for animal in self.animals:
+                    animal.make_invisible("fuera")
+
+                for object in self.objects:
+                    object.make_invisible("fuera")
+
                 self.player.set_position(1800, 3850)
             elif(place == "wuan"):
                 for npc in self.npcs:
                     npc.make_invisible("wuan")
+                
+                for animal in self.animals:
+                    animal.make_invisible("wuan")
+
+                for object in self.objects:
+                    object.make_invisible("wuan")
             
                 self.player.set_position(1150, 1290)
             elif(place == "exterior_eva"):
                 for npc in self.npcs:
                     npc.make_invisible("fuera")
+
+                for animal in self.animals:
+                    animal.make_invisible("fuera")
+
+                for object in self.objects:
+                    object.make_invisible("fuera")
             
                 self.player.set_position(1810, 1470)
             elif(place == "eva"):
                 for npc in self.npcs:
                     npc.make_invisible("eva")
+
+                for animal in self.animals:
+                    animal.make_invisible("eva")
+
+                for object in self.objects:
+                    object.make_invisible("eva")
+                
                 #self.show_loading_screen()
                 self.player.set_position(1280, 1100)
             elif(place == "xoel"):      
                 for npc in self.npcs:
                     npc.make_invisible("xoel")
+
+                for animal in self.animals:
+                    animal.make_invisible("xoel")
+
+                for object in self.objects:
+                    object.make_invisible("xoel")
+
                 #self.show_loading_screen()
                 self.player.set_position(1090, 1280)
                 
             elif(place == "exterior_xoel"):
                 for npc in self.npcs:
                     npc.make_invisible("fuera")
+
+                for animal in self.animals:
+                    animal.make_invisible("fuera")
+
+                for object in self.objects:
+                    object.make_invisible("fuera")
+                    
                 #self.show_loading_screen()
                 self.player.set_position(2180, 1470)
             elif(place == "final1"):
+                for npc in self.npcs:
+                    npc.make_invisible("final1")
+
+                for animal in self.animals:
+                    animal.make_invisible("final1")
+
+                for object in self.objects:
+                    object.make_invisible("final1")
+
                 self.player.set_position(1180, 1000)
             elif(place == "final2"):
+                for npc in self.npcs:
+                    npc.make_invisible("final2")
+
+                for animal in self.animals:
+                    animal.make_invisible("final2")
+
+                for object in self.objects:
+                    object.make_invisible("final2")
+
                 self.player.set_position(990, 1170)
         
-                
+            # Mostrar pantalla de carga
+            self.show_loading_screen()
+
+            #Cargar el mapa de Tiled
+            self.tmx_map = load_pygame(path)
+            # Obtener la capa de colisiones
+            self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
             self.player.set_collision_layer(self.collision_layer)
     
             #self.create_npcs()
@@ -162,15 +255,15 @@ class Level:
         
         objects_list.append(InteractableObject(
             pos=(SCREEN_WIDTH / 2 - 300, SCREEN_HEIGHT / 2 + 500),
-            group=self.all_sprites, color=(255, 255, 0),dialogue=self.dialogue, sprite="./code/sprites/trigo.png", interactable_type="trigo"))
+            group=self.all_sprites, color=(255, 255, 0),dialogue=self.dialogue, sprite="./code/sprites/trigo.png", interactable_type="trigo", location="fuera"))
         
         objects_list.append(InteractableObject(
             pos=(SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 + 500),
-            group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera"))
+            group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera", location="fuera"))
         
         objects_list.append(InteractableObject(
             pos=(SCREEN_WIDTH / 2  + 500, SCREEN_HEIGHT / 2 + 2200),
-            group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero"))
+            group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero", location="fuera"))
         
         return objects_list
 
@@ -218,28 +311,6 @@ class Level:
         
         return animals_list
         
-    def show_loading_screen(self):
-        # Directorio donde se encuentran las imágenes del GIF
-        gif_folder = './code/sprites/pantalla_carga/gif_cargando'
-
-        # Obtener la lista de archivos en el directorio
-        gif_files = sorted(os.listdir(gif_folder))
-
-        # Cargar y mostrar cada imagen en la carpeta
-        for file_name in gif_files:
-            file_path = os.path.join(gif_folder, file_name)
-            image = pygame.image.load(file_path).convert_alpha()
-
-            # Escalar la imagen para que encaje en la pantalla
-            original_width, original_height = image.get_size()
-            new_height = SCREEN_HEIGHT
-            new_width = int((new_height / original_height) * original_width)
-            image = pygame.transform.scale(image, (new_width, new_height))
-
-            # Mostrar la imagen en la pantalla de carga
-            self.display_surface.blit(image, (0, 0))
-            pygame.display.flip()
-            time.sleep(5)
 
     def run(self, dt, key_z_pressed, left_mouse_button_down, event_mouse, tutorial_enabled):
         self.display_surface.fill('black')

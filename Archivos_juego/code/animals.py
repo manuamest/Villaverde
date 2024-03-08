@@ -89,17 +89,18 @@ class Animal(pygame.sprite.Sprite):
         self.state = state
 
     def talk_animal(self, dialogue, inventory, personaje):
-        self.set_state("inactivo")
-        self.stop_counter = 20
-        if personaje == "pollo":
-            dialogue.set_opcion_dialogo(True)
-            dialogue.dibujar_dialogo(inventory, "pollo")
-        elif personaje == "oveja":
-            dialogue.set_opcion_dialogo(True)
-            dialogue.dibujar_dialogo(inventory, "oveja")     
-        elif personaje == "vaca":
-            dialogue.set_opcion_dialogo(True)
-            dialogue.dibujar_dialogo(inventory, "vaca")
+        if self.visible == True:
+            self.set_state("inactivo")
+            self.stop_counter = 20
+            if personaje == "pollo":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory, "pollo")
+            elif personaje == "oveja":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory, "oveja")     
+            elif personaje == "vaca":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory, "vaca")
 
           
     def update(self, dt):
@@ -145,11 +146,15 @@ class Animal(pygame.sprite.Sprite):
     def make_invisible(self, location):
         if self.location != location:
             self.visible = False
-            for i in range(len(self.sprites)):
-                    self.sprites[i] = pygame.image.load('code/sprites/invisible.png')
-
-    def make_visible(self, location):
-        if self.location == location:
+            for i in range(len(self.sprites_caminando)):
+                self.sprites_caminando[i] = pygame.image.load('code/sprites/invisible.png')
+            for i in range(len(self.sprites_inactivo)):
+                self.sprites_inactivo[i] = pygame.image.load('code/sprites/invisible.png')
+        else:
             self.visible = True
-            for i in range(len(self.sprites)):
-                self.sprites[i] = self.original_sprites[i]  
+            if self.prime:  # Comprueba si está en estado cabraprime
+                self.sprites_caminando = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_caminando_prime"))
+                self.sprites_inactivo = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_inactivo_prime"))
+            else:
+                self.sprites_caminando = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_caminando"))
+                self.sprites_inactivo = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_inactivo"))

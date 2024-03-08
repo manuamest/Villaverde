@@ -44,21 +44,22 @@ class NPC(pygame.sprite.Sprite):
             self.image = self.sprites[self.current_frame]
 
     def talk(self, dialogue, inventory, personaje):
-        if personaje == "don diego":
-            dialogue.set_opcion_dialogo(True)
-            dialogue.dibujar_dialogo(inventory, "don diego")
-        elif personaje == "mercader":
-            dialogue.set_opcion_dialogo(True)
-            dialogue.dibujar_dialogo(inventory,"mercader")
-        elif personaje == "modista":
-            dialogue.set_opcion_dialogo(True)
-            dialogue.dibujar_dialogo(inventory,"modista")
-        elif personaje == "butanero":
-            dialogue.set_opcion_dialogo(True)
-            dialogue.dibujar_dialogo(inventory, "butanero")
-        elif personaje == "hermanos":
-            dialogue.set_opcion_dialogo(True)
-            dialogue.dibujar_dialogo(inventory, "hermanos")
+        if self.visible == True:
+            if personaje == "don diego":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory, "don diego")
+            elif personaje == "mercader":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory,"mercader")
+            elif personaje == "modista":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory,"modista")
+            elif personaje == "butanero":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory, "butanero")
+            elif personaje == "hermanos":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory, "hermanos")
 
     def make_invisible(self, location):
         if self.location != location:
