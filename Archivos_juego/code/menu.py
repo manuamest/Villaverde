@@ -10,20 +10,21 @@ class MenuBase:
         self.selected_option = 0
         self.background_image = background_image
         self.background_rect = background_rect
-        self.font = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 28)
+        self.font = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 40)
         self.should_return_flag = False
 
     def show_menu(self):
         self.screen.blit(self.background_image, self.background_rect)
         for i, option in enumerate(self.menu_options):
-            bar_rect = pygame.Rect(SCREEN_WIDTH // 4, SCREEN_HEIGHT // 2 + i * 50, SCREEN_WIDTH // 2, 30)
-            pygame.draw.rect(self.screen, (168, 82, 52), bar_rect, border_radius=10)
+            bar_rect = pygame.Rect(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2 + i * 60, SCREEN_WIDTH // 3, 40)  # Ajusta el alto y el ancho aquí
+            pygame.draw.rect(self.screen, (128, 42, 12) if i == self.selected_option else (168, 82, 52), bar_rect, border_radius=10)
             pygame.draw.rect(self.screen, 'black', bar_rect, 2, border_radius=10)
-            color = 'white' if i == self.selected_option else (100, 100, 100)
+            color = 'white'
             text = self.font.render(option, True, color)
-            text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + i * 50 + 15))
+            text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + i * 60 + 20))  # Ajusta la posición vertical aquí
             self.screen.blit(text, text_rect)
         pygame.display.flip()
+
 
     def handle_key_return(self):
         pass
