@@ -5,6 +5,7 @@ from settings import *
 
 class MenuBase:
     def __init__(self, screen, menu_options, background_image, background_rect):
+        #self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
         self.screen = screen
         self.menu_options = menu_options
         self.selected_option = 0
@@ -40,7 +41,7 @@ class Menu(MenuBase):
     def __init__(self, screen, clock, level, soil_layer, last_growth_time=None):
         menu_options = ["Jugar", "Opciones", "Controles", "Salir"]
         # Fondo
-        self.background_image = pygame.image.load('./code/villaverde.jpg').convert()
+        self.background_image = pygame.image.load('./code/PantallaTitulo.png').convert()
         original_width, original_height = self.background_image.get_size()
         new_height = SCREEN_HEIGHT
         new_width = int((new_height / original_height) * original_width)
