@@ -82,7 +82,7 @@ class SoilLayer:
     # Establece que tiles del mapa son cultivables
     def create_farm_grid(self):
         # Obtener la capa cultivable del mapa
-        cultivable_layer = load_pygame("./code/mapa/mapa_otoño.tmx").get_layer_by_name('cultivable')
+        cultivable_layer = load_pygame("./code/mapa//otoño/mapa_otoño.tmx").get_layer_by_name('cultivable')
 
         self.grid = defaultdict(lambda: defaultdict(list))
 

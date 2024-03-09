@@ -58,7 +58,7 @@ class Level:
             # Cargar el mapa de Tiled
             self.opcion_mapa = "verano"
             extension = maps.get(self.opcion_mapa, "pruebas2")
-            self.main_tmx_map = "./code/mapa/mapa_verano22.tmx"
+            self.main_tmx_map = "./code/mapa/verano/mapa_verano.tmx"
             self.tmx_map = load_pygame(self.main_tmx_map)
 
             # trees 
@@ -100,7 +100,7 @@ class Level:
             # Cargar el mapa de Tiled
             self.opcion_mapa = "invierno"   # Cambiar este string para cambiar de mapa
             extension = maps.get(self.opcion_mapa, "pruebas2")
-            self.main_tmx_map = "./code/mapa/mapa_invierno2.tmx"
+            self.main_tmx_map = "./code/mapa/invierno/mapa_invierno.tmx"
             self.tmx_map = load_pygame(self.main_tmx_map)
 
             # trees 
@@ -123,10 +123,6 @@ class Level:
             obj.width *= self.zoom  # Aumentar el ancho
             obj.height *= self.zoom  # Aumentar la altura
 
-    def change_map(self, path, outside, place):
-    
-            #Cargar el mapa de Tiled
-            self.tmx_map = load_pygame(path)
 
     def show_loading_screen(self):
         # Directorio donde se encuentran las imágenes del GIF
@@ -149,79 +145,183 @@ class Level:
             # Mostrar la imagen en la pantalla de carga
             self.display_surface.blit(image, (0, 0))
             pygame.display.flip()
-
-    """
-    def show_loading_screen(self):
-        loading_gif = pygame.image.load("cargando.gif") 
-        loading_rect = loading_gif.get_rect(center=self.screen.get_rect().center)
-
-        self.screen.fill((255, 255, 255))  # Rellenar la pantalla de blanco (o el color que prefieras)
-        self.screen.blit(loading_gif, loading_rect)
-        pygame.display.flip()
-    """
         
     def change_map(self, path, outside, place):
-
-        #Cargar el mapa de Tiled
-        self.tmx_map = load_pygame(path)
-
+            
         if not outside:
             for tree in self.tree_sprites.sprites():
                 tree.make_invisible()
         else:
             for tree in self.tree_sprites.sprites():
-                tree.make_visible()
-
-        # Obtener la capa de colisiones
-        self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
-
-        #Obtener el tamaño del mapa
-        #map_width = self.tmx_map.width * self.tmx_map.tilewidth
-        #map_height = self.tmx_map.height * self.tmx_map.tileheight
-
+                    tree.make_visible()
+    
         #Crear el jugador en la posición deseada
         if(place == "exterior_wuan"):
+            for npc in self.npcs:
+                npc.make_invisible("fuera")
+
+            for animal in self.animals:
+                animal.make_invisible("fuera")
+
+            for object in self.objects:
+                object.make_invisible("fuera")
+
             self.player.set_position(1800, 3850)
         elif(place == "wuan"):
-            self.player.set_position(1150, 1290)
+            for npc in self.npcs:
+                npc.make_invisible("wuan")
+                
+            for animal in self.animals:
+                animal.make_invisible("wuan")
 
+            for object in self.objects:
+                object.make_invisible("wuan")
+            
+            self.player.set_position(1150, 1290)
         elif(place == "exterior_eva"):
+            for npc in self.npcs:
+                npc.make_invisible("fuera")
+
+            for animal in self.animals:
+                animal.make_invisible("fuera")
+
+            for object in self.objects:
+                object.make_invisible("fuera")
+            
             self.player.set_position(1810, 1470)
         elif(place == "eva"):
+            for npc in self.npcs:
+                npc.make_invisible("eva")
+
+            for animal in self.animals:
+                animal.make_invisible("eva")
+
+            for object in self.objects:
+                object.make_invisible("eva")
+                
             self.player.set_position(1280, 1100)
+        elif(place == "xoel"):      
+            for npc in self.npcs:
+                npc.make_invisible("xoel")
 
-        elif(place == "xoel"):
+            for animal in self.animals:
+                animal.make_invisible("xoel")
+
+            for object in self.objects:
+                object.make_invisible("xoel")
+
             self.player.set_position(1090, 1280)
+                
         elif(place == "exterior_xoel"):
+            for npc in self.npcs:
+                npc.make_invisible("fuera")
+
+            for animal in self.animals:
+                animal.make_invisible("fuera")
+
+            for object in self.objects:
+                object.make_invisible("fuera")
+                    
             self.player.set_position(2180, 1470)
+        if(place == "exterior_playa"):
+            for npc in self.npcs:
+                npc.make_invisible("fuera")
 
-        elif(place == "parking"):
-            self.player.set_position(2400, 1470)
-        elif(place == "exterior_parking"):
-            self.player.set_position(710, 2570)
+            for animal in self.animals:
+                animal.make_invisible("fuera")
 
-        elif(place == "playa"):
-            self.player.set_position(1100, 1480)
-        elif(place == "exterior_playa"):
+            for object in self.objects:
+                object.make_invisible("fuera")
+
             self.player.set_position(3100, 4430)
+        elif(place == "playa"):
+            for npc in self.npcs:
+                npc.make_invisible("playa")
+                
+            for animal in self.animals:
+                animal.make_invisible("playa")
 
-        elif(place == "cementerio"):
-            self.player.set_position(1560, 1430)
-        elif(place == "exterior_cementerio"):
+            for object in self.objects:
+                object.make_invisible("playa")
+
+            self.player.set_position(1100, 1480)
+        if(place == "exterior_cementerio"):
+            for npc in self.npcs:
+                npc.make_invisible("fuera")
+
+            for animal in self.animals:
+                animal.make_invisible("fuera")
+
+            for object in self.objects:
+                object.make_invisible("fuera")
+
             self.player.set_position(3100, 2570)
+        elif(place == "cementerio"):
+            for npc in self.npcs:
+                npc.make_invisible("cementerio")
+                
+            for animal in self.animals:
+                animal.make_invisible("cementerio")
 
+            for object in self.objects:
+                object.make_invisible("cementerio")
+
+            self.player.set_position(1800, 3850)
+        if(place == "exterior_parking"):
+            for npc in self.npcs:
+                npc.make_invisible("fuera")
+
+            for animal in self.animals:
+                animal.make_invisible("fuera")
+
+            for object in self.objects:
+                object.make_invisible("fuera")
+
+            self.player.set_position(710, 2570)
+        elif(place == "parking"):
+            for npc in self.npcs:
+                npc.make_invisible("parking")
+                
+            for animal in self.animals:
+                animal.make_invisible("parking")
+
+            for object in self.objects:
+                object.make_invisible("parking")
+
+            self.player.set_position(2400, 1470)
         elif(place == "final1"):
+            for npc in self.npcs:
+                npc.make_invisible("final1")
+
+            for animal in self.animals:
+                animal.make_invisible("final1")
+
+            for object in self.objects:
+                object.make_invisible("final1")
+
             self.player.set_position(1180, 1000)
         elif(place == "final2"):
+            for npc in self.npcs:
+                npc.make_invisible("final2")
+
+            for animal in self.animals:
+                    animal.make_invisible("final2")
+
+            for object in self.objects:
+                 object.make_invisible("final2")
+
             self.player.set_position(990, 1170)
+        
+        # Mostrar pantalla de carga
+        self.show_loading_screen()
 
-            
+        #Cargar el mapa de Tiled
+        self.tmx_map = load_pygame(path)
+        # Obtener la capa de colisiones
+        self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
         self.player.set_collision_layer(self.collision_layer)
-
-        #self.create_npcs()
-        #self.create_objects()
-        #self.create_animals()
-
+    
+    
         # Ajustar la posición y el tamaño de los objetos en el mapa
         for obj in self.collision_layer:
             obj.x *= self.zoom  # Aumentar la posición x
@@ -254,13 +354,17 @@ class Level:
         
         if self.escene == "Nivel1":
             npcs_list.append(NPC(
-                pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 2100),
+                pos=(SCREEN_WIDTH / 2 + 550 , SCREEN_HEIGHT / 2 + 570),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego", location="wuan"))
             
             npcs_list.append(NPC(
                 pos=(2200, 3850),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,personaje="butanero", location="fuera"))
         else:
+            npcs_list.append(NPC(
+                pos=(860, 836),
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego", location="wuan"))
+
             npcs_list.append(NPC(
                 pos=(SCREEN_WIDTH / 2 + 680 , SCREEN_HEIGHT / 2 + 505),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Eva_la_modista",inventory=self.inventory, dialogue=self.dialogue,personaje="modista", location="eva"))
@@ -270,7 +374,7 @@ class Level:
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", location="xoel"))
             
             npcs_list.append(NPC(
-                pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 1900),
+                pos=(2360, 2540),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Pablo_y_Manu",inventory=self.inventory, dialogue=self.dialogue,personaje="hermanos", location="fuera"))
             
         return npcs_list

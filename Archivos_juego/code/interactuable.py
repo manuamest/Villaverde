@@ -9,11 +9,11 @@ class InteractableObject(pygame.sprite.Sprite):
         self.color = color  # Guarda el color
         self.sprite = sprite  # Guarda el sprite
         self.interactable_type = interactable_type  # Guarda el tipo de interactuable
+        self.visible = True
         if location=="fuera":
             self.visible == True
         else:
             self.visible == False
-
         # Configuración general
         if self.sprite is None:
             self.image = pygame.Surface((32, 32))

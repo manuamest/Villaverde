@@ -229,21 +229,21 @@ class Player(pygame.sprite.Sprite):
             if new_rect.colliderect(col_rect):
 
                 if obj.name == "puertawuan":
-                    self.level.change_map("./code/mapa/casawuan.tmx", False, "wuan")
+                    self.level.change_map("./code/mapa/casas/casawuan.tmx", False, "wuan")
                     return True
                 if obj.name == "salidawuan":
                     self.level.change_map(self.level.main_tmx_map, True, "exterior_wuan")
                     return True
                 
                 elif obj.name == "puertaeva":
-                    self.level.change_map("./code/mapa/tiendaeva.tmx", False, "eva")
+                    self.level.change_map("./code/mapa/casas/tiendaeva.tmx", False, "eva")
                     return True
                 elif obj.name == "salidaeva":
                     self.level.change_map(self.level.main_tmx_map, True, "exterior_eva")
                     return True
                 
                 elif obj.name == "puertaxoel":
-                    self.level.change_map("./code/mapa/tiendaxoel.tmx", False, "xoel")
+                    self.level.change_map("./code/mapa/casas/tiendaxoel.tmx", False, "xoel")
                     return True
                 elif obj.name == "salidaxoel":
                     self.level.change_map(self.level.main_tmx_map, True, "exterior_xoel")

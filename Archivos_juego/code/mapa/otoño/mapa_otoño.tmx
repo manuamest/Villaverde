@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="31" nextobjectid="554">
- <tileset firstgid="1" source="../arboles.tsx"/>
+ <tileset firstgid="1" source="arboles.tsx"/>
  <tileset firstgid="182" source="mapa_otoño.tsx"/>
  <layer id="29" name="otoño" width="60" height="100">
   <data encoding="csv">

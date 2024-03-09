@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="266">
  <tileset firstgid="1" source="cementerio.tsx"/>
- <tileset firstgid="1201" source="../../../../../Villaverde/Archivos_juego/code/mapa/tilemap_fall.tsx"/>
- <tileset firstgid="1467" source="../../../../../Villaverde/Archivos_juego/code/mapa/arboles2.tsx"/>
  <layer id="11" name="cementerio" width="40" height="30">
   <data encoding="csv">
 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,
