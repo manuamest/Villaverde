@@ -16,6 +16,7 @@ class Tutorial:
         self.tutorial_mensajes = [
             "Bienvenido a Villaverde! Usa las teclas A,W,S,D para mover al jugador. Dale a la 'Z' para seguir.",
             "Ahora para cambiar de herramienta presiona la tecla 'Q' y para usarla dale al 'SPACE'.",
+            "Prueba a talar un arbol, acercate con el hacha y usala, algunos son mas duros que otros, prueba desde distintos angulos.",
             "Para recoger objetos, simplemente camina sobre ellos y presiona la tecla 'E'.",
             "Muy bien! Ahora, vamos a ver tu inventario. Presiona la tecla 'B' para abrirlo. Cierralo presionando 'B' de nuevo!",
             "Vamos a hablar con el NPC. Acercate a el y presiona la tecla 'E'.",

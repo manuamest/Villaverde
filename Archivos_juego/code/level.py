@@ -77,7 +77,7 @@ class Level:
 
             # trees 
             for obj in self.tmx_map.get_layer_by_name('arboles'):
-                Tree( pos = (obj.x *5 + obj.x/10, obj.y * 7 + obj.y/2.5), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, inventory=self.inventory)
+                Tree( pos = (obj.x *5 + obj.x/10, obj.y * 7 + obj.y/2.5), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, inventory=self.inventory, season=1)
 
             # Obtener la capa de colisiones
             self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
@@ -96,7 +96,7 @@ class Level:
 
             # trees 
             for obj in self.tmx_map.get_layer_by_name('arboles'):
-                Tree( pos = (obj.x *5 + obj.x/10, obj.y * 7 + obj.y/2.5), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, inventory=self.inventory)
+                Tree( pos = (obj.x *5 + obj.x/10, obj.y * 7 + obj.y/2.5), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, inventory=self.inventory, season=2)
 
             # Obtener la capa de colisiones
             self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
@@ -337,27 +337,13 @@ class Level:
 
 
         objects_list.append(InteractableObject(
-            pos=(1600, 4100),
+            pos=(900, 4100),
             group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/icono.png", interactable_type="Fin", location="fuera"))
 
         if self.escene == "Nivel1":
-
-            objects_list.append(InteractableObject(
-                pos=(1800, 4100),
-                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera", location="fuera"))
-            
-            objects_list.append(InteractableObject(
-                pos=(1800, 4300),
-                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera", location="fuera"))
-            
-            objects_list.append(InteractableObject(
-                pos=(1800, 4500),
-                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera", location="fuera"))
-            
             objects_list.append(InteractableObject(
                 pos=(1700, 4000),
                 group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero", location="fuera"))      
-
         else:
             objects_list.append(InteractableObject(
                 pos=(1700, 4100),
@@ -374,11 +360,11 @@ class Level:
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego", location="wuan"))
             
             npcs_list.append(NPC(
-                pos=(2000, 3850),
+                pos=(1900, 3950),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,personaje="butanero", location="fuera"))
             
             npcs_list.append(NPC(
-                pos=(2000, 4000),
+                pos=(2000, 4500),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", location="fuera"))
             
         else:
@@ -391,11 +377,11 @@ class Level:
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Eva_la_modista",inventory=self.inventory, dialogue=self.dialogue,personaje="modista", location="eva"))
             
             npcs_list.append(NPC(
-                pos=(SCREEN_WIDTH / 2 + 550 , SCREEN_HEIGHT / 2 + 570),
+                pos=(SCREEN_WIDTH / 2 + 650 , SCREEN_HEIGHT / 2 + 570),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", location="xoel"))
             
             npcs_list.append(NPC(
-                pos=(2360, 2540),
+                pos=(2330, 2500),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Pablo_y_Manu",inventory=self.inventory, dialogue=self.dialogue,personaje="hermanos", location="fuera"))
             
         return npcs_list
@@ -410,7 +396,7 @@ class Level:
             pass
         
         animals_list.append(Animal(
-            pos=(SCREEN_WIDTH / 2 + 300  , SCREEN_HEIGHT / 2 + 2500), group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue,personaje="oveja", prime=True, walk=3, location="playa"))
+            pos=(SCREEN_WIDTH / 2 + 300  , SCREEN_HEIGHT / 2 + 2500), group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue,personaje="oveja", walk=3, location="playa"))
         
         
         animals_list.append(Animal(
@@ -420,7 +406,7 @@ class Level:
         
         animals_list.append(Animal(
             pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 1200),
-            group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", prime=True, walk=2, location="parking"))
+            group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", walk=2, location="parking"))
         
         
         return animals_list
