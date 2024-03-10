@@ -34,16 +34,8 @@ class Level:
 
         self.soil_layer = soil_layer
         self.all_sprites = all_sprites
-        self.setup()
+        #self.setup()
         
-        # Overlay 
-        self.overlay = Overlay(self.player)
-        
-        # Tutorial
-        self.tutorial = Tutorial(self.screen)
-
-        # Objetives
-        self.objectives = Objectives(self.screen, self.inventory, self.dialogue, self.player, self.soil_layer, self.opcion_mapa)
 
     def setup(self):
         
@@ -59,7 +51,6 @@ class Level:
 
             # Cargar el mapa de Tiled
             self.opcion_mapa = "verano"
-            extension = maps.get(self.opcion_mapa, "pruebas2")
             self.main_tmx_map = "./code/mapa/verano/mapa_verano.tmx"
             self.tmx_map = load_pygame(self.main_tmx_map)
 
@@ -81,7 +72,6 @@ class Level:
 
             # Cargar el mapa de Tiled
             self.opcion_mapa = "otoño"   # Cambiar este string para cambiar de mapa
-            extension = maps.get(self.opcion_mapa, "pruebas2")
             self.main_tmx_map = "./code/mapa/otoño/mapa_otoño.tmx"
             self.tmx_map = load_pygame(self.main_tmx_map)
 
@@ -101,7 +91,6 @@ class Level:
         elif self.escene == "Nivel3":
             # Cargar el mapa de Tiled
             self.opcion_mapa = "invierno"   # Cambiar este string para cambiar de mapa
-            extension = maps.get(self.opcion_mapa, "pruebas2")
             self.main_tmx_map = "./code/mapa/invierno/mapa_invierno.tmx"
             self.tmx_map = load_pygame(self.main_tmx_map)
 
@@ -124,6 +113,16 @@ class Level:
             obj.y *= self.zoom  # Aumentar la posición y
             obj.width *= self.zoom  # Aumentar el ancho
             obj.height *= self.zoom  # Aumentar la altura
+
+        
+        # Overlay 
+        self.overlay = Overlay(self.player)
+        
+        # Tutorial
+        self.tutorial = Tutorial(self.screen)
+
+        # Objetives
+        self.objectives = Objectives(self.screen, self.inventory, self.dialogue, self.player, self.soil_layer, self.opcion_mapa)
 
 
     def show_loading_screen(self):

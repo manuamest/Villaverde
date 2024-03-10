@@ -5,14 +5,13 @@ from sprites import *
 from settings import *
 
 class Puzle:
-    def __init__(self):
+    def __init__(self, screen):
+        self.screen = screen
         self.puzle_ancho, self.puzle_alto = SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2  # Ajustar según necesidad
         self.puzle_surface = pygame.Surface((self.puzle_ancho, self.puzle_alto))
         self.puzle_surface.set_alpha(200)
         self.puzle_x = (SCREEN_WIDTH - self.puzle_ancho) // 2
         self.puzle_y = (SCREEN_HEIGHT - self.puzle_alto) // 2
-
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
         self.clock = pygame.time.Clock()
         self.shuffle_time = 0

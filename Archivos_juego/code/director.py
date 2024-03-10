@@ -7,6 +7,7 @@ from settings import *
 from menu import Menu
 from moviepy.editor import VideoFileClip
 import os
+from pyvidplayer import Video
 
 class Director:
     def __init__(self):
@@ -19,9 +20,6 @@ class Director:
         pygame.display.set_icon(icon)
         pygame.display.set_caption('Villaverde')
 
-        # Pila de escenas
-        self.pila = []
-
         # Flag para salir de la escena
         self.salir_escena = False
 
@@ -32,45 +30,53 @@ class Director:
         self.all_sprites = CameraGroup()
         self.soil_layer = SoilLayer(self.all_sprites)
         self.last_growth_time = time.time()
-        self.level = Level(self.soil_layer, self.all_sprites, self.screen, "Nivel1")
+        self.levels = [Level(self.soil_layer, self.all_sprites, self.screen, "Nivel1"),
+                        Level(self.soil_layer, self.all_sprites, self.screen, "Nivel2"),
+                        Level(self.soil_layer, self.all_sprites, self.screen, "Nivel3")]
         self.menu = Menu(self.screen, self.clock)
-
-        # Obtener la ruta actual del archivo
-        current_path = os.path.dirname(os.path.abspath(__file__))
         
-        # Ruta del archivo de video (relativa al directorio actual)
-        video_filename = 'videos/intro.mp4'
-        
-        # Concatenar la ruta actual con la ruta del archivo de video
-        self.video_path = os.path.join(current_path, video_filename)
-        self.video_clip = VideoFileClip(self.video_path)
-        self.video_duration = self.video_clip.duration
 
         self.paused = False
         self.overlay_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.overlay_surface.set_alpha(10)  # Configura la transicion
 
+        # Cinematica y creditos
+        self.current_path = os.path.dirname(os.path.abspath(__file__))
+        self.intro_name = 'videos/intro.mp4'
+        self.credits_name = 'videos/creditos.mp4'
+
 
     def run(self):
-        escena1 = 1
-        #self.bucle(escena=escena1)
+
         self.menu.show_start_screen()
         self.menu.run()
         self.tutorial_enabled = self.menu.tutorial_enabled
-        self.bucle(escena=escena1)
-        self.level.clean_level()
-        self.tutorial_enabled = False
-        # Crea un nuevo nivel y repite el bucle
-        self.level = Level(self.soil_layer, self.all_sprites, self.menu.screen, "Nivel2")
-        self.bucle(escena=escena1)
-        self.level.clean_level()
+        
+        self.playIntro()
 
-        # Repite el proceso para los demás niveles
-        self.level = Level(self.soil_layer, self.all_sprites, self.screen, "Nivel3")
-        self.bucle(escena=escena1)
-        self.level.clean_level()
-            
-        #self.play_video_intro()
+        for level in self.levels:
+            level.setup()
+            self.bucle(level)
+            level.clean_level()
+            self.tutorial_enabled = False
+        
+        self.playCredits()
+                
+    def playIntro(self):
+        self.video_path = os.path.join(self.current_path, self.intro_name)
+        self.intro = Video(self.video_path)
+        self.intro.set_size((SCREEN_WIDTH, SCREEN_HEIGHT))
+        while self.intro.active:
+            self.intro.draw(self.screen, (0,0))
+            pygame.display.update()
+
+    def playCredits(self):
+        self.video_path = os.path.join(self.current_path, self.credits_name)
+        self.credits = Video(self.video_path)
+        self.credits.set_size((SCREEN_WIDTH, SCREEN_HEIGHT))
+        while self.credits.active:
+            self.credits.draw(self.screen, (0,0), force_draw=False)
+            pygame.display.update()
 
     def _update_plants(self):
         current_time = time.time()
@@ -80,7 +86,7 @@ class Director:
             self.soil_layer.update_plants() 
             self.last_growth_time = current_time
 
-    def bucle(self, escena):
+    def bucle(self, level):
         self.salir_escena = False
 
         while not self.salir_escena:
@@ -102,10 +108,10 @@ class Director:
                         left_mouse_button_down = True
                         event_mouse = event
 
-            if not self.paused:  # Solo actualizar si no está en pausa
+            if not self.paused:
                 self._update_plants()
                 dt = self.clock.tick(FPS) / 700
-                self.level.run(dt, self.key_z_pressed, left_mouse_button_down, event_mouse, self.tutorial_enabled)
+                level.run(dt, self.key_z_pressed, left_mouse_button_down, event_mouse, self.tutorial_enabled)
                 pygame.display.update()
             else:
                 self.screen.blit(self.overlay_surface, (0, 0))  # Agrega el filtro oscuro
@@ -115,50 +121,7 @@ class Director:
 
                 pygame.display.update()
             
-            self.salir_escena = self.level.inventory.salir_escena
-
-
-    def play_video_intro(self):
-        # Reproducir el video de introducción
-        self.video_clip.preview()
-
-    def ejecutar(self):
-
-        # Mientras haya escenas en la pila, ejecutaremos la de arriba
-        while(len(self.pila) > 0):
-            # Se toma la escena de la cima
-            escena = self.pila[len(self.pila) -1 ]
-
-            # Ejecutamos el bucle hasta que termine la escena
-            self.bucle(escena)
-
-    def salirEscena(self):
-    
-        # Indicamos en el flag que se quiere salir de la escena
-        self.salir_escena = True
-    
-        # Eliminamos la escena actual de la pila (si la hay)
-        if (len(self.pila)>0):
-            self.pila.pop()
-    
-    def salirPrograma(self):
-    
-        # Vaciamos la lista de escenas pendientes
-        self.pila = []
-        self.salir_escena = True
-    
-    def cambiarEscena(self, escena):
-        self.salirEscena()
-    
-        # Ponemos la escena pasada en la cima de la pila
-        self.pila.append(escena)
-    
-    def apilarEscena(self, escena):
-        self.salir_escena = True
-    
-        # Ponemos la escena pasada en la cima de la pila
-        self.pila.append(escena)
-
+            self.salir_escena = level.inventory.salir_escena
 
 if __name__ == '__main__':
     director = Director()

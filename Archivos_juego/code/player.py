@@ -30,7 +30,8 @@ class Player(pygame.sprite.Sprite):
         self.pos = pygame.math.Vector2(self.rect.center)
         self.speed = 100
 
-        self.puzle = Puzle()
+        self.puzle = Puzle(self.inventory.screen)
+
         # Diálogo
         self.dialogue = Dialogue(self.inventory.pantalla)
         self.personaje_actual = None

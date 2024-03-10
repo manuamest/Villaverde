@@ -10,6 +10,7 @@ class Inventory:
         self.pantalla_ancho = SCREEN_WIDTH
         self.pantalla_alto = SCREEN_HEIGHT
         self.salir_escena = False
+        self.screen = screen
 
         # Colores
         self.COLOR_LETRAS = (238, 212, 167)
