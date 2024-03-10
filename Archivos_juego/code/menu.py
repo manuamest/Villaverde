@@ -5,24 +5,31 @@ from settings import *
 
 class MenuBase:
     def __init__(self, screen, menu_options, background_image, background_rect):
-        #self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
         self.screen = screen
         self.menu_options = menu_options
         self.selected_option = 0
         self.background_image = background_image
         self.background_rect = background_rect
         self.font = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 40)
-        self.should_return_flag = False
+        self.should_return_flag = False        
+        self.continue_text = self.font.render('Continuar', True, (255, 255, 255))
+        self.quit_text = self.font.render('Salir del juego', True, (255, 255, 255))
+        self.continue_text_rect = self.continue_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50))
+        self.quit_text_rect = self.quit_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50))
+
+    def show_pause_menu(self):
+        self.screen.blit(self.continue_text, self.continue_text_rect)
+        self.screen.blit(self.quit_text, self.quit_text_rect)
 
     def show_menu(self):
         self.screen.blit(self.background_image, self.background_rect)
         for i, option in enumerate(self.menu_options):
-            bar_rect = pygame.Rect(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2 + i * 60, SCREEN_WIDTH // 3, 40)  # Ajusta el alto y el ancho aquí
+            bar_rect = pygame.Rect(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2 - 100 + i * 60, SCREEN_WIDTH // 3, 40)  # Ajusta el alto y el ancho aquí
             pygame.draw.rect(self.screen, (128, 42, 12) if i == self.selected_option else (168, 82, 52), bar_rect, border_radius=10)
             pygame.draw.rect(self.screen, 'black', bar_rect, 2, border_radius=10)
             color = 'white'
             text = self.font.render(option, True, color)
-            text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + i * 60 + 20))  # Ajusta la posición vertical aquí
+            text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 100 + i * 60 + 20))  # Ajusta la posición vertical aquí
             self.screen.blit(text, text_rect)
         pygame.display.flip()
 
@@ -38,7 +45,7 @@ class MenuBase:
 
 
 class Menu(MenuBase):
-    def __init__(self, screen, clock, level, soil_layer, last_growth_time=None):
+    def __init__(self, screen, clock):
         menu_options = ["Jugar", "Opciones", "Controles", "Salir"]
         # Fondo
         self.background_image = pygame.image.load('./code/PantallaTitulo.png').convert()
@@ -50,14 +57,11 @@ class Menu(MenuBase):
         super().__init__(screen, menu_options, self.background_image, self.background_rect)
         self.screen = screen
         self.clock = clock
-        self.level = level
-        self.soil_layer = soil_layer
-        self.last_growth_time = last_growth_time
 
     def show_start_screen(self):
         waiting = True
         text_flash_timer = 0
-        flash_interval = 200
+        flash_interval = 150  # Intervalo de parpadeo en milisegundos
         show_text = True
 
         while waiting:
@@ -68,30 +72,39 @@ class Menu(MenuBase):
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
                         waiting = False
+
+            # Dibujar la imagen de fondo centrada
             self.screen.blit(self.background_image, self.background_rect)
-            self._show_flash_text(text_flash_timer, flash_interval, show_text)
+
+            # Mensaje en la pantalla de inicio (ajustado hacia abajo)
+            font = pygame.font.Font(None, 36)
+            text = "Presiona Enter para comenzar"
+
+            # Actualizar el parpadeo del texto
+            text_flash_timer += self.clock.get_rawtime()
+            if text_flash_timer > flash_interval:
+                show_text = not show_text
+                text_flash_timer = 0
+
+            # Renderizar texto con borde
+            font_surface = font.render(text, True, 'black')
+            text_rect = font_surface.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200))
+
+            # Dibujar texto con borde
+            if show_text:
+                for dx in [-2, 0, 2]:
+                    for dy in [-2, 0, 2]:
+                        self.screen.blit(font_surface, (text_rect.x + dx, text_rect.y + dy))
+
+                # Renderizar texto real
+                font_surface = font.render(text, True, 'white')
+                self.screen.blit(font_surface, text_rect)
 
             pygame.display.flip()
+
+            # Restablecer el temporizador para evitar una acumulación innecesaria
             self.clock.tick(FPS)
-
-    def _show_flash_text(self, text_flash_timer, flash_interval, show_text):
-        font = pygame.font.Font(None, 36)
-        text = "Presiona Enter para comenzar"
-        text_flash_timer += self.clock.get_rawtime()
-        if text_flash_timer > flash_interval:
-            show_text = not show_text
-            text_flash_timer = 0
-
-        font_surface = font.render(text, True, 'black')
-        text_rect = font_surface.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 220))
-
-        if show_text:
-            for dx in [-2, 0, 2]:
-                for dy in [-2, 0, 2]:
-                    self.screen.blit(font_surface, (text_rect.x + dx, text_rect.y + dy))
-            font_surface = font.render(text, True, 'white')
-            self.screen.blit(font_surface, text_rect)
-
+            
     def handle_key_return(self):
         if self.selected_option == 0:  # Jugar
             self.in_menu = False
@@ -131,36 +144,6 @@ class Menu(MenuBase):
             self.show_menu()
             self.clock.tick(FPS)
 
-        while True:
-            self.key_z_pressed = False   # Detecta la tecla z
-            left_mouse_button_down = False
-            event_mouse = None
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                elif event.type == pygame.KEYUP:
-                    if event.key == pygame.K_z:
-                        self.key_z_pressed = True
-                elif event.type == pygame.MOUSEBUTTONDOWN: # Clic del raton
-                    if event.button == 1:  # Clic izquierdo
-                        left_mouse_button_down = True
-                        event_mouse = event
-
-            self._update_plants()
-            dt = self.clock.tick(FPS) / 700
-            self.level.run(dt, self.key_z_pressed, left_mouse_button_down, event_mouse, self.tutorial_enabled)
-            pygame.display.update()
-
-    def _update_plants(self):
-        current_time = time.time()
-        elapsed_time = current_time - self.last_growth_time
-
-        if elapsed_time >= 5:
-            self.soil_layer.update_plants() 
-            self.last_growth_time = current_time
-
-
 class Options(MenuBase):
     def __init__(self, screen, clock, background_image, background_rect):
         self.screen = screen
@@ -169,21 +152,27 @@ class Options(MenuBase):
         self.background_rect = background_rect
         self.tutorial_enabled = True
         self.tutorial_option_text = "Desactivar Tutorial"
-        menu_options = [self.tutorial_option_text, "Volver"]
+        self.fullscreen_option_text = "Pantalla Completa"
+        menu_options = [self.tutorial_option_text, self.fullscreen_option_text, "Volver"]
         super().__init__(screen, menu_options, self.background_image, self.background_rect)
 
     def handle_key_return(self):
         if self.selected_option == 0:  # Activar o Desactivar Tutorial
             self.tutorial_enabled = not self.tutorial_enabled
             self.tutorial_option_text = "Desactivar Tutorial" if self.tutorial_enabled else "Activar Tutorial"
-            print(f'El tutorial esta a: {self.tutorial_enabled}')
-        elif self.selected_option == 1:  # Volver
+            print(f'El tutorial está a: {self.tutorial_enabled}')
+        elif self.selected_option == 1:  # Pantalla Completa
+            pygame.display.toggle_fullscreen()
+            self.fullscreen_option_text = "Ventana" if self.fullscreen_option_text == 'Pantalla Completa' else "Pantalla Completa"
+        elif self.selected_option == 2:  # Volver
             self.in_options = False
             self.should_return_flag = True
 
     def show_menu(self):
         super().show_menu()
         self.menu_options[0] = self.tutorial_option_text
+        self.menu_options[1] = self.fullscreen_option_text
+
 
     def run(self):
         self.in_options = True

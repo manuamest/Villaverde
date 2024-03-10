@@ -17,19 +17,20 @@ class Objectives:
         return tutorial.indice_tutorial == (len(tutorial.tutorial_mensajes) - 1)
 
     def __init__(self, screen, inventory, dialogue, player, soil_layer, opcion_mapa):
+        self.salir_escena = False
         self.objectives = [
             # Objectives (mapa verano) nivel 1
             Objective([
                 Requirement(lambda state: player.is_cut_down_tree() == True, "0")
             ], (lambda : self.dropdown.set_check_button(0))),
             Objective([
-                Requirement(lambda state: inventory.get_madera() == 3, "1"),
+                Requirement(lambda state: inventory.get_madera() >= 3, "1"),
             ], (lambda : self.dropdown.set_check_button(1))),
             Objective([
                 Requirement(lambda state: player.talk_with("mercader") == True, "2")
             ], (lambda : self.dropdown.set_check_button(2))),
             Objective([
-                Requirement(lambda state: inventory.get_dinero() == 10, "3")
+                Requirement(lambda state: inventory.get_dinero() >= 3, "3")
             ], (lambda : self.dropdown.set_check_button(3))),
             Objective([
                 Requirement(lambda state: player.talk_with("butanero") == True, "4")
@@ -81,7 +82,7 @@ class Objectives:
                     ("Consigue 3 de madera", False),
                     ("Habla con Xoel el Mercader", False),
                     ("Consigue 10 moneda", False),
-                    ("Habla con Jordi, el obrero", False),
+                    ("Habla con Jordi, el butanero", False),
                     ("Dale dinero a Jordi", False),
                     ("Habla con Don Diego", False),
                     ("Planta trigo y riegalo", False),          # Nivel 2
@@ -105,6 +106,10 @@ class Objectives:
         self.click_on_objectives_button = False
 
     def evaluate(self):
+        nivel_1_completo = all(obj.evaluate() for obj in self.objectives[:7])  # Verifica si todos los objetivos del nivel 1 están completos
+        if nivel_1_completo:
+            self.salir_escena = True  # Establece salir_escena en True si todos los objetivos del nivel 1 están completos
+
         for i in range(self.min,self.max+1):
             self.objectives[i].evaluate()
 
@@ -131,13 +136,15 @@ class Objective:
         self.requirements = requirements
         self.action = action
         self.true_results = []
+        self.completed = False
 
     def evaluate(self):
         result = [(requirement.get_id(), requirement.evaluate(self.true_results)) for requirement in self.requirements]
         self.true_results = [id for (id, boolean) in result if boolean]
         boolean_results = [boolean for (id,boolean) in result]
-        if all(boolean_results):
+        if all(boolean_results) and not self.completed:  # Verifica si todos los requisitos son verdaderos y el objetivo no se ha completado previamente
             (self.action)()
+            self.completed = True  # Marca el objetivo como completado
             return True
         return False
 

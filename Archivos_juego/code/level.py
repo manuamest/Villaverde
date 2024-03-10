@@ -23,11 +23,13 @@ class Level:
         self.camera = pygame.math.Vector2()
 
         self.escene = escene
+        self.screen = screen
 
         # Dialogue
-        self.dialogue = Dialogue(screen)
-        self.inventory = Inventory(screen)
-        self.draw = Draw(screen)
+        self.dialogue = Dialogue(self.screen)
+        self.inventory = Inventory(self.screen)
+
+        self.draw = Draw(self.screen)
         self.dialogue_strategy = Dialogue_Strategy(self.draw)
 
         self.soil_layer = soil_layer
@@ -38,10 +40,10 @@ class Level:
         self.overlay = Overlay(self.player)
         
         # Tutorial
-        self.tutorial = Tutorial(screen)
+        self.tutorial = Tutorial(self.screen)
 
         # Objetives
-        self.objectives = Objectives(screen, self.inventory, self.dialogue, self.player, self.soil_layer, self.opcion_mapa)
+        self.objectives = Objectives(self.screen, self.inventory, self.dialogue, self.player, self.soil_layer, self.opcion_mapa)
 
     def setup(self):
         
@@ -334,18 +336,33 @@ class Level:
     def create_objects(self):
         objects_list = []
 
+
+        objects_list.append(InteractableObject(
+            pos=(1600, 4100),
+            group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/icono.png", interactable_type="Fin", location="fuera"))
+
         if self.escene == "Nivel1":
-            objects_list.append(InteractableObject(
-                pos=(1700, 4100),
-                group=self.all_sprites, color=(255, 255, 0),dialogue=self.dialogue, sprite="./code/sprites/trigo.png", interactable_type="trigo", location="fuera"))
-            
+
             objects_list.append(InteractableObject(
                 pos=(1800, 4100),
                 group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera", location="fuera"))
             
             objects_list.append(InteractableObject(
-                pos=(1900, 4100),
+                pos=(1800, 4300),
+                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera", location="fuera"))
+            
+            objects_list.append(InteractableObject(
+                pos=(1800, 4500),
+                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera", location="fuera"))
+            
+            objects_list.append(InteractableObject(
+                pos=(1700, 4000),
                 group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero", location="fuera"))      
+
+        else:
+            objects_list.append(InteractableObject(
+                pos=(1700, 4100),
+                group=self.all_sprites, color=(255, 255, 0),dialogue=self.dialogue, sprite="./code/sprites/trigo.png", interactable_type="trigo", location="fuera"))
         
         return objects_list
 
@@ -358,8 +375,13 @@ class Level:
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego", location="wuan"))
             
             npcs_list.append(NPC(
-                pos=(2200, 3850),
+                pos=(2000, 3850),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,personaje="butanero", location="fuera"))
+            
+            npcs_list.append(NPC(
+                pos=(2000, 4000),
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", location="fuera"))
+            
         else:
             npcs_list.append(NPC(
                 pos=(860, 836),
@@ -464,6 +486,15 @@ class Level:
                         for water_sprite in self.soil_layer.water_sprites.sprites():
                             if water_sprite.rect.collidepoint((x * TILE_SIZE, y * TILE_SIZE)):
                                 water_sprite.kill()
+
+    def clean_level(self):
+        # Eliminar todos los sprites del grupo de sprites y reiniciar listas de objetos
+        self.all_sprites.empty()
+        self.tree_sprites.empty()
+        self.collision_sprites.empty()
+        self.npcs.clear()
+        self.objects.clear()
+        self.animals.clear()
                 
 class CameraGroup(pygame.sprite.Group):
     def __init__(self):

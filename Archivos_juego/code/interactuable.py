@@ -10,6 +10,7 @@ class InteractableObject(pygame.sprite.Sprite):
         self.sprite = sprite  # Guarda el sprite
         self.interactable_type = interactable_type  # Guarda el tipo de interactuable
         self.visible = True
+
         if location=="fuera":
             self.visible == True
         else:
@@ -36,6 +37,8 @@ class InteractableObject(pygame.sprite.Sprite):
             elif self.interactable_type == "dinero":
                 inventory.añadir_dinero()
                 self.kill()
+            elif self.interactable_type == "Fin":
+                inventory.salir()
 
     def make_invisible(self, location):
         if self.location != location:

@@ -9,6 +9,8 @@ class Inventory:
         self.pantalla = screen
         self.pantalla_ancho = SCREEN_WIDTH
         self.pantalla_alto = SCREEN_HEIGHT
+        self.salir_escena = False
+
         # Colores
         self.COLOR_LETRAS = (238, 212, 167)
         self.MARRON = (128, 58, 58)
@@ -32,6 +34,9 @@ class Inventory:
             'Llave magistral': pygame.image.load('./code/sprites/llavemagistral.png')
         }
 
+    def salir(self):
+        self.salir_escena = True
+
     def añadir_madera(self):
         self.inventario_items["Madera"] += 1
 
@@ -48,7 +53,7 @@ class Inventory:
         self.inventario_items["Trigo"] += 1
 
     def añadir_dinero(self):
-        self.inventario_items["Bolsa de dinero"] += 1
+        self.inventario_items["Bolsa de dinero"] += 100
 
     def añadir_jordan(self):
         self.inventario_items["Jordan"] += 1
