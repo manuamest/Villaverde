@@ -8,18 +8,12 @@ class NPC(pygame.sprite.Sprite):
         super().__init__(group)
         self.sprite_directory = sprite_directory
         self.dialogue = dialogue
-        self.visible = True
-        if location=="fuera":
-            self.visible == True
-        else:
-            self.visible == False
         self.location = location
 
         # Load sprite images
         self.sprites = self.load_sprites()
         self.original_sprites = self.sprites
         self.dialogo_abierto = False 
-       
 
         # Configuración inicial
         self.image = self.sprites[0]  # Use the first sprite as the initial image
@@ -32,6 +26,9 @@ class NPC(pygame.sprite.Sprite):
         self.animation_counter = 0
 
         self.personaje = personaje 
+
+        self.visible = True
+        self.make_invisible("fuera")
 
     def load_sprites(self):
         sprites = []

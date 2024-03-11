@@ -12,11 +12,7 @@ class Animal(pygame.sprite.Sprite):
         self.dialogue = dialogue
         self.prime = prime
         self.location = location
-        self.visible = True
-        if location=="fuera":
-            self.visible == True
-        else:
-            self.visible == False
+     
         # Load sprite images for walking and inactive states
         if self.prime:  # Comprueba si está en estado cabraprime
             self.sprites_caminando = self.load_sprites(os.path.join(self.sprite_directory, f"{animal_type}_caminando_prime"))
@@ -64,6 +60,9 @@ class Animal(pygame.sprite.Sprite):
         else:  # Predeterminado para otros animales
             self.move_speed = 2
             self.target_positions = [(pos[0] - 200, pos[1] - 60), (pos[0] + 10, pos[1] - 30)]
+
+        self.visible = True
+        self.make_invisible("fuera")
 
     def load_sprites(self, directory):
         sprites = []

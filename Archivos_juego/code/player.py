@@ -275,7 +275,7 @@ class Player(pygame.sprite.Sprite):
                     return True
                 if obj.name == "puertafinal2":
                     self.puzle.start_puzle()     
-                    self.level.change_map("./code/mapa/final/final2.tmx", True, "final2")              
+                    self.level.change_map("./code/mapa/final/final2.tmx", False, "final2")              
                     return True
                 
                 else:
@@ -283,14 +283,15 @@ class Player(pygame.sprite.Sprite):
             
         # Check for collisions with animal sprites
         for sprite in pygame.sprite.spritecollide(self, self.groups()[0], False):
-            if isinstance(sprite, Animal):  
-                if new_rect.colliderect(sprite.rect):
-                    # Collision detected with an animal sprite, take action based on collision
-                    sprite.talk_animal(self.dialogue, self.inventory, sprite.personaje)
-                    self.personaje_actual = sprite.personaje
-                    #self.set_talk_with(self.personaje_actual)
-                    # Return True to indicate collision
-                    return True
+            if isinstance(sprite, Animal):
+                if sprite.visible:  
+                    if new_rect.colliderect(sprite.rect):
+                        # Collision detected with an animal sprite, take action based on collision
+                        sprite.talk_animal(self.dialogue, self.inventory, sprite.personaje)
+                        self.personaje_actual = sprite.personaje
+                        #self.set_talk_with(self.personaje_actual)
+                        # Return True to indicate collision
+                        return True
         
         # Si no se detectan colisiones, se devuelve False
         return False
