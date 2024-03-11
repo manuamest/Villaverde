@@ -166,6 +166,17 @@ class Level:
             self.display_surface.blit(image, (0, 0))
             pygame.display.flip()
         
+    def make_things_invisible(self, location):
+        for npc in self.npcs:
+                npc.make_invisible(location)
+
+        for animal in self.animals:
+           animal.make_invisible(location)
+
+        for object in self.objects:
+            object.make_invisible(location)
+
+
     def change_map(self, path, outside, place):
             
         if not outside:
@@ -177,158 +188,59 @@ class Level:
     
         #Crear el jugador en la posición deseada
         if(place == "exterior_wuan"):
-            for npc in self.npcs:
-                npc.make_invisible("fuera")
-
-            for animal in self.animals:
-                animal.make_invisible("fuera")
-
-            for object in self.objects:
-                object.make_invisible("fuera")
+            self.make_things_invisible(place)
 
             self.player.set_position(1800, 3850)
         elif(place == "wuan"):
-            for npc in self.npcs:
-                npc.make_invisible("wuan")
-                
-            for animal in self.animals:
-                animal.make_invisible("wuan")
-
-            for object in self.objects:
-                object.make_invisible("wuan")
+            self.make_things_invisible(place)
             
             self.player.set_position(1150, 1290)
         elif(place == "exterior_eva"):
-            for npc in self.npcs:
-                npc.make_invisible("fuera")
-
-            for animal in self.animals:
-                animal.make_invisible("fuera")
-
-            for object in self.objects:
-                object.make_invisible("fuera")
+            self.make_things_invisible(place)
             
             self.player.set_position(1810, 1470)
         elif(place == "eva"):
-            for npc in self.npcs:
-                npc.make_invisible("eva")
-
-            for animal in self.animals:
-                animal.make_invisible("eva")
-
-            for object in self.objects:
-                object.make_invisible("eva")
+            self.make_things_invisible(place)
                 
             self.player.set_position(1280, 1100)
         elif(place == "xoel"):      
-            for npc in self.npcs:
-                npc.make_invisible("xoel")
-
-            for animal in self.animals:
-                animal.make_invisible("xoel")
-
-            for object in self.objects:
-                object.make_invisible("xoel")
+            self.make_things_invisible(place)
 
             self.player.set_position(1090, 1280)
-                
         elif(place == "exterior_xoel"):
-            for npc in self.npcs:
-                npc.make_invisible("fuera")
-
-            for animal in self.animals:
-                animal.make_invisible("fuera")
-
-            for object in self.objects:
-                object.make_invisible("fuera")
+            self.make_things_invisible(place)
                     
             self.player.set_position(2180, 1470)
         if(place == "exterior_playa"):
-            for npc in self.npcs:
-                npc.make_invisible("fuera")
-
-            for animal in self.animals:
-                animal.make_invisible("fuera")
-
-            for object in self.objects:
-                object.make_invisible("fuera")
+            self.make_things_invisible(place)
 
             self.player.set_position(3100, 4430)
         elif(place == "playa"):
-            for npc in self.npcs:
-                npc.make_invisible("playa")
-                
-            for animal in self.animals:
-                animal.make_invisible("playa")
-
-            for object in self.objects:
-                object.make_invisible("playa")
+            self.make_things_invisible(place)
 
             self.player.set_position(1100, 1480)
         if(place == "exterior_cementerio"):
-            for npc in self.npcs:
-                npc.make_invisible("fuera")
-
-            for animal in self.animals:
-                animal.make_invisible("fuera")
-
-            for object in self.objects:
-                object.make_invisible("fuera")
+            self.make_things_invisible(place)
 
             self.player.set_position(3100, 2570)
         elif(place == "cementerio"):
-            for npc in self.npcs:
-                npc.make_invisible("cementerio")
-                
-            for animal in self.animals:
-                animal.make_invisible("cementerio")
+            self.make_things_invisible(place)
 
-            for object in self.objects:
-                object.make_invisible("cementerio")
-
-            self.player.set_position(1800, 3850)
+            self.player.set_position(1572, 1488)
         if(place == "exterior_parking"):
-            for npc in self.npcs:
-                npc.make_invisible("fuera")
-
-            for animal in self.animals:
-                animal.make_invisible("fuera")
-
-            for object in self.objects:
-                object.make_invisible("fuera")
+            self.make_things_invisible(place)
 
             self.player.set_position(710, 2570)
         elif(place == "parking"):
-            for npc in self.npcs:
-                npc.make_invisible("parking")
-                
-            for animal in self.animals:
-                animal.make_invisible("parking")
-
-            for object in self.objects:
-                object.make_invisible("parking")
+            self.make_things_invisible(place)
 
             self.player.set_position(2400, 1470)
         elif(place == "final1"):
-            for npc in self.npcs:
-                npc.make_invisible("final1")
-
-            for animal in self.animals:
-                animal.make_invisible("final1")
-
-            for object in self.objects:
-                object.make_invisible("final1")
+            self.make_things_invisible(place)
 
             self.player.set_position(1180, 1000)
         elif(place == "final2"):
-            for npc in self.npcs:
-                npc.make_invisible("final2")
-
-            for animal in self.animals:
-                    animal.make_invisible("final2")
-
-            for object in self.objects:
-                 object.make_invisible("final2")
+            self.make_things_invisible(place)
 
             self.player.set_position(990, 1170)
         
@@ -354,7 +266,6 @@ class Level:
     def create_objects(self):
         objects_list = []
 
-
         objects_list.append(InteractableObject(
             pos=(900, 4100),
             group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/icono.png", interactable_type="Fin", location="fuera"))
@@ -370,6 +281,7 @@ class Level:
         
         return objects_list
 
+
     def create_npcs(self):
         npcs_list = []
         
@@ -383,10 +295,15 @@ class Level:
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,personaje="butanero", location="fuera"))
             
             npcs_list.append(NPC(
+<<<<<<< HEAD
+                pos=(2360, 2540),
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Pablo_y_Manu",inventory=self.inventory, dialogue=self.dialogue,personaje="hermanos", location="fuera"))
+=======
                 pos=(2000, 4500),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", location="fuera"))
+>>>>>>> 5551f39e8dce9fec25e5b786d1681e1812d52f08
             
-        else:
+        elif self.escene == "Nivel2":
             npcs_list.append(NPC(
                 pos=(860, 836),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego", location="wuan"))
@@ -403,11 +320,26 @@ class Level:
                 pos=(2330, 2500),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Pablo_y_Manu",inventory=self.inventory, dialogue=self.dialogue,personaje="hermanos", location="fuera"))
             
+        else:
+            npcs_list.append(NPC(
+                pos=(860, 836),
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego", location="wuan"))
+            
+            npcs_list.append(NPC(
+                pos=(912, 992),
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", location="final2"))
+            
         return npcs_list
+
 
     def create_animals(self):
         animals_list = []
         if self.escene == "Nivel2":
+<<<<<<< HEAD
+            animals_list.append(Animal(
+                pos=(1308, 1072), 
+                group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue, personaje="oveja", prime=False, walk=1, location="cementerio"))
+=======
             # Posicion animales
             pass
         else:
@@ -421,11 +353,38 @@ class Level:
         animals_list.append(Animal(
             pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 2000),
             group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue,personaje="pollo", walk=1, location="cementerio"))
+>>>>>>> 5551f39e8dce9fec25e5b786d1681e1812d52f08
         
+            animals_list.append(Animal(
+                pos=(1928, 1488),
+                group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue, personaje="pollo", prime=False, walk=3, location="playa"))
+
+            animals_list.append(Animal(
+                pos=(1520, 1588),
+                group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", prime=False, walk=3, location="parking"))
+            
+        elif self.escene == "Nivel3":
+            animals_list.append(Animal(
+                pos=(992, 868), 
+                group=self.all_sprites, animal_type="cabra", inventory=self.inventory, dialogue=self.dialogue,personaje="oveja", prime=True, walk=0, location="final2"))
+
+            animals_list.append(Animal(
+                pos=(1156, 4596), 
+                group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue,personaje="oveja", prime=True, walk=1, location="fuera"))
         
+<<<<<<< HEAD
+            animals_list.append(Animal(
+                pos=(2864, 3660),
+                group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue,personaje="pollo", prime=False, walk=0, location="fuera"))
+
+            animals_list.append(Animal(
+                pos=(1308, 5120),
+                group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", prime=True, walk=1, location="fuera"))
+=======
         animals_list.append(Animal(
             pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 1200),
             group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", walk=2, location="parking"))
+>>>>>>> 5551f39e8dce9fec25e5b786d1681e1812d52f08
         
         
         return animals_list

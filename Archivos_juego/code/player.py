@@ -276,7 +276,7 @@ class Player(pygame.sprite.Sprite):
                     return True
                 if obj.name == "puertafinal2":
                     self.puzle.start_puzle()     
-                    self.level.change_map("./code/mapa/final/final2.tmx", True, "final2")              
+                    self.level.change_map("./code/mapa/final/final2.tmx", False, "final2")              
                     return True
                 
                 else:
