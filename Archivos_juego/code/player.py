@@ -281,17 +281,6 @@ class Player(pygame.sprite.Sprite):
                 
                 else:
                     return True
-            
-        # Check for collisions with animal sprites
-        for sprite in pygame.sprite.spritecollide(self, self.groups()[0], False):
-            if isinstance(sprite, Animal):  
-                if new_rect.colliderect(sprite.rect):
-                    # Collision detected with an animal sprite, take action based on collision
-                    sprite.talk_animal(self.dialogue, self.inventory, sprite.personaje)
-                    self.personaje_actual = sprite.personaje
-                    #self.set_talk_with(self.personaje_actual)
-                    # Return True to indicate collision
-                    return True
         
         # Si no se detectan colisiones, se devuelve False
         return False
