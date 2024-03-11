@@ -34,16 +34,15 @@ class Level:
 
         self.soil_layer = soil_layer
         self.all_sprites = all_sprites
-        self.setup()
-        
-        # Overlay 
-        self.overlay = Overlay(self.player)
-        
-        # Tutorial
-        self.tutorial = Tutorial(self.screen)
 
-        # Objetives
-        self.objectives = Objectives(self.screen, self.inventory, self.dialogue, self.player, self.soil_layer, self.opcion_mapa)
+
+        # Texto del nivel
+        self.show_level_text = True
+        self.level_start_time = 0
+        self.font = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 40)
+        #self.setup()
+        self.cnt = 0
+        
 
     def setup(self):
         
@@ -56,10 +55,14 @@ class Level:
 
 
         if self.escene == "Nivel1":
+            
+            self.cnt = -103
+
+            self.level_text = pygame.image.load("./code/sprites/text_level/verano.png").convert_alpha()
+            self.level_text = pygame.transform.scale(self.level_text, (500, 500))
 
             # Cargar el mapa de Tiled
             self.opcion_mapa = "verano"
-            extension = maps.get(self.opcion_mapa, "pruebas2")
             self.main_tmx_map = "./code/mapa/verano/mapa_verano.tmx"
             self.tmx_map = load_pygame(self.main_tmx_map)
 
@@ -78,16 +81,18 @@ class Level:
             self.animals = []
 
         elif self.escene == "Nivel2":
+            
+            self.level_text = pygame.image.load("./code/sprites/text_level/otono.png").convert_alpha()
+            self.level_text = pygame.transform.scale(self.level_text, (500, 500))
 
             # Cargar el mapa de Tiled
             self.opcion_mapa = "otoño"   # Cambiar este string para cambiar de mapa
-            extension = maps.get(self.opcion_mapa, "pruebas2")
             self.main_tmx_map = "./code/mapa/otoño/mapa_otoño.tmx"
             self.tmx_map = load_pygame(self.main_tmx_map)
 
             # trees 
             for obj in self.tmx_map.get_layer_by_name('arboles'):
-                Tree( pos = (obj.x *5 + obj.x/10, obj.y * 7 + obj.y/2.5), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, inventory=self.inventory)
+                Tree( pos = (obj.x *5 + obj.x/10, obj.y * 7 + obj.y/2.5), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, inventory=self.inventory, season=1)
 
             # Obtener la capa de colisiones
             self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
@@ -99,15 +104,18 @@ class Level:
             self.animals = self.create_animals()
 
         elif self.escene == "Nivel3":
+
+            self.level_text = pygame.image.load("./code/sprites/text_level/invierno.png").convert_alpha()
+            self.level_text = pygame.transform.scale(self.level_text, (500, 500))
+
             # Cargar el mapa de Tiled
             self.opcion_mapa = "invierno"   # Cambiar este string para cambiar de mapa
-            extension = maps.get(self.opcion_mapa, "pruebas2")
             self.main_tmx_map = "./code/mapa/invierno/mapa_invierno.tmx"
             self.tmx_map = load_pygame(self.main_tmx_map)
 
             # trees 
             for obj in self.tmx_map.get_layer_by_name('arboles'):
-                Tree( pos = (obj.x *5 + obj.x/10, obj.y * 7 + obj.y/2.5), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, inventory=self.inventory)
+                Tree( pos = (obj.x *5 + obj.x/10, obj.y * 7 + obj.y/2.5), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, inventory=self.inventory, season=2)
 
             # Obtener la capa de colisiones
             self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
@@ -124,6 +132,16 @@ class Level:
             obj.y *= self.zoom  # Aumentar la posición y
             obj.width *= self.zoom  # Aumentar el ancho
             obj.height *= self.zoom  # Aumentar la altura
+
+        
+        # Overlay 
+        self.overlay = Overlay(self.player)
+        
+        # Tutorial
+        self.tutorial = Tutorial(self.screen)
+
+        # Objetives
+        self.objectives = Objectives(self.screen, self.inventory, self.dialogue, self.player, self.soil_layer, self.opcion_mapa)
 
 
     def show_loading_screen(self):
@@ -249,27 +267,13 @@ class Level:
         objects_list = []
 
         objects_list.append(InteractableObject(
-            pos=(1600, 4100),
+            pos=(900, 4100),
             group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/icono.png", interactable_type="Fin", location="fuera"))
 
         if self.escene == "Nivel1":
-
-            objects_list.append(InteractableObject(
-                pos=(1800, 4100),
-                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera", location="fuera"))
-            
-            objects_list.append(InteractableObject(
-                pos=(1800, 4300),
-                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera", location="fuera"))
-            
-            objects_list.append(InteractableObject(
-                pos=(1800, 4500),
-                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/madera.png", interactable_type="madera", location="fuera"))
-            
             objects_list.append(InteractableObject(
                 pos=(1700, 4000),
                 group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero", location="fuera"))      
-
         else:
             objects_list.append(InteractableObject(
                 pos=(1700, 4100),
@@ -287,12 +291,17 @@ class Level:
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego", location="wuan"))
             
             npcs_list.append(NPC(
-                pos=(2000, 3850),
+                pos=(1900, 3950),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,personaje="butanero", location="fuera"))
             
             npcs_list.append(NPC(
+<<<<<<< HEAD
                 pos=(2360, 2540),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Pablo_y_Manu",inventory=self.inventory, dialogue=self.dialogue,personaje="hermanos", location="fuera"))
+=======
+                pos=(2000, 4500),
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", location="fuera"))
+>>>>>>> 5551f39e8dce9fec25e5b786d1681e1812d52f08
             
         elif self.escene == "Nivel2":
             npcs_list.append(NPC(
@@ -304,11 +313,11 @@ class Level:
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Eva_la_modista",inventory=self.inventory, dialogue=self.dialogue,personaje="modista", location="eva"))
             
             npcs_list.append(NPC(
-                pos=(SCREEN_WIDTH / 2 + 550 , SCREEN_HEIGHT / 2 + 570),
+                pos=(SCREEN_WIDTH / 2 + 650 , SCREEN_HEIGHT / 2 + 570),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", location="xoel"))
             
             npcs_list.append(NPC(
-                pos=(2360, 2540),
+                pos=(2330, 2500),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Pablo_y_Manu",inventory=self.inventory, dialogue=self.dialogue,personaje="hermanos", location="fuera"))
             
         else:
@@ -326,9 +335,25 @@ class Level:
     def create_animals(self):
         animals_list = []
         if self.escene == "Nivel2":
+<<<<<<< HEAD
             animals_list.append(Animal(
                 pos=(1308, 1072), 
                 group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue, personaje="oveja", prime=False, walk=1, location="cementerio"))
+=======
+            # Posicion animales
+            pass
+        else:
+            # Posicion animales
+            pass
+        
+        animals_list.append(Animal(
+            pos=(SCREEN_WIDTH / 2 + 300  , SCREEN_HEIGHT / 2 + 2500), group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue,personaje="oveja", walk=3, location="playa"))
+        
+        
+        animals_list.append(Animal(
+            pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 2000),
+            group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue,personaje="pollo", walk=1, location="cementerio"))
+>>>>>>> 5551f39e8dce9fec25e5b786d1681e1812d52f08
         
             animals_list.append(Animal(
                 pos=(1928, 1488),
@@ -347,6 +372,7 @@ class Level:
                 pos=(1156, 4596), 
                 group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue,personaje="oveja", prime=True, walk=1, location="fuera"))
         
+<<<<<<< HEAD
             animals_list.append(Animal(
                 pos=(2864, 3660),
                 group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue,personaje="pollo", prime=False, walk=0, location="fuera"))
@@ -354,6 +380,11 @@ class Level:
             animals_list.append(Animal(
                 pos=(1308, 5120),
                 group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", prime=True, walk=1, location="fuera"))
+=======
+        animals_list.append(Animal(
+            pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 1200),
+            group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", walk=2, location="parking"))
+>>>>>>> 5551f39e8dce9fec25e5b786d1681e1812d52f08
         
         
         return animals_list
@@ -387,14 +418,23 @@ class Level:
         # Para mostrar el overlay
         self.overlay.display()
         
-        # Tutorial
-        self.tutorial.mostrar_tutorial(key_z_pressed, tutorial_enabled)
-        
         self.objectives.evaluate()
 
         # Dropdown
         self.objectives.show_dropdown(left_mouse_button_down, event_mouse)
-
+        
+        if self.show_level_text:
+            #self.level_text = self.font.render('VERANO', True, (255, 255, 255))
+            self.level_text_rect = self.level_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+            self.screen.blit(self.level_text, self.level_text_rect)
+            self.cnt += dt
+            if (self.cnt>2):
+                self.level_text.set_alpha((6-self.cnt) * 100)
+            if self.cnt>6:
+                self.show_level_text = False
+        else:
+            # Tutorial
+            self.tutorial.mostrar_tutorial(key_z_pressed, tutorial_enabled)
         
     def check_collision(self):
         player_rect = self.player.rect

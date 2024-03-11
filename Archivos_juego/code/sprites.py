@@ -29,6 +29,9 @@ class Particle(Generic):
 class Tree(Generic):
     def __init__(self, pos, surf, groups, name, inventory, season=0):
         super().__init__(pos, surf, groups)
+        
+        self.rect.inflate_ip(20, 20)
+        self.hitbox.midleft = self.rect.midleft 
         self.visible = True
         self.name = name
         self.inventory = inventory
@@ -53,7 +56,7 @@ class Tree(Generic):
             if self.health <= 0:
                 # Ajustar posición inicial del sprite  
                 self.rect.y += 20
-                self.rect.x -= 20
+                #self.rect.x -= 20
                 self.image = self.stump_surf
                 self.visible_image = self.stump_surf
 
