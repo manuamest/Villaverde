@@ -295,13 +295,8 @@ class Level:
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,personaje="butanero", location="fuera"))
             
             npcs_list.append(NPC(
-<<<<<<< HEAD
                 pos=(2360, 2540),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Pablo_y_Manu",inventory=self.inventory, dialogue=self.dialogue,personaje="hermanos", location="fuera"))
-=======
-                pos=(2000, 4500),
-                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", location="fuera"))
->>>>>>> 5551f39e8dce9fec25e5b786d1681e1812d52f08
             
         elif self.escene == "Nivel2":
             npcs_list.append(NPC(
@@ -335,25 +330,9 @@ class Level:
     def create_animals(self):
         animals_list = []
         if self.escene == "Nivel2":
-<<<<<<< HEAD
             animals_list.append(Animal(
                 pos=(1308, 1072), 
                 group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue, personaje="oveja", prime=False, walk=1, location="cementerio"))
-=======
-            # Posicion animales
-            pass
-        else:
-            # Posicion animales
-            pass
-        
-        animals_list.append(Animal(
-            pos=(SCREEN_WIDTH / 2 + 300  , SCREEN_HEIGHT / 2 + 2500), group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue,personaje="oveja", walk=3, location="playa"))
-        
-        
-        animals_list.append(Animal(
-            pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 2000),
-            group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue,personaje="pollo", walk=1, location="cementerio"))
->>>>>>> 5551f39e8dce9fec25e5b786d1681e1812d52f08
         
             animals_list.append(Animal(
                 pos=(1928, 1488),
@@ -372,7 +351,6 @@ class Level:
                 pos=(1156, 4596), 
                 group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue,personaje="oveja", prime=True, walk=1, location="fuera"))
         
-<<<<<<< HEAD
             animals_list.append(Animal(
                 pos=(2864, 3660),
                 group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue,personaje="pollo", prime=False, walk=0, location="fuera"))
@@ -380,11 +358,6 @@ class Level:
             animals_list.append(Animal(
                 pos=(1308, 5120),
                 group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", prime=True, walk=1, location="fuera"))
-=======
-        animals_list.append(Animal(
-            pos=(SCREEN_WIDTH / 2 + 500 , SCREEN_HEIGHT / 2 + 1200),
-            group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", walk=2, location="parking"))
->>>>>>> 5551f39e8dce9fec25e5b786d1681e1812d52f08
         
         
         return animals_list
