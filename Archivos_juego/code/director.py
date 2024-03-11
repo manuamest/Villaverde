@@ -11,9 +11,7 @@ from pyvidplayer import Video
 
 class Director:
     def __init__(self):
-        
         # Inicializamos la pantalla, con un icono y el modo grafico
-        #self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         icon_path = "./code/sprites/icono.png"
         icon = pygame.image.load(icon_path)
@@ -34,7 +32,6 @@ class Director:
                         Level(self.soil_layer, self.all_sprites, self.screen, "Nivel2"),
                         Level(self.soil_layer, self.all_sprites, self.screen, "Nivel3")]
         self.menu = Menu(self.screen, self.clock)
-        
 
         self.paused = False
         self.overlay_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -44,7 +41,6 @@ class Director:
         self.current_path = os.path.dirname(os.path.abspath(__file__))
         self.intro_name = 'videos/intro.mp4'
         self.credits_name = 'videos/creditos.mp4'
-
 
     def run(self):
 
@@ -56,6 +52,8 @@ class Director:
 
         for level in self.levels:
             level.setup()
+            self.show_level_text = True
+            self.level_start_time = time.time()
             self.bucle(level)
             level.clean_level()
             self.tutorial_enabled = False
@@ -112,7 +110,7 @@ class Director:
                 self._update_plants()
                 dt = self.clock.tick(FPS) / 700
                 level.run(dt, self.key_z_pressed, left_mouse_button_down, event_mouse, self.tutorial_enabled)
-                pygame.display.update()
+                pygame.display.update()                
             else:
                 self.screen.blit(self.overlay_surface, (0, 0))  # Agrega el filtro oscuro
 

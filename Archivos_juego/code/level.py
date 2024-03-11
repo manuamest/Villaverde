@@ -34,7 +34,14 @@ class Level:
 
         self.soil_layer = soil_layer
         self.all_sprites = all_sprites
+
+
+        # Texto del nivel
+        self.show_level_text = True
+        self.level_start_time = 0
+        self.font = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 40)
         #self.setup()
+        self.cnt = 0
         
 
     def setup(self):
@@ -48,6 +55,11 @@ class Level:
 
 
         if self.escene == "Nivel1":
+            
+            self.cnt = -103
+
+            self.level_text = pygame.image.load("./code/sprites/text_level/verano.png").convert_alpha()
+            self.level_text = pygame.transform.scale(self.level_text, (500, 500))
 
             # Cargar el mapa de Tiled
             self.opcion_mapa = "verano"
@@ -69,6 +81,9 @@ class Level:
             self.animals = []
 
         elif self.escene == "Nivel2":
+            
+            self.level_text = pygame.image.load("./code/sprites/text_level/otono.png").convert_alpha()
+            self.level_text = pygame.transform.scale(self.level_text, (500, 500))
 
             # Cargar el mapa de Tiled
             self.opcion_mapa = "otoño"   # Cambiar este string para cambiar de mapa
@@ -89,6 +104,10 @@ class Level:
             self.animals = self.create_animals()
 
         elif self.escene == "Nivel3":
+
+            self.level_text = pygame.image.load("./code/sprites/text_level/invierno.png").convert_alpha()
+            self.level_text = pygame.transform.scale(self.level_text, (500, 500))
+
             # Cargar el mapa de Tiled
             self.opcion_mapa = "invierno"   # Cambiar este string para cambiar de mapa
             self.main_tmx_map = "./code/mapa/invierno/mapa_invierno.tmx"
@@ -440,14 +459,23 @@ class Level:
         # Para mostrar el overlay
         self.overlay.display()
         
-        # Tutorial
-        self.tutorial.mostrar_tutorial(key_z_pressed, tutorial_enabled)
-        
         self.objectives.evaluate()
 
         # Dropdown
         self.objectives.show_dropdown(left_mouse_button_down, event_mouse)
-
+        
+        if self.show_level_text:
+            #self.level_text = self.font.render('VERANO', True, (255, 255, 255))
+            self.level_text_rect = self.level_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+            self.screen.blit(self.level_text, self.level_text_rect)
+            self.cnt += dt
+            if (self.cnt>2):
+                self.level_text.set_alpha((6-self.cnt) * 100)
+            if self.cnt>6:
+                self.show_level_text = False
+        else:
+            # Tutorial
+            self.tutorial.mostrar_tutorial(key_z_pressed, tutorial_enabled)
         
     def check_collision(self):
         player_rect = self.player.rect
