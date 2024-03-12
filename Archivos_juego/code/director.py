@@ -48,7 +48,7 @@ class Director:
         self.menu.run()
         self.tutorial_enabled = self.menu.tutorial_enabled
         
-        self.playIntro()
+        #self.playIntro()
 
         for level in self.levels:
             level.setup()

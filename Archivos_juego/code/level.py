@@ -56,7 +56,7 @@ class Level:
 
         if self.escene == "Nivel1":
             
-            self.cnt = -103
+            self.cnt = 0
 
             self.level_text = pygame.image.load("./code/sprites/text_level/verano.png").convert_alpha()
             self.level_text = pygame.transform.scale(self.level_text, (500, 500))
@@ -168,7 +168,7 @@ class Level:
         
     def make_things_invisible(self, location):
         for npc in self.npcs:
-                npc.make_invisible(location)
+            npc.make_invisible(location)
 
         for animal in self.animals:
            animal.make_invisible(location)
@@ -184,11 +184,11 @@ class Level:
                 tree.make_invisible()
         else:
             for tree in self.tree_sprites.sprites():
-                    tree.make_visible()
+                tree.make_visible()
     
         #Crear el jugador en la posición deseada
         if(place == "exterior_wuan"):
-            self.make_things_invisible(place)
+            self.make_things_invisible("fuera")
 
             self.player.set_position(1800, 3850)
         elif(place == "wuan"):
@@ -196,7 +196,7 @@ class Level:
             
             self.player.set_position(1150, 1290)
         elif(place == "exterior_eva"):
-            self.make_things_invisible(place)
+            self.make_things_invisible("fuera")
             
             self.player.set_position(1810, 1470)
         elif(place == "eva"):
@@ -208,11 +208,11 @@ class Level:
 
             self.player.set_position(1090, 1280)
         elif(place == "exterior_xoel"):
-            self.make_things_invisible(place)
+            self.make_things_invisible("fuera")
                     
             self.player.set_position(2180, 1470)
         if(place == "exterior_playa"):
-            self.make_things_invisible(place)
+            self.make_things_invisible("fuera")
 
             self.player.set_position(3100, 4430)
         elif(place == "playa"):
@@ -220,7 +220,7 @@ class Level:
 
             self.player.set_position(1100, 1480)
         if(place == "exterior_cementerio"):
-            self.make_things_invisible(place)
+            self.make_things_invisible("fuera")
 
             self.player.set_position(3100, 2570)
         elif(place == "cementerio"):
@@ -228,7 +228,7 @@ class Level:
 
             self.player.set_position(1572, 1488)
         if(place == "exterior_parking"):
-            self.make_things_invisible(place)
+            self.make_things_invisible("fuera")
 
             self.player.set_position(710, 2570)
         elif(place == "parking"):
@@ -295,7 +295,7 @@ class Level:
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,personaje="butanero", location="fuera"))
             
             npcs_list.append(NPC(
-                pos=(2360, 2540),
+                pos=(2400, 2520),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Pablo_y_Manu",inventory=self.inventory, dialogue=self.dialogue,personaje="hermanos", location="fuera"))
             
         elif self.escene == "Nivel2":

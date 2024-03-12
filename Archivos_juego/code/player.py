@@ -172,7 +172,8 @@ class Player(pygame.sprite.Sprite):
                 self.timers['interaccion'].activate()
                 player_center = pygame.math.Vector2(self.rect.center)
                 for sprite in self.groups()[0].sprites():
-                    if isinstance(sprite, InteractableObject) or isinstance(sprite, NPC) or isinstance(sprite, Animal):  
+                    if (isinstance(sprite, InteractableObject) or isinstance(sprite, NPC) or isinstance(sprite, Animal)) and sprite.visible:  
+                        print(sprite.location)
                         obj_center = pygame.math.Vector2(sprite.rect.center)
                         distancia = player_center.distance_to(obj_center)
                         if distancia < 110 and (isinstance(sprite, NPC)):

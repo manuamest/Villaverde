@@ -5,7 +5,7 @@ class DialogoPolloEstrategia(Dialogue_Strategy):
     def obtener_dialogo(self, contexto):
 
         if contexto.get_contador_llave() == 3:
-                return self.draw.dialogos_llave_magistral
+            return self.draw.dialogos_llave_magistral
         if contexto.obtener_opcion_escogida_pollo():
             if contexto.obtener_opcion_seleccionada_pollo() == 1:
                 return self.draw.dialogos_pollo_4

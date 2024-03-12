@@ -4,7 +4,7 @@ import os
 from settings import LAYERS
 
 class NPC(pygame.sprite.Sprite):
-    def __init__(self, pos, group, sprite_directory,inventory,dialogue, personaje,location):
+    def __init__(self, pos, group, sprite_directory,inventory,dialogue, personaje, location):
         super().__init__(group)
         self.sprite_directory = sprite_directory
         self.dialogue = dialogue
