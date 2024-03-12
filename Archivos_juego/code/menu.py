@@ -25,7 +25,7 @@ class MenuBase:
         self.screen.blit(self.background_image, self.background_rect)
         for i, option in enumerate(self.menu_options):
             bar_rect = pygame.Rect(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2 - 100 + i * 60, SCREEN_WIDTH // 3, 40)  # Ajusta el alto y el ancho aquí
-            pygame.draw.rect(self.screen, (128, 42, 12) if i == self.selected_option else (168, 82, 52), bar_rect, border_radius=10)
+            pygame.draw.rect(self.screen, (168, 104, 47) if i == self.selected_option else (211, 132, 60), bar_rect, border_radius=10)
             pygame.draw.rect(self.screen, 'black', bar_rect, 2, border_radius=10)
             color = 'white'
             text = self.font.render(option, True, color)
