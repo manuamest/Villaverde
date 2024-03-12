@@ -81,7 +81,8 @@ class Level:
             self.animals = []
 
         elif self.escene == "Nivel2":
-            
+            self.inventory.cambiar_imagen_inventario("otoño")
+
             self.level_text = pygame.image.load("./code/sprites/text_level/otono.png").convert_alpha()
             self.level_text = pygame.transform.scale(self.level_text, (500, 500))
 
@@ -104,6 +105,7 @@ class Level:
             self.animals = self.create_animals()
 
         elif self.escene == "Nivel3":
+            self.inventory.cambiar_imagen_inventario("invierno")
 
             self.level_text = pygame.image.load("./code/sprites/text_level/invierno.png").convert_alpha()
             self.level_text = pygame.transform.scale(self.level_text, (500, 500))

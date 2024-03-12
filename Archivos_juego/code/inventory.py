@@ -14,14 +14,14 @@ class Inventory:
 
         # Colores
         self.COLOR_LETRAS = (238, 212, 167)
-        self.MARRON = (128, 58, 58)
+        self.MARRON = (177, 75, 1)
         self.GRIS = (200, 200, 200)
 
         # Variables del inventario
         self.inventario_abierto = False
         self.inventario_items = {"Madera": 0, "Trigo": 0,"Bolsa de dinero":0,"Jordan":0,"Bufandas":0,"Gafas":0,"Llave magistral":0}
 
-        self.imagen_fondo_inventario = pygame.image.load('./code/sprites/inventario.png').convert_alpha()
+        self.imagen_fondo_inventario = pygame.image.load('./code/sprites/inventarios/verano.png').convert_alpha()
         self.imagen_fondo_inventario = pygame.transform.scale(self.imagen_fondo_inventario, (400, 300))
         self.imagen_fondo_inventario.set_alpha(200)
 
@@ -34,6 +34,18 @@ class Inventory:
             'Gafas': pygame.image.load('./code/sprites/jordan.png'),
             'Llave magistral': pygame.image.load('./code/sprites/llavemagistral.png')
         }
+
+    def cambiar_imagen_inventario(self, estacion):
+        if estacion == "otoño":
+            nueva_imagen = pygame.image.load('./code/sprites/inventarios/otoño.png').convert_alpha()
+        else:
+            nueva_imagen = pygame.image.load('./code/sprites/inventarios/invierno.png').convert_alpha()
+
+        nueva_imagen = pygame.transform.scale(nueva_imagen, (400, 300))
+        nueva_imagen.set_alpha(200)
+
+        # Actualizar la imagen de fondo del inventario
+        self.imagen_fondo_inventario = nueva_imagen
 
     def salir(self):
         self.salir_escena = True
@@ -112,7 +124,7 @@ class Inventory:
     
 
     # Función para dibujar el inventario
-    def dibujar_inventario(self, inventario_x=None, inventario_y=None,not_transparencia=False):
+    def dibujar_inventario(self, inventario_x=None, inventario_y=None, not_transparencia=False):
         inventario_ancho = 400
         inventario_alto = 300
         if inventario_x is None:
@@ -122,23 +134,24 @@ class Inventory:
         if not_transparencia:
             self.imagen_fondo_inventario.set_alpha(255)
         self.pantalla.blit(self.imagen_fondo_inventario, (inventario_x, inventario_y))
-      
-        barra_alto_interior = 36  
+
+        barra_alto_interior = 36
         ajuste_y = 0
+        barra_ancho = 200  # Nuevo ancho de la barra
 
         for i, (item, cantidad) in enumerate(self.inventario_items.items()):
-            if cantidad > 0:  
+            if cantidad > 0:
                 texto = self.fuente.render(f"{item}: {cantidad}", True, self.COLOR_LETRAS)
                 barra_x = inventario_x + 20 + 29
                 barra_y = inventario_y + 20 + (i * 50) + 29 - ajuste_y
-                pygame.draw.rect(self.pantalla, (0, 0, 0), (barra_x, barra_y, 300, 40), border_radius=5)
-                pygame.draw.rect(self.pantalla, self.MARRON, (barra_x + 2, barra_y + 2, 296, 36), border_radius=5)
+                pygame.draw.rect(self.pantalla, (0, 0, 0), (barra_x, barra_y, barra_ancho, 40), border_radius=5)
+                pygame.draw.rect(self.pantalla, self.MARRON, (barra_x + 2, barra_y + 2, barra_ancho - 4, 36), border_radius=5)
                 texto_x = barra_x + 10
                 texto_y = barra_y + (40 - texto.get_height()) // 2
                 self.pantalla.blit(texto, (texto_x, texto_y))
-                sprite = self.sprites_items[item]  
+                sprite = self.sprites_items[item]
                 sprite_escalado = pygame.transform.scale(sprite, (int(sprite.get_width() * barra_alto_interior / sprite.get_height()), barra_alto_interior))
-                sprite_x = barra_x + 300 - sprite_escalado.get_width() - 2
+                sprite_x = barra_x - sprite_escalado.get_width() - 2  # Ajustar posición del sprite
                 self.pantalla.blit(sprite_escalado, (sprite_x, barra_y + 2))
             else:
                 ajuste_y += 50
