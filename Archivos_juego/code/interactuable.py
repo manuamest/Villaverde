@@ -15,7 +15,10 @@ class InteractableObject(pygame.sprite.Sprite):
             self.image = pygame.Surface((32, 32))
             self.image.fill(color)  # Usa el color pasado como argumento
         else:
-            self.image = pygame.image.load(sprite).convert_alpha()  # Cargar y convertir el sprite
+            original_image = pygame.image.load(sprite).convert_alpha()
+            scaled_size = (original_image.get_width() * 15, original_image.get_height() * 15)
+            self.image = pygame.transform.scale(original_image, scaled_size)
+
 
         self.original_image = self.image
         self.rect = self.image.get_rect(center=pos)

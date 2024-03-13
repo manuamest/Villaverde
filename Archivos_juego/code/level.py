@@ -270,7 +270,7 @@ class Level:
 
         objects_list.append(InteractableObject(
             pos=(900, 4100),
-            group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/icono.png", interactable_type="Fin", location="fuera"))
+            group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/jordan.png", interactable_type="Fin", location="fuera"))
 
         if self.escene == "Nivel1":
             objects_list.append(InteractableObject(
@@ -310,7 +310,7 @@ class Level:
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Eva_la_modista",inventory=self.inventory, dialogue=self.dialogue,personaje="modista", location="eva"))
             
             npcs_list.append(NPC(
-                pos=(SCREEN_WIDTH / 2 + 650 , SCREEN_HEIGHT / 2 + 570),
+                pos=(SCREEN_WIDTH / 2 + 550 , SCREEN_HEIGHT / 2 + 570),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", location="xoel"))
             
             npcs_list.append(NPC(

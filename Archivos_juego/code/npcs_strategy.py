@@ -196,7 +196,7 @@ class DialogoMercaderEstrategia(Dialogue_Strategy):
                         contexto.set_confirmacion_abierta(False)
                         contexto.set_opcion_escogida(False)
                         contexto.set_indice_personaje("mercader", 2) 
-                        contexto.cantidades = {"Madera": 0, "Trigo": 0, "Jordan": 0, "Bufandas": 0, "Gafas": 0}
+                        contexto.cantidades = {"Madera": 0, "Trigo": 0, "Jordan": 0, "Bufanda y boina": 0, "Gafas y cadena": 0}
 
 
 class DialogoModistaEstrategia(Dialogue_Strategy):
@@ -212,7 +212,7 @@ class DialogoModistaEstrategia(Dialogue_Strategy):
         elif contexto.obtener_confirmacion_abierta():
             if contexto.obtener_cantidad_seleccionada() == 0:
                 return self.draw.dialogos_modista_3
-            elif contexto.obtener_cantidad_seleccionada() == 1 and ((contexto.obtener_item_seleccionado() == "Jordan" and contexto.jordan_compradas) or(contexto.obtener_item_seleccionado() == "Bufandas" and contexto.bufandas_compradas) or (contexto.obtener_item_seleccionado() == "Gafas" and contexto.gafas_compradas)):
+            elif contexto.obtener_cantidad_seleccionada() == 1 and ((contexto.obtener_item_seleccionado() == "Jordan" and contexto.jordan_compradas) or(contexto.obtener_item_seleccionado() == "Bufanda y boina" and contexto.bufandas_compradas) or (contexto.obtener_item_seleccionado() == "Gafas y cadena" and contexto.gafas_compradas)):
                 return self.draw.dialogos_modista_7
 
             else:
@@ -241,7 +241,7 @@ class DialogoModistaEstrategia(Dialogue_Strategy):
         elif contexto.obtener_cantidad_seleccionada() == 0 and contexto.obtener_confirmacion_abierta() and not contexto.obtener_opcion_escogida():
             contexto.dibujar_menu(personaje, inventory, keys)
         elif contexto.obtener_cantidad_seleccionada() == 1 and contexto.obtener_confirmacion_abierta() and not contexto.obtener_opcion_escogida() and ((contexto.obtener_item_seleccionado() == "Jordan" and
-         contexto.jordan_compradas) or(contexto.obtener_item_seleccionado() == "Bufandas" and contexto.bufandas_compradas) or (contexto.obtener_item_seleccionado() == "Gafas" and contexto.gafas_compradas)):
+         contexto.jordan_compradas) or(contexto.obtener_item_seleccionado() == "Bufanda y boina" and contexto.bufandas_compradas) or (contexto.obtener_item_seleccionado() == "Gafas y cadena" and contexto.gafas_compradas)):
             contexto.dibujar_menu(personaje, inventory, keys)
         elif contexto.obtener_opcion_seleccionada() == 1 and contexto.obtener_opcion_escogida():
             contexto.dibujar_menu(personaje, inventory, keys)
@@ -264,10 +264,10 @@ class DialogoModistaEstrategia(Dialogue_Strategy):
                 if contexto.item_seleccionado == "Jordan":
                     inventory.añadir_jordan()
                     contexto.jordan_compradas = True
-                elif contexto.item_seleccionado == "Bufandas":
+                elif contexto.item_seleccionado == "Bufanda y boina":
                     inventory.añadir_bufandas()
                     contexto.bufandas_compradas = True
-                elif contexto.item_seleccionado == "Gafas":
+                elif contexto.item_seleccionado == "Gafas y cadena":
                     inventory.añadir_gafas()
                     contexto.gafas_compradas = True
             else:
@@ -290,7 +290,7 @@ class DialogoModistaEstrategia(Dialogue_Strategy):
                     contexto.set_final_dialogo(False)
                     contexto.set_confirmacion_abierta(False)
                     contexto.set_opcion_escogida(False)
-                    contexto.cantidades = {"Madera": 0, "Trigo": 0,"Jordan": 0, "Bufandas": 0,"Gafas":0}
+                    contexto.cantidades = {"Madera": 0, "Trigo": 0,"Jordan": 0, "Bufanda y boina": 0,"Gafas y cadena":0}
                     contexto.set_indice_personaje(personaje_actual, 0) 
                     personaje_actual = None
 
@@ -305,7 +305,7 @@ class DialogoModistaEstrategia(Dialogue_Strategy):
                     contexto.set_final_dialogo(False)
                     contexto.set_confirmacion_abierta(False)
                     contexto.set_opcion_escogida(False)
-                    contexto.cantidades = {"Madera": 0, "Trigo": 0,"Jordan": 0, "Bufandas": 0,"Gafas":0}
+                    contexto.cantidades = {"Madera": 0, "Trigo": 0,"Jordan": 0, "Bufanda y boina": 0,"Gafas y cadena":0}
                     contexto.set_indice_personaje(personaje_actual, 1) 
                     personaje_actual = None
 

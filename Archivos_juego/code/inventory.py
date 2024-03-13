@@ -29,9 +29,9 @@ class Inventory:
             "Madera": pygame.image.load('./code/sprites/madera.png'),
             "Trigo": pygame.image.load('./code/sprites/trigo.png'),
             "Bolsa de dinero": pygame.image.load('./code/sprites/dinero.png'),
-            'Bufandas': pygame.image.load('./code/sprites/bufanda_y_boina.png'),
+            'Bufanda y boina': pygame.image.load('./code/sprites/bufanda_y_boina.png'),
             'Jordan': pygame.image.load('./code/sprites/jordan.png'),
-            'Gafas': pygame.image.load('./code/sprites/jordan.png'),
+            'Gafas y cadena': pygame.image.load('./code/sprites/gafas.png'),
             'Llave magistral': pygame.image.load('./code/sprites/llavemagistral.png')
         }
 
@@ -72,22 +72,22 @@ class Inventory:
         self.inventario_items["Jordan"] += 1
     
     def añadir_bufandas(self):
-        self.inventario_items["Bufandas"] += 1
+        self.inventario_items["Bufanda y boina"] += 1
     
     def añadir_llave(self):
         self.inventario_items["Llave magistral"] += 1
     
     def añadir_gafas(self):
-        self.inventario_items["Gafas"] += 1
+        self.inventario_items["Gafas y cadena"] += 1
        
     def eliminar_gafas(self):
-        self.inventario_items["Gafas"] -= 1
+        self.inventario_items["Gafas y cadena"] -= 1
     
     def eliminar_jordan(self):
         self.inventario_items["Jordan"] -= 1
 
     def eliminar_bufandas(self):
-        self.inventario_items["Bufandas"] -= 1
+        self.inventario_items["Bufanda y boina"] -= 1
 
     def eliminar_dinero(self,cantidad):
         self.inventario_items["Bolsa de dinero"] -= cantidad
@@ -108,11 +108,11 @@ class Inventory:
      
     def get_bufandas(self):
 
-        return self.inventario_items["Bufandas"]
+        return self.inventario_items["Bufanda y boina"]
     
     def get_gafas(self):
 
-        return self.inventario_items["Gafas"]
+        return self.inventario_items["Gafas y cadena"]
     
     def get_jordan(self):
 

@@ -90,13 +90,13 @@ class Dialogue:
             "Madera": 0,
             "Trigo": 0,
             "Jordan": 0,
-            "Bufandas": 0,
-            "Gafas":0
+            "Bufanda y boina": 0,
+            "Gafas y cadena":0
         }
 
         self.precios = {
             "mercader": {"Madera": 5, "Trigo": 3},
-            "modista": {"Jordan": 10, "Bufandas": 7,"Gafas":5}
+            "modista": {"Jordan": 10, "Bufanda y boina": 7,"Gafas y cadena":5}
         }
 
         self.indices = {
@@ -309,7 +309,7 @@ class Dialogue:
     def dibujar_menu(self, personaje, inventory, keys):
 
         if not self.obtener_opcion_escogida():   
-            opciones = {"mercader": ["Madera", "Trigo"], "modista": ["Jordan", "Bufandas","Gafas"]}.get(personaje, [])
+            opciones = {"mercader": ["Madera", "Trigo"], "modista": ["Jordan", "Bufanda y boina","Gafas y cadena"]}.get(personaje, [])
             self.cantidades = {opcion: self.cantidades.get(opcion, 0) for opcion in opciones}
             menu_ancho, menu_alto = 350, 400
             menu_x, menu_y = self.pantalla_ancho // 2 - menu_ancho // 2 - 400, self.pantalla_alto // 2 - menu_alto // 2 - 155
