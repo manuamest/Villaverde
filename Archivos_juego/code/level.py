@@ -274,8 +274,8 @@ class Level:
 
         if self.escene == "Nivel1":
             objects_list.append(InteractableObject(
-                pos=(1700, 4000),
-                group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero", location="fuera"))      
+                pos=(860, 836),
+                group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero", location="wuan"))      
         else:
             objects_list.append(InteractableObject(
                 pos=(1700, 4100),
@@ -289,8 +289,8 @@ class Level:
         
         if self.escene == "Nivel1":
             npcs_list.append(NPC(
-                pos=(SCREEN_WIDTH / 2 + 550 , SCREEN_HEIGHT / 2 + 570),
-                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego", location="wuan"))
+                pos=(1656, 3816),
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego", location="fuera"))
             
             npcs_list.append(NPC(
                 pos=(1900, 3950),
@@ -302,7 +302,7 @@ class Level:
             
         elif self.escene == "Nivel2":
             npcs_list.append(NPC(
-                pos=(860, 836),
+                pos=(SCREEN_WIDTH / 2 + 550 , SCREEN_HEIGHT / 2 + 570),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego", location="wuan"))
 
             npcs_list.append(NPC(
@@ -319,7 +319,7 @@ class Level:
             
         else:
             npcs_list.append(NPC(
-                pos=(860, 836),
+                pos=(SCREEN_WIDTH / 2 + 550 , SCREEN_HEIGHT / 2 + 570),
                 group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego", location="wuan"))
             
             npcs_list.append(NPC(

@@ -288,7 +288,7 @@ class Dialogue:
                 "pollo": (self.pollo,'GALLINA DANIEL'),
                 "vaca":(self.vaca,'VACA ISABEL'),
                 "oveja":(self.oveja,'OVEJA OSCAR'),
-                "hermanos": (self.manu,'HERMANO MANU') if self.obtener_indice_personaje(personaje) % 2 == 0 else (self.pablo,'HERMANO PABLO')
+                "hermanos": (self.manu,'HERMANO PABLO') if self.obtener_indice_personaje(personaje) % 2 == 0 else (self.pablo,'HERMANO MANUEL')
 
             }
 
