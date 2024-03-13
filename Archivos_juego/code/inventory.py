@@ -51,7 +51,7 @@ class Inventory:
         self.salir_escena = True
 
     def añadir_madera(self):
-        self.inventario_items["Madera"] += 1
+        self.inventario_items["Madera"] += 5
 
     def eliminar_madera(self,cantidad):
         self.inventario_items["Madera"] -= cantidad

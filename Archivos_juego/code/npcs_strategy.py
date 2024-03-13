@@ -5,19 +5,16 @@ class DialogoDonDiegoEstrategia(Dialogue_Strategy):
         return self.draw.dialogos_dondiego
 
 class DialogoButaneroEstrategia(Dialogue_Strategy):
-    def obtener_dialogo(self, contexto):
-            
-        if contexto.obtener_opcion_escogida_butanero():
     
+    def obtener_dialogo(self, contexto):
+        if contexto.obtener_opcion_escogida_butanero():
             if contexto.obtener_opcion_seleccionada() == 0:
                 if contexto.obtener_dinero_dado() and contexto.obtener_madera_dada():
                     return self.draw.dialogos_butanero_2
                 elif contexto.obtener_madera_dada() and not contexto.obtener_dinero_dado():
                     return self.draw.dialogos_butanero_5
-                
                 elif not contexto.obtener_madera_dada() and contexto.obtener_dinero_dado():
                     return self.draw.dialogos_butanero_6
-                              
                 elif not contexto.obtener_madera_dada():
                     return self.draw.dialogos_butanero_3
             elif contexto.obtener_opcion_seleccionada() == 1:
@@ -40,12 +37,11 @@ class DialogoButaneroEstrategia(Dialogue_Strategy):
             contexto.manejar_opciones_personaje(keys, inventory, inicio_texto_x, inicio_texto_y, personaje)
     
     
-    def ejecutar_accion(self, inventory, contexto,personaje):
-
+    def ejecutar_accion(self, inventory, contexto, personaje):
         if not contexto.obtener_dinero_dado() and not contexto.obtener_madera_dada():
             if contexto.opcion_seleccionada == 0:
-                tiene_dinero = inventory.get_dinero() >= 5
-                tiene_madera = inventory.get_madera() >= 3
+                tiene_dinero = inventory.get_dinero() == 100
+                tiene_madera = inventory.get_madera() >= 20
               
                 if tiene_dinero and not tiene_madera:
                     contexto.set_dinero_dado(True)
@@ -54,28 +50,25 @@ class DialogoButaneroEstrategia(Dialogue_Strategy):
                     contexto.set_opcion_escogida_butanero(True)
 
                 elif not tiene_dinero and tiene_madera:
-
                     contexto.set_madera_dada(True)
                     contexto.set_dinero_dado(False)
                     contexto.set_opcion_seleccionada(0) 
                     contexto.set_opcion_escogida_butanero(True)
 
-
                 elif tiene_dinero and tiene_madera:
+                    contexto.set_objetos_a_jordi(True)
                     contexto.set_dinero_dado(True)
                     contexto.set_madera_dada(True)
                     contexto.set_opcion_seleccionada(0) 
-                    inventory.eliminar_dinero(5)
-                    inventory.eliminar_madera(3)
+                    inventory.eliminar_dinero(100)
+                    inventory.eliminar_madera(20)
                     contexto.set_opcion_escogida_butanero(True)
                 
                 else:
-
                     contexto.set_dinero_dado(False)
                     contexto.set_madera_dada(False)
                     contexto.set_opcion_seleccionada(0)
                     contexto.set_opcion_escogida_butanero(True)
-
 
             elif contexto.opcion_seleccionada == 1:
                 contexto.set_dinero_dado(False)
@@ -109,13 +102,13 @@ class DialogoButaneroEstrategia(Dialogue_Strategy):
                         contexto.set_opcion_escogida_butanero(False)
                         personaje_actual = None
                 else:
-                        contexto.set_dinero_dado(False)
-                        contexto.set_madera_dada(False)
-                        contexto.set_indice_personaje(personaje_actual, 1)
-                        contexto.set_opcion_dialogo(False)
-                        contexto.set_final_dialogo(False)
-                        contexto.set_opcion_escogida_butanero(False)
-                        personaje_actual = None
+                    contexto.set_dinero_dado(False)
+                    contexto.set_madera_dada(False)
+                    contexto.set_indice_personaje(personaje_actual, 1)
+                    contexto.set_opcion_dialogo(False)
+                    contexto.set_final_dialogo(False)
+                    contexto.set_opcion_escogida_butanero(False)
+                    personaje_actual = None
 
 class DialogoMercaderEstrategia(Dialogue_Strategy):
     def obtener_dialogo(self, contexto):

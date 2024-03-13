@@ -47,12 +47,9 @@ class Level:
     def setup(self):
         
         self.zoom = 4
-
-        maps = {"verano": "mapa_verano22", "otoño": "mapa_otoño2", "invierno": "mapa_invierno2", "volcan": "volcan"}
         
         player_start_x = 1800
         player_start_y = 4000
-
 
         if self.escene == "Nivel1":
             

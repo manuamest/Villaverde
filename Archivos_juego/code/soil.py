@@ -72,7 +72,7 @@ class SoilLayer:
         # Escalar la imagen del suelo al tamaño del TILE_SIZE
         self.soil_surf = pygame.transform.scale(self.soil_surf, (TILE_SIZE, TILE_SIZE))
         # Fases del trigo
-        self.fases_cultivo = {  "plantar": False,
+        self.fases_cultivo = {  "arar": False,
                                 "sembrar": False,
                                 "regar": False}
 
@@ -111,6 +111,7 @@ class SoilLayer:
                 # print("Contenido de self.grid en la posición (", x, ",", y, "):", self.grid[y][x])
                 if 'F' in self.grid[y][x]:
                     # print('farmable')
+                    self.set_fase_cultivo("arar")
                     self.grid[y][x].append('C') # Tile cultivado
                     self.create_soil_tiles()
 
@@ -141,7 +142,7 @@ class SoilLayer:
                 y = soil_sprite.rect.y // TILE_SIZE
                 if 'S' not in self.grid[y][x]:
                     self.grid[y][x].append('S') # Tile con una semilla plantada
-                    self.set_fase_cultivo("plantar")
+                    self.set_fase_cultivo("sembrar")
                     Plant(seed, [self.all_sprites, self.plant_sprites], soil_sprite, self.check_watered)
                     #print("Nueva planta creada:", new_plant)
                     #print("Tamaño del grupo de plantas:", len(self.plant_sprites.sprites()))

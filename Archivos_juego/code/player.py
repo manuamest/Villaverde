@@ -33,7 +33,7 @@ class Player(pygame.sprite.Sprite):
         self.puzle = Puzle(self.inventory.screen)
 
         # Diálogo
-        self.dialogue = Dialogue(self.inventory.pantalla)
+        self.dialogue = dialogue
         self.personaje_actual = None
         
 

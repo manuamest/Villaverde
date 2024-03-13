@@ -73,6 +73,7 @@ class Dialogue:
         self.madera_dada = False
         self.contador_llave = 0
         self.opcion_escogida_butanero = False
+        self.objetos_a_jordi = False
         self.estrategias_dialogo = {
             "don diego": DialogoDonDiegoEstrategia(self.draw),
             "butanero": DialogoButaneroEstrategia(self.draw),
@@ -208,9 +209,9 @@ class Dialogue:
 
     def obtener_cantidad_seleccionada(self):
         return self.cantidad_seleccionada
+
     def obtener_item_seleccionado(self):
         return self.item_seleccionado
-
 
     def set_confirmacion_abierta(self, confirmacion_abierta):
         self.confirmacion_abierta = confirmacion_abierta
@@ -224,13 +225,11 @@ class Dialogue:
     def obtener_opcion_seleccionada(self):
         return self.opcion_seleccionada
     
-
     def set_opcion_seleccionada_oveja(self, opcion):
         self.opcion_seleccionada_oveja = opcion
 
     def obtener_opcion_seleccionada_oveja(self):
         return self.opcion_seleccionada_oveja
-    
 
     def set_opcion_seleccionada_vaca(self, opcion):
         self.opcion_seleccionada_vaca = opcion
@@ -238,7 +237,6 @@ class Dialogue:
     def obtener_opcion_seleccionada_vaca(self):
         return self.opcion_seleccionada_vaca
     
-
     def set_opcion_seleccionada_pollo(self, opcion):
         self.opcion_seleccionada_pollo = opcion
 
@@ -250,12 +248,16 @@ class Dialogue:
         return precio * cantidad
     
     def set_incr_llave(self,contador):
-
         self.contador_llave += contador
     
     def get_contador_llave(self):
         return self.contador_llave
 
+    def set_objetos_a_jordi(self, opcion):
+        self.objetos_a_jordi = opcion
+    
+    def get_objetos_a_jordi(self):
+        return self.objetos_a_jordi
 
 
     def dibujar_dialogo(self, inventory, personaje):
@@ -374,7 +376,7 @@ class Dialogue:
                 self.sonido_select.play()
 
             if keys[pygame.K_x]:
-                    estrategia.ejecutar_accion(inventory,self, personaje)
+                estrategia.ejecutar_accion(inventory,self, personaje)
                         
         else:
             print("No hay estrategia definida para este personaje.")
