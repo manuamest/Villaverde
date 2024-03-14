@@ -276,7 +276,6 @@ class Dialogue:
             return []
             
     def manejar_opciones_personaje(self, keys, inventory, inicio_texto_x, inicio_texto_y, personaje):
-        self.opcion_seleccionada = 0  
         estrategia = self.estrategias_dialogo.get(personaje)
         if estrategia:
             opciones = estrategia.manejar_opciones(self)
@@ -294,7 +293,8 @@ class Dialogue:
                 self.sonido_select.play()
 
             if keys[pygame.K_x]:
-                    estrategia.ejecutar_accion(inventory, self, personaje)
+                    estrategia.ejecutar_accion(inventory,self, personaje)
+                        
         else:
             print("No hay estrategia definida para este personaje.")
 
@@ -355,7 +355,7 @@ class Dialogue:
                         "vaca":(self.vaca,'VACA CLARA'),
                         "oveja":(self.oveja,'OVEJA OSCAR'),
                         "cabra":(self.cabra,'CABRA FER'),
-                        "hermanos": (self.manu,'HERMANO MANU') if self.obtener_indice_personaje(personaje) % 2 == 0 else (self.pablo,'HERMANO PABLO')
+                        "hermanos": (self.manu,'HERMANO PABLO') if self.obtener_indice_personaje(personaje) % 2 == 0 else (self.pablo,'HERMANO MANUEL')
                     }
 
                     if personaje in personajes:

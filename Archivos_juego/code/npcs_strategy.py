@@ -101,7 +101,7 @@ class DialogoButaneroEstrategia(Dialogue_Strategy):
                     else:
                         contexto.set_dinero_dado(False)
                         contexto.set_madera_dada(False)
-                        contexto.set_indice_personaje(personaje_actual, 1)
+                        contexto.set_indice_personaje(personaje_actual, 3)
                         contexto.set_opcion_dialogo(False)
                         contexto.set_final_dialogo(False)
                         contexto.set_opcion_escogida_butanero(False)
@@ -109,7 +109,7 @@ class DialogoButaneroEstrategia(Dialogue_Strategy):
                 else:
                         contexto.set_dinero_dado(False)
                         contexto.set_madera_dada(False)
-                        contexto.set_indice_personaje(personaje_actual, 1)
+                        contexto.set_indice_personaje(personaje_actual, 3)
                         contexto.set_opcion_dialogo(False)
                         contexto.set_final_dialogo(False)
                         contexto.set_opcion_escogida_butanero(False)

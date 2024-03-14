@@ -15,7 +15,7 @@ class Draw:
     def definir_dialogos(self):
         self.dialogos_dondiego  = ["Que va a ser de mi?, mi granja esta destrozada y Fer ha desaparecido...", "Por favor, Wuan, coge la bolsa que tengo en casa con todos mis ahorros y habla con Jordi el obrero, el quizas nos pueda ayudar.", "Todo esta en tus manos..."]
         self.dialogos_dondiego_2 = ["Ugh...ugh...necesito una monst...er.", "Querido Wuan, salva la granja...esta todo en tus manos.", "Eres el unico capaz de hacer que me vaya de esta vida en paz...cumple solo este favor..."]
-        self.dialogos_butanero = ["Hola! Soy Jordi el butanero.", "Necesito que me des 5 unidades de dinero y 3 de madera, venga damelo que hay prisa!"]
+        self.dialogos_butanero = ["Hola! Soy Jordi el obrero, yo te puedo ayudar a reconstruir la granja.", "Wuan, lamento decirte que los ahorros de tu abuelo probablemente no sean suficientes para pagar la reconstruccion...", "Si no puedes conseguir mas dinero vas a tener que proporcionarme los materiales de construccion.", "Traeme 20 de madera y 100 monedas y vere que puedo hacer."]
         self.dialogos_butanero_2 = ["Genial! Ya era hora de que por fin me trajeras el dinero y la madera, sigue asi Wuan."]
         self.dialogos_butanero_3 = ["Estas sordo primo? Que te he dicho que me des el dinero y la madera, ya veo que no tienes suficientes unidades de ambos, traeme lo que te he pedido."]
         self.dialogos_butanero_4 = ["Me vas a tener esperando un tiempecito parece eh, avisame cuando los consigas"]
@@ -48,7 +48,7 @@ class Draw:
         self.dialogos_vaca_2 = ["Gracias cielo, ahora junto a ti desfilare, con estas gafas y nuestro esfuerzo salvaremos la granja. Puedes contar conmigo, Clara, como tu fiel aliada."]
         self.dialogos_vaca_3 = ["Aun no tienes las gafas cielo...vuelve cuando tengas algo mas de disposicion."]
         self.dialogos_vaca_4 = ["De acuerdo, cuando las traigas sere la vaca mas guapa y te podre ayudar."]
-        self.dialogos_hermanos = ["Hermano Pablo, has visto a Wuan con determinacion, buscando soluciones para salvar nuestra situacion?", "Si, Manuel, lo he visto, con su mente inquieta y su corazon valiente, buscando formas de reconstruir nuestra granja y ser eficiente.", "Debemos unirnos a su noble labor, juntos, enfrentaremos cualquier dolor.", "Pero, Manuel, escucha lo que te digo, a veces, actuar solo es el mejor abrigo.", "Entiendo, Pablo, pero quiero colaborar, juntos, mas podemos lograr.", "Tu entusiasmo es loable, Manuel, no lo niego, pero confiemos en Wuan, el es nuestro fuego.", "Wuan, cuando salves la granja con ingenio y destreza, Don Diego dejara de ser un cascarrabias, vaya rareza!"]
+        self.dialogos_hermanos = ["Al viejo ese le quedan dos telediarios.", "Con el disgusto que le ha dado Wuan, no creo que llegue a ver el amanecer.", "Wuan, eres la oveja negra de la familia.", "Espabila Wuan!", "Wuan, no tienes nada mejor que hacer?", "Wuan, tienes mucho que aprender de nosotros...", "Lavate o algo, Wuan, hueles a estiercol!"]
         self.dialogos_llave_magistral = ["Nos has reclutado a todos, por eso hemos decidido darte la Llave Magistral, ponla a buen recaudo, la necesitaras."]
         self.dialogos_cabra = ["MEEEEEEE!!!"]
 
