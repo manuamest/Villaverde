@@ -58,7 +58,6 @@ class Director:
             self.level_start_time = time.time()
             self.bucle(level)
             level.clean_level()
-            self.tutorial_enabled = False
         
         self.playCredits()
                 

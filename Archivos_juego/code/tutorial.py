@@ -6,24 +6,40 @@ from objectives import Objectives
 
 
 class Tutorial:
-    def __init__(self, screen):
+    def __init__(self, screen, opcion_mapa):
         self.pantalla = screen
         self.imagen_fondo_tutorial = pygame.image.load('./code/sprites/tutorial/tutorial.png').convert_alpha()
         self.posicion = self.imagen_fondo_tutorial.get_rect().topleft
         self.margen = 35
 
         self.indice_tutorial = 0
-        self.tutorial_mensajes = [
-            "Bienvenido a Villaverde! Usa las teclas A,W,S,D para mover al jugador. Dale a la 'Z' para seguir.",
-            "Ahora para cambiar de herramienta presiona la tecla 'Q' y para usarla dale al 'SPACE'.",
-            "Prueba a talar un arbol, acercate con el hacha y usala, algunos son mas duros que otros, prueba desde distintos angulos.",
-            "Para recoger objetos, simplemente camina sobre ellos y presiona la tecla 'E'.",
-            "Muy bien! Ahora, vamos a ver tu inventario. Presiona la tecla 'B' para abrirlo. Cierralo presionando 'B' de nuevo!",
-            "Vamos a hablar con el NPC. Acercate a el y presiona la tecla 'E'.",
-            "Usa la tecla 'X' para avanzar en el dialogo o seleccionar una opcion. Si necesitas escoger una opcion presiona 'UP' o 'DOWN'.",
-            "Clica en la esquina superior derecha para ver los objetivos y vuelve a clicar para cerrar el desplegable",
+
+        tutorial_verano = [
+            "Bienvenido a Villaverde! Usa las teclas A,W,S,D para mover al jugador. Presiona 'Z' para seguir.",
+            "Para cambiar de herramienta, presiona la tecla 'Q' y para usarla presiona 'SPACE'.",
+            "Intenta talar un arbol. Acercate con el hacha y usala. Algunos son mas duros que otros, prueba desde distintos angulos.",
+            "Para recoger objetos, simplemente camina sobre ellos y/o presiona la tecla 'E'.",
+            "Ahora, vamos a ver tu inventario. Presiona la tecla 'B' para abrirlo. Cierralo presionando 'B' de nuevo.",
+            "Hablemos con Don Diego o Jordi el obrero. Acercate a el y presiona la tecla 'E'.",
+            "Usa la tecla 'X' para avanzar en el dialogo o seleccionar una opcion. Si necesitas escoger una opcion, presiona 'UP' o 'DOWN'.",
+            "Haz clic en la esquina superior derecha para ver los objetivos y vuelve a hacer clic para cerrar el desplegable.",
             "Felicidades! Has completado el tutorial. Disfruta del juego!"
-        ]
+            ]
+
+        tutorial_otoño = [
+            "Bienvenido al mapa de otono! Dirigete a una zona vallada abierta, que sera terreno cultivable.",
+            "Asegurate de tener la herramienta adecuada para arar y presiona 'SPACE'.",
+            "Intenta plantar una semilla de trigo presionando la tecla 'F' sobre el terreno arado.",
+            "Ahora, vamos a regarla con agua. Espera unos segundos. Ya tenemos nuestro trigo!",
+            "Busca a Xoel el mercader o a Eva la modista. Acercate a uno de ellos y presiona la tecla 'E'.",
+            "Para escoger la cantidad a vender o comprar, muevete con las teclas 'LEFT' y 'RIGHT'. Para seleccionar la opcion, presiona 'X'.",
+            "Sigue explorando!"
+            ]
+
+        if opcion_mapa == "verano":
+            self.tutorial_mensajes = tutorial_verano
+        elif opcion_mapa == "otoño":
+            self.tutorial_mensajes = tutorial_otoño
         
         self.tutorial_on = True
 
@@ -32,7 +48,7 @@ class Tutorial:
         self.fuente = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 28)
         self.longitud_actual = 0
 
-        self.velocidad_texto = 0.05
+        self.velocidad_texto = 0.07
         self.update = time.time()
 
     # def activar_tutorial(self):

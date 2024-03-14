@@ -109,8 +109,8 @@ class Menu(MenuBase):
         if self.selected_option == 0:  # Jugar
             self.in_menu = False
         elif self.selected_option == 1:  # Opciones
-            self.options = Options(self.screen, self.clock, self.background_image, self.background_rect)
-            print("Mostrar Opciones")  # Agrega lógica de opciones aquí
+            self.options = Options(self.screen, self.clock, self.background_image, self.background_rect, self.tutorial_enabled, self.full_screen)
+            # print("Mostrar Opciones")  # Agrega lógica de opciones aquí
         elif self.selected_option == 2:  # Controles
             print("Mostrar Controles")  # Agrega lógica de controles aquí
         elif self.selected_option == 3:  # Salir
@@ -121,7 +121,7 @@ class Menu(MenuBase):
         self.in_menu = True
         self.options = None
         self.tutorial_enabled = True
-
+        self.full_screen = False
         while self.in_menu:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -134,49 +134,44 @@ class Menu(MenuBase):
                         self.selected_option = (self.selected_option - 1) % len(self.menu_options)
                     elif event.key == pygame.K_RETURN:
                         self.handle_key_return()
-
             if self.options:
                 self.options.run()
                 self.tutorial_enabled = self.options.get_tutorial_enabled()
+                self.full_screen = self.options.get_full_screen_enabled()
                 if self.options.get_should_return():
                     self.options = None
-
             self.show_menu()
             self.clock.tick(FPS)
 
 class Options(MenuBase):
-    def __init__(self, screen, clock, background_image, background_rect):
+    def __init__(self, screen, clock, background_image, background_rect, tutorial_enabled, full_screen):
         self.screen = screen
         self.clock = clock
         self.background_image = background_image 
         self.background_rect = background_rect
-        self.tutorial_enabled = True
-        self.tutorial_option_text = "Desactivar Tutorial"
-        self.fullscreen_option_text = "Pantalla Completa"
-        menu_options = [self.tutorial_option_text, self.fullscreen_option_text, "Volver"]
+        self.tutorial_enabled = tutorial_enabled
+        menu_options = ["", "", "Volver"]
         super().__init__(screen, menu_options, self.background_image, self.background_rect)
+        self.full_screen = full_screen
 
     def handle_key_return(self):
         if self.selected_option == 0:  # Activar o Desactivar Tutorial
             self.tutorial_enabled = not self.tutorial_enabled
-            self.tutorial_option_text = "Desactivar Tutorial" if self.tutorial_enabled else "Activar Tutorial"
-            print(f'El tutorial está a: {self.tutorial_enabled}')
+            # print(f'El tutorial está a: {self.tutorial_enabled}')
         elif self.selected_option == 1:  # Pantalla Completa
             pygame.display.toggle_fullscreen()
-            self.fullscreen_option_text = "Ventana" if self.fullscreen_option_text == 'Pantalla Completa' else "Pantalla Completa"
+            self.full_screen = not self.full_screen
         elif self.selected_option == 2:  # Volver
             self.in_options = False
             self.should_return_flag = True
 
     def show_menu(self):
         super().show_menu()
-        self.menu_options[0] = self.tutorial_option_text
-        self.menu_options[1] = self.fullscreen_option_text
-
+        self.menu_options[0] = "Desactivar Tutorial" if self.tutorial_enabled else "Activar Tutorial"
+        self.menu_options[1] = "Ventana" if self.full_screen else "Pantalla Completa"
 
     def run(self):
         self.in_options = True
-
         while self.in_options:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -189,9 +184,11 @@ class Options(MenuBase):
                         self.selected_option = (self.selected_option - 1) % len(self.menu_options)
                     elif event.key == pygame.K_RETURN:
                         self.handle_key_return()
-
             self.show_menu()
             self.clock.tick(FPS)
 
     def get_tutorial_enabled(self):
         return self.tutorial_enabled
+
+    def get_full_screen_enabled(self):
+        return self.full_screen

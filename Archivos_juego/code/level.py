@@ -141,7 +141,7 @@ class Level:
         self.overlay = Overlay(self.player)
         
         # Tutorial
-        self.tutorial = Tutorial(self.screen)
+        self.tutorial = Tutorial(self.screen, self.opcion_mapa)
 
         # Objetives
         self.objectives = Objectives(self.screen, self.inventory, self.dialogue, self.player, self.soil_layer, self.opcion_mapa)
@@ -423,8 +423,8 @@ class Level:
             if self.cnt>6:
                 self.show_level_text = False
         else:
-            # Tutorial
-            self.tutorial.mostrar_tutorial(key_z_pressed, tutorial_enabled)
+            if self.escene == "Nivel1" or self.escene == "Nivel2":
+                self.tutorial.mostrar_tutorial(key_z_pressed, tutorial_enabled)
         
     def check_collision(self):
         player_rect = self.player.rect
