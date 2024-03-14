@@ -23,7 +23,7 @@ class Dialogue:
             self.sonido = pygame.mixer.Sound("./code/sounds/llaves.wav")
             self.MARRON = (128, 58, 58)
      
-            self.imagen_cartel = pygame.image.load('./code/sprites/tutorial/tutorial.png').convert_alpha()
+            self.imagen_cartel = pygame.image.load('./code/sprites/tutorial/tutorial_sin_z.png').convert_alpha()
             self.update = 0
             self.longitud_actual = 0
             self.opcion_seleccionada = 0

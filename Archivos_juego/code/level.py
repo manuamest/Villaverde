@@ -16,7 +16,7 @@ from dialogue_strategy import Dialogue_Strategy
 from objectives import Objectives
 
 class Level:
-    def __init__(self, soil_layer, all_sprites, screen,inventory, escene):
+    def __init__(self, soil_layer, all_sprites, screen, inventory, escene, director):
         self.display_surface = pygame.display.get_surface()
         self.collision_sprites = pygame.sprite.Group()
         self.tree_sprites = pygame.sprite.Group()
@@ -25,17 +25,15 @@ class Level:
         self.escene = escene
         self.screen = screen
         self.inventory = inventory
-        self.salir_escena = False
+        self.director = director
 
         # Dialogue
-        self.dialogue = Dialogue(self.screen,self.escene,self.inventory)
+        self.dialogue = Dialogue(self.screen, self.escene, self.inventory)
         self.draw = Draw(self.screen)
-        self.dialogue_strategy = Dialogue_Strategy(self.draw,escene)
+        self.dialogue_strategy = Dialogue_Strategy(self.draw, escene)
      
-
         self.soil_layer = soil_layer
         self.all_sprites = all_sprites
-
 
         # Texto del nivel
         self.show_level_text = True
@@ -43,10 +41,6 @@ class Level:
         self.font = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 40)
         #self.setup()
         self.cnt = 0
-    
-    def salir(self):
-        self.salir_escena = True
-        
 
     def setup(self):
         
@@ -144,7 +138,7 @@ class Level:
         self.tutorial = Tutorial(self.screen, self.opcion_mapa)
 
         # Objetives
-        self.objectives = Objectives(self.screen, self.inventory, self.dialogue, self.player, self.soil_layer, self.opcion_mapa)
+        self.objectives = Objectives(self.screen, self.inventory, self.dialogue, self.player, self.soil_layer, self.opcion_mapa, self.director)
 
 
     def show_loading_screen(self):

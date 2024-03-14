@@ -3,9 +3,7 @@ from settings import *
 
 class Objectives:
 
-    def __init__(self, screen, inventory, dialogue, player, soil_layer, opcion_mapa):
-        self.salir_escena = False
-
+    def __init__(self, screen, inventory, dialogue, player, soil_layer, opcion_mapa, director):
         # Evaluacion de objetivos
         objectives_check_n1 = [
             Objective([
@@ -25,8 +23,7 @@ class Objectives:
             ], (lambda : self.dropdown.set_check_button(4))),
             Objective([
                 Requirement(lambda state: dialogue.get_objetos_a_jordi() == True, "0")
-            ], (lambda : self.dropdown.set_check_button(5)))
-            ]
+            ], (lambda : self.dropdown.set_check_button(5)))]
         objectives_check_n2 = [
             Objective([
                 Requirement(lambda state: soil_layer.get_fase_cultivo("arar") == True, "0"),
@@ -59,8 +56,7 @@ class Objectives:
                 Requirement(lambda state: dialogue.get_jordan_dadas() == True, "0"),
                 Requirement(lambda state: dialogue.get_bufandas_dadas() == True, "1"),
                 Requirement(lambda state: dialogue.get_gafas_dadas() == True, "2")
-            ], (lambda : self.dropdown.set_check_button(9)))
-            ]
+            ], (lambda : self.dropdown.set_check_button(9)))]
         
         objectives_check_n3 = [
             Objective([
@@ -104,6 +100,7 @@ class Objectives:
         self.click_on_objectives_button = False
         self.button = Button()
         self.dropdown = Dropdown(self.button.rect, self.objectives)
+        self.director = director
 
     def evaluate(self):
         for i in range(len(self.objectives)):
@@ -112,7 +109,8 @@ class Objectives:
 
         nivel_completo = all(obj.is_completed() for obj in self.objectives_check)  # Verifica si todos los objetivos del nivel están completos
         if nivel_completo:
-            self.salir_escena = True  # Establece salir_escena en True si todos los objetivos del nivel están completos
+            if self.opcion_mapa == "verano" or self.opcion_mapa == "otoño":
+                self.director.set_salir_escena(True) # Establece cambia de nivel si todos los objetivos del nivel están completos
             # print(f'Salir de escena {self.opcion_mapa} : {self.salir_escena}')
 
     def show_dropdown(self, left_mouse_button_down, event):

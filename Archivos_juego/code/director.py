@@ -30,9 +30,9 @@ class Director:
         self.soil_layer = SoilLayer(self.all_sprites)
         self.inventory = Inventory(self.screen)
         self.last_growth_time = time.time()
-        self.levels = [Level(self.soil_layer, self.all_sprites, self.screen,self.inventory, "Nivel1"),
-                        Level(self.soil_layer, self.all_sprites, self.screen,self.inventory, "Nivel2"),
-                        Level(self.soil_layer, self.all_sprites, self.screen,self.inventory, "Nivel3")]
+        self.levels = [Level(self.soil_layer, self.all_sprites, self.screen,self.inventory, "Nivel1", self),
+                        Level(self.soil_layer, self.all_sprites, self.screen,self.inventory, "Nivel2", self),
+                        Level(self.soil_layer, self.all_sprites, self.screen,self.inventory, "Nivel3", self)]
         self.menu = Menu(self.screen, self.clock)
 
         self.paused = False
@@ -84,6 +84,12 @@ class Director:
         if elapsed_time >= 5:
             self.soil_layer.update_plants() 
             self.last_growth_time = current_time
+        
+    def set_salir_escena(self, opcion):
+        self.salir_escena = opcion
+
+    def get_salir_escena(self):
+        return self.salir_escena
 
     def bucle(self, level):
         self.salir_escena = False
@@ -114,13 +120,8 @@ class Director:
                 pygame.display.update()                
             else:
                 self.screen.blit(self.overlay_surface, (0, 0))  # Agrega el filtro oscuro
-
-                # Muestra las opciones de continuar y salir del juego
-                self.menu.show_pause_menu()
-
+                self.menu.show_pause_menu() # Muestra las opciones de continuar y salir del juego
                 pygame.display.update()
-            
-            self.salir_escena = level.salir_escena
 
 if __name__ == '__main__':
     director = Director()
