@@ -6,20 +6,15 @@ from npcs_strategy import *
 from animals_strategy import *
 from settings import SCREEN_WIDTH, SCREEN_HEIGHT
 
-
 class Dialogue:
     def __init__(self,screen,escene,inventory):
             
-
             self.pantalla = screen
             self.escene = escene
             
              # Almacena el objeto screen como un atributo de la instancia
             self.pantalla_ancho = SCREEN_WIDTH
             self.pantalla_alto = SCREEN_HEIGHT
-
-
-                 
 
             self.clock = pygame.time.Clock()
             self.message = "Parece que para entrar aqui se necesita la Llave Magistral"  # Mensaje adicional
@@ -34,9 +29,6 @@ class Dialogue:
             self.opcion_seleccionada = 0
             self.opciones = []  # Lista vacía de opciones al inicio
 
-
-            
-        
             pygame.mixer.init()
             self.fuente = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 28)
             self.sonido_select = pygame.mixer.Sound("./code/sounds/select.wav")
@@ -95,6 +87,7 @@ class Dialogue:
         self.opcion_escogida_butanero = False
         self.cartel_procesado = False
         self.cartel_active = False
+        self.objetos_dados_a_jordi = False
 
         self.estrategias_dialogo = {
             "don diego": DialogoDonDiegoEstrategia(self.draw,self.escene),
@@ -107,7 +100,6 @@ class Dialogue:
             "oveja": DialogoOvejaEstrategia(self.draw,self.escene),
             "cabra": DialogoCabraEstrategia(self.draw,self.escene),
         }
-
     
         self.valor = 0
         self.cantidades = {
@@ -130,13 +122,9 @@ class Dialogue:
             "modista": 0,
         }
 
-
-
     def reiniciar_letras(self):
-
         self.longitud_actual = 0
         self.update = time.time()
-
 
     def set_indice_personaje(self, personaje, indice):
         self.indices[personaje] = indice
@@ -149,7 +137,6 @@ class Dialogue:
 
     def obtener_opcion_escogida(self):
         return self.opcion_escogida
-    
 
     def set_madera_dada(self, madera_dada):
         self.madera_dada = madera_dada
@@ -163,7 +150,6 @@ class Dialogue:
     def obtener_opcion_escogida_butanero(self):
         return self.opcion_escogida_butanero
     
-    
     def set_opcion_escogida_pollo(self, opcion_escogida_pollo):
         self.opcion_escogida_pollo = opcion_escogida_pollo
 
@@ -176,7 +162,6 @@ class Dialogue:
     def obtener_opcion_escogida_oveja(self):
         return self.opcion_escogida_oveja
 
-    
     def set_opcion_escogida_vaca(self, opcion_escogida_vaca):
         self.opcion_escogida_vaca = opcion_escogida_vaca
 
@@ -189,14 +174,12 @@ class Dialogue:
     def obtener_final_dialogo(self):
         return self.final_dialogo
     
-
     def set_gafas_dadas(self, gafas_dadas):
         self.gafas_dadas = gafas_dadas
 
     def get_gafas_dadas(self):
         return self.gafas_dadas
     
-
     def set_jordan_dadas(self, jordan_dadas):
         self.jordan_dadas = jordan_dadas
 
@@ -232,9 +215,9 @@ class Dialogue:
 
     def obtener_cantidad_seleccionada(self):
         return self.cantidad_seleccionada
+
     def obtener_item_seleccionado(self):
         return self.item_seleccionado
-
 
     def set_confirmacion_abierta(self, confirmacion_abierta):
         self.confirmacion_abierta = confirmacion_abierta
@@ -247,7 +230,6 @@ class Dialogue:
 
     def obtener_opcion_seleccionada(self):
         return self.opcion_seleccionada
-    
 
     def set_opcion_seleccionada_oveja(self, opcion):
         self.opcion_seleccionada_oveja = opcion
@@ -255,13 +237,11 @@ class Dialogue:
     def obtener_opcion_seleccionada_oveja(self):
         return self.opcion_seleccionada_oveja
     
-
     def set_opcion_seleccionada_vaca(self, opcion):
         self.opcion_seleccionada_vaca = opcion
 
     def obtener_opcion_seleccionada_vaca(self):
         return self.opcion_seleccionada_vaca
-    
 
     def set_opcion_seleccionada_pollo(self, opcion):
         self.opcion_seleccionada_pollo = opcion
@@ -277,12 +257,16 @@ class Dialogue:
         return precio * cantidad
     
     def set_incr_llave(self,contador):
-
         self.contador_llave += contador
     
     def get_contador_llave(self):
         return self.contador_llave
     
+    def set_objetos_a_jordi(self, opcion):
+        self.objetos_dados_a_jordi = opcion
+    
+    def get_objetos_a_jordi(self):
+        return self.objetos_dados_a_jordi
 
     def obtener_dialogo_personaje(self, personaje):
         estrategia = self.estrategias_dialogo.get(personaje)
@@ -314,15 +298,12 @@ class Dialogue:
         else:
             print("No hay estrategia definida para este personaje.")
 
-
-
     def manejar_interacciones(self, personaje, keys, inventory, inicio_texto_x, inicio_texto_y, longitud_actual):
         estrategia = self.estrategias_dialogo.get(personaje)
         if estrategia:
             estrategia.manejar_interacciones(keys, inventory, inicio_texto_x, inicio_texto_y, longitud_actual, personaje,self,self.escene)
         else:
             print("No hay estrategia definida para este personaje.")
-
 
     def procesar_dialogo(self, keys, dialogos_personaje, timers, personaje_actual):
         if keys[pygame.K_x] and not timers['dialogo'].active and self.draw.caracter_especial_dibujado:
@@ -336,10 +317,8 @@ class Dialogue:
                 estrategia = self.estrategias_dialogo.get(personaje_actual)
                 if estrategia:
                     estrategia.reset_dialogo(keys, dialogos_personaje,timers,personaje_actual,self,self.escene)  
-              
                 else:
                     pass
-
 
     def dibujar_dialogo(self, inventory, personaje):
             if self.dialogo_abierto:
@@ -432,7 +411,6 @@ class Dialogue:
                 self.item_seleccionado = opciones[self.opcion_seleccionada]
                 self.cantidad_seleccionada = self.cantidades[self.item_seleccionado]
 
-    
     def dibujar_cartel(self, inventory, mensaje=None):
         self.cartel_active = True  
         self.opcion_seleccionada = 0

@@ -5,25 +5,26 @@ class Objectives:
 
     def __init__(self, screen, inventory, dialogue, player, soil_layer, opcion_mapa):
         self.salir_escena = False
+
+        # Evaluacion de objetivos
         objectives_check_n1 = [
-            # nivel 1
             Objective([
                 Requirement(lambda state: player.talk_with("don diego") == True, "0")
             ], (lambda : self.dropdown.set_check_button(0))),
             Objective([
-                Requirement(lambda state: player.talk_with("butanero") == True, "1")
+                Requirement(lambda state: player.talk_with("butanero") == True, "0")
             ], (lambda : self.dropdown.set_check_button(1))),
             Objective([
-                Requirement(lambda state: inventory.get_dinero() == 100, "2")
+                Requirement(lambda state: inventory.get_dinero() == 100, "0")
             ], (lambda : self.dropdown.set_check_button(2))),
             Objective([
-                Requirement(lambda state: player.is_cut_down_tree() == True, "3")
+                Requirement(lambda state: player.is_cut_down_tree() == True, "0")
             ], (lambda : self.dropdown.set_check_button(3))),
             Objective([
-                Requirement(lambda state: inventory.get_madera() >= 20 , "4"),
+                Requirement(lambda state: inventory.get_madera() >= 20 , "0"),
             ], (lambda : self.dropdown.set_check_button(4))),
             Objective([
-                #Requirement(lambda state: dialogue.get_objetos_a_jordi() == True, "5")
+                Requirement(lambda state: dialogue.get_objetos_a_jordi() == True, "0")
             ], (lambda : self.dropdown.set_check_button(5)))
             ]
         objectives_check_n2 = [
@@ -31,40 +32,42 @@ class Objectives:
                 Requirement(lambda state: soil_layer.get_fase_cultivo("arar") == True, "0"),
             ], (lambda : self.dropdown.set_check_button(0))),
             Objective([
-                Requirement(lambda state: soil_layer.get_fase_cultivo("sembrar") == True, "1"),
+                Requirement(lambda state: soil_layer.get_fase_cultivo("sembrar") == True, "0"),
             ], (lambda : self.dropdown.set_check_button(1))),
             Objective([
-                Requirement(lambda state: soil_layer.get_fase_cultivo("regar") == True, "2")
+                Requirement(lambda state: soil_layer.get_fase_cultivo("regar") == True, "0")
             ], (lambda : self.dropdown.set_check_button(2))),
             Objective([
-                Requirement(lambda state: inventory.get_trigo() >= 1 , "3")
+                Requirement(lambda state: inventory.get_trigo() >= 1 , "0")
             ], (lambda : self.dropdown.set_check_button(3))),
             Objective([
-                Requirement(lambda state: player.talk_with("mercader") == True, "4")
+                Requirement(lambda state: player.talk_with("mercader") == True, "0")
             ], (lambda : self.dropdown.set_check_button(4))), 
             Objective([
-                Requirement(lambda state: player.talk_with("modista") == True, "5")
+                Requirement(lambda state: player.talk_with("modista") == True, "0")
             ], (lambda : self.dropdown.set_check_button(5))),
             Objective([
-                Requirement(lambda state: player.talk_with("pollo") == True, "6")
+                Requirement(lambda state: player.talk_with("pollo") == True, "0")
             ], (lambda : self.dropdown.set_check_button(6))),
             Objective([
-                Requirement(lambda state: player.talk_with("oveja") == True, "7")
+                Requirement(lambda state: player.talk_with("oveja") == True, "0")
             ], (lambda : self.dropdown.set_check_button(7))),
             Objective([
-                Requirement(lambda state: player.talk_with("vaca") == True, "8")
+                Requirement(lambda state: player.talk_with("vaca") == True, "0")
             ], (lambda : self.dropdown.set_check_button(8))),
-            # Objective([
-            #     Requirement(lambda state: , "9")
-            # ], (lambda : self.dropdown.set_check_button(9))),
+            Objective([
+                Requirement(lambda state: dialogue.get_jordan_dadas() == True, "0"),
+                Requirement(lambda state: dialogue.get_bufandas_dadas() == True, "1"),
+                Requirement(lambda state: dialogue.get_gafas_dadas() == True, "2")
+            ], (lambda : self.dropdown.set_check_button(9)))
             ]
         
         objectives_check_n3 = [
             Objective([
-                Requirement(lambda state: inventory.get_llave() == 1, "1")
+                Requirement(lambda state: inventory.get_llave() == 1, "0")
             ], (lambda : self.dropdown.set_check_button(0)))]
 
-        # Dropdown
+        # Objetivos que se mostraran en el desplegable
         objetivos_n1 = [("Habla con Don Diego", False),
                         ("Habla con Jordi el obrero", False),
                         ("Consigue el dinero", False),
@@ -79,9 +82,9 @@ class Objectives:
                         ("Habla con Xoel el Mercader", False),
                         ("Habla con Eva la modista", False),
                         ("Habla con la gallina Daniel", False),
-                        ("Habla con la oveja Óscar", False),
+                        ("Habla con la oveja Oscar", False),
                         ("Habla con la vaca Klara", False),
-                        # ("Haz que todos los animales sean felices de nuevo", False)
+                        ("Haz que todos los animales sean felices de nuevo", False)
                         ]
         objetivos_n3 = [("Consigue la llave magistral", False)]
 
@@ -103,12 +106,14 @@ class Objectives:
         self.dropdown = Dropdown(self.button.rect, self.objectives)
 
     def evaluate(self):
-        nivel_completo = all(obj.evaluate() for obj in self.objectives_check)  # Verifica si todos los objetivos del nivel están completos
-        if nivel_completo:
-            self.salir_escena = True  # Establece salir_escena en True si todos los objetivos del nivel 1 están completos
-            print("SALIR DE ESCENA:", self.salir_escena)
         for i in range(len(self.objectives)):
-            self.objectives_check[i].evaluate()
+            if not self.objectives_check[i].is_completed():
+                self.objectives_check[i].evaluate()
+
+        nivel_completo = all(obj.is_completed() for obj in self.objectives_check)  # Verifica si todos los objetivos del nivel están completos
+        if nivel_completo:
+            self.salir_escena = True  # Establece salir_escena en True si todos los objetivos del nivel están completos
+            # print(f'Salir de escena {self.opcion_mapa} : {self.salir_escena}')
 
     def show_dropdown(self, left_mouse_button_down, event):
         if left_mouse_button_down and self.button.rect.collidepoint(event.pos):
@@ -136,6 +141,9 @@ class Objective:
             self.completed = True  # Marca el objetivo como completado
             return True
         return False
+    
+    def is_completed(self):
+        return self.completed
 
 class Requirement:
     def __init__(self, check, id, dependencies = []):
@@ -170,7 +178,7 @@ class Dropdown:
         self.str_objectives = [obj for (obj,check_button) in objectives]
         self.dropdown_image = pygame.image.load('./code/sprites/objetivos/dropdown.png')
         self.rect_dropdown = self.dropdown_image.get_rect()
-        self.font = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 20)
+        self.font = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 18)
         self.image_check_button = pygame.image.load('./code/sprites/objetivos/boton_lila.png')
         self.update_dimensions()
 

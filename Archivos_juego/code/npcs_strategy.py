@@ -1,17 +1,16 @@
 from dialogue_strategy import Dialogue_Strategy
 
 class DialogoDonDiegoEstrategia(Dialogue_Strategy):
-    def obtener_dialogo(self, contexto,escene):
 
+    def obtener_dialogo(self, contexto,escene):
         if escene == "Nivel1":
-    
             return self.draw.dialogos_dondiego
         else:
             return self.draw.dialogos_dondiego_2      
 
 class DialogoButaneroEstrategia(Dialogue_Strategy):
+    
     def obtener_dialogo(self, contexto,escene):
-            
         if contexto.obtener_opcion_escogida_butanero():
     
             if contexto.obtener_opcion_seleccionada() == 0:
@@ -46,11 +45,10 @@ class DialogoButaneroEstrategia(Dialogue_Strategy):
     
     
     def ejecutar_accion(self, inventory, contexto,personaje):
-
         if not contexto.obtener_dinero_dado() and not contexto.obtener_madera_dada():
             if contexto.opcion_seleccionada == 0:
-                tiene_dinero = inventory.get_dinero() >= 5
-                tiene_madera = inventory.get_madera() >= 3
+                tiene_dinero = inventory.get_dinero() == 100
+                tiene_madera = inventory.get_madera() >= 20
               
                 if tiene_dinero and not tiene_madera:
                     contexto.set_dinero_dado(True)
@@ -59,35 +57,31 @@ class DialogoButaneroEstrategia(Dialogue_Strategy):
                     contexto.set_opcion_escogida_butanero(True)
 
                 elif not tiene_dinero and tiene_madera:
-
                     contexto.set_madera_dada(True)
                     contexto.set_dinero_dado(False)
                     contexto.set_opcion_seleccionada(0) 
                     contexto.set_opcion_escogida_butanero(True)
-
 
                 elif tiene_dinero and tiene_madera:
                     contexto.set_dinero_dado(True)
                     contexto.set_madera_dada(True)
                     contexto.set_opcion_seleccionada(0) 
-                    inventory.eliminar_dinero(5)
-                    inventory.eliminar_madera(3)
+                    inventory.eliminar_dinero(100)
+                    inventory.eliminar_madera(20)
                     contexto.set_opcion_escogida_butanero(True)
+                    contexto.set_objetos_a_jordi(True)
                 
                 else:
-
                     contexto.set_dinero_dado(False)
                     contexto.set_madera_dada(False)
                     contexto.set_opcion_seleccionada(0)
                     contexto.set_opcion_escogida_butanero(True)
-
 
             elif contexto.opcion_seleccionada == 1:
                 contexto.set_dinero_dado(False)
                 contexto.set_madera_dada(False)
                 contexto.set_opcion_seleccionada(1) 
                 contexto.set_opcion_escogida_butanero(True)
-          
 
     def reset_dialogo(self,keys, dialogos_personaje,timers,personaje_actual,contexto,escene):
         contexto.set_opcion_dialogo(True)
@@ -96,7 +90,6 @@ class DialogoButaneroEstrategia(Dialogue_Strategy):
         if contexto.obtener_opcion_escogida_butanero():
             if contexto.obtener_final_dialogo():   
                 if contexto.obtener_opcion_seleccionada() == 0:
-            
                     if contexto.obtener_dinero_dado() and contexto.obtener_madera_dada():
                         contexto.set_dinero_dado(True)
                         contexto.set_madera_dada(True)
@@ -123,8 +116,8 @@ class DialogoButaneroEstrategia(Dialogue_Strategy):
                         personaje_actual = None
 
 class DialogoMercaderEstrategia(Dialogue_Strategy):
-    def obtener_dialogo(self, contexto,escene):
     
+    def obtener_dialogo(self, contexto,escene):
         if escene== "Nivel2":
             if contexto.obtener_opcion_escogida():
                 if contexto.obtener_opcion_seleccionada() == 1:
@@ -140,7 +133,7 @@ class DialogoMercaderEstrategia(Dialogue_Strategy):
             else:
                 return self.draw.dialogos_mercader
         elif escene == "Nivel3":
-            
+
          return self.draw.dialogos_mercader_7
         
     def manejar_opciones(self, contexto):
@@ -152,11 +145,9 @@ class DialogoMercaderEstrategia(Dialogue_Strategy):
         fin_dialogo = longitud_actual >= len(dialogos_personaje[indice_dialogo]) and indice_dialogo == len(dialogos_personaje) - 1
 
         if escene == "Nivel2":
-
             if contexto.obtener_dialogo() and not contexto.obtener_final_dialogo():  
-                    # Solo dibuja el inventario mientras el menú esté abierto y el diálogo no haya terminado
+                # Solo dibuja el inventario mientras el menú esté abierto y el diálogo no haya terminado
                 inventory.dibujar_inventario((contexto.pantalla_ancho // 2 + 1200 // 2 - 400),(contexto.pantalla_alto // 2 - 400 // 2 - 155),True)
-
             if contexto.obtener_opcion_escogida() and (contexto.obtener_opcion_seleccionada() in [0, 1]) and fin_dialogo and contexto.confirmacion_abierta:
                 contexto.set_final_dialogo(True)
             elif contexto.obtener_cantidad_seleccionada() == 0 and contexto.obtener_confirmacion_abierta() and not contexto.obtener_opcion_escogida():
@@ -220,10 +211,10 @@ class DialogoMercaderEstrategia(Dialogue_Strategy):
 
 
 class DialogoModistaEstrategia(Dialogue_Strategy):
-    def obtener_dialogo(self, contexto,escene):
 
+    def obtener_dialogo(self, contexto,escene):
         if contexto.todo_vendido == 1: 
-                return self.draw.dialogos_modista_8
+            return self.draw.dialogos_modista_8
         elif contexto.obtener_opcion_escogida():
             if contexto.obtener_opcion_seleccionada() == 1:
                 return self.draw.dialogos_modista_6
@@ -234,7 +225,6 @@ class DialogoModistaEstrategia(Dialogue_Strategy):
                 return self.draw.dialogos_modista_3
             elif contexto.obtener_cantidad_seleccionada() == 1 and ((contexto.obtener_item_seleccionado() == "Jordan" and contexto.jordan_compradas) or(contexto.obtener_item_seleccionado() == "Bufanda y boina" and contexto.bufandas_compradas) or (contexto.obtener_item_seleccionado() == "Gafas y cadena" and contexto.gafas_compradas)):
                 return self.draw.dialogos_modista_7
-
             else:
                 pago = contexto.calcular_pago("modista", contexto.item_seleccionado, contexto.cantidad_seleccionada)
                 return ["Seguro que quieres comprar {} unidad de {}? Te cobrare por ello {} unidades de dinero. Es una buena oferta, verdad?\u00A0".format(contexto.cantidad_seleccionada, contexto.item_seleccionado[0].lower() + contexto.item_seleccionado[1:] if contexto.item_seleccionado else '', pago)]
@@ -250,7 +240,6 @@ class DialogoModistaEstrategia(Dialogue_Strategy):
         fin_dialogo = longitud_actual >= len(dialogos_personaje[indice_dialogo]) and indice_dialogo == len(dialogos_personaje) - 1
 
         if contexto.obtener_dialogo() and not contexto.obtener_final_dialogo() and not (contexto.jordan_compradas and  contexto.bufandas_compradas and contexto.gafas_compradas):  
-               
             inventory.dibujar_inventario((contexto.pantalla_ancho // 2 + 1200 // 2 - 400),(contexto.pantalla_alto // 2 - 400 // 2 - 155),True)
         
         if (contexto.jordan_compradas and  contexto.bufandas_compradas and contexto.gafas_compradas) and fin_dialogo:
@@ -299,7 +288,6 @@ class DialogoModistaEstrategia(Dialogue_Strategy):
 
 
     def reset_dialogo(self,keys, dialogos_personaje,timers,personaje_actual,contexto,escene):
-
         contexto.set_opcion_dialogo(True)
         contexto.set_indice_personaje(personaje_actual, 0)
 

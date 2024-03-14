@@ -35,7 +35,7 @@ class Player(pygame.sprite.Sprite):
         self.level = level
 
         # Diálogo
-        self.dialogue = Dialogue(self.inventory.pantalla,self.level.escene,self.inventory)
+        self.dialogue = dialogue
         self.personaje_actual = None
         
 
@@ -166,14 +166,14 @@ class Player(pygame.sprite.Sprite):
                 self.timers['cambio de herramienta'].activate()
                 self.tool_index = (self.tool_index + 1) % len(self.tools)
                 self.selected_tool = self.tools[self.tool_index]
-                print(f'Cambiando a herramienta [{self.selected_tool}] ')
+                # print(f'Cambiando a herramienta [{self.selected_tool}] ')
   
             if keys[pygame.K_e] and not self.timers['interaccion'].active:
                 self.timers['interaccion'].activate()
                 player_center = pygame.math.Vector2(self.rect.center)
                 for sprite in self.groups()[0].sprites():
                     if (isinstance(sprite, InteractableObject) or isinstance(sprite, NPC) or isinstance(sprite, Animal)) and sprite.visible:  
-                        print(sprite.location)
+                        # print(sprite.location)
                         obj_center = pygame.math.Vector2(sprite.rect.center)
                         distancia = player_center.distance_to(obj_center)
                         if distancia < 110 and (isinstance(sprite, NPC)):
