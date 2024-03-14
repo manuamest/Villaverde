@@ -9,7 +9,6 @@ class Inventory:
         self.pantalla = screen
         self.pantalla_ancho = SCREEN_WIDTH
         self.pantalla_alto = SCREEN_HEIGHT
-        self.salir_escena = False
         self.screen = screen
 
         # Colores
@@ -19,7 +18,7 @@ class Inventory:
 
         # Variables del inventario
         self.inventario_abierto = False
-        self.inventario_items = {"Madera": 0, "Trigo": 0,"Bolsa de dinero":0,"Jordan":0,"Bufandas":0,"Gafas":0,"Llave magistral":0}
+        self.inventario_items = {"Madera": 0, "Trigo": 0,"Bolsa de dinero":0,"Jordan":0,"Bufanda y boina":0,"Gafas y cadena":0,"Llave magistral":0}
 
         self.imagen_fondo_inventario = pygame.image.load('./code/sprites/inventarios/verano.png').convert_alpha()
         self.imagen_fondo_inventario = pygame.transform.scale(self.imagen_fondo_inventario, (400, 300))
@@ -47,8 +46,6 @@ class Inventory:
         # Actualizar la imagen de fondo del inventario
         self.imagen_fondo_inventario = nueva_imagen
 
-    def salir(self):
-        self.salir_escena = True
 
     def añadir_madera(self):
         self.inventario_items["Madera"] += 5
@@ -79,6 +76,9 @@ class Inventory:
     
     def añadir_gafas(self):
         self.inventario_items["Gafas y cadena"] += 1
+    
+    def eliminar_llave(self):
+        self.inventario_items["Llave magistral"] -= 1
        
     def eliminar_gafas(self):
         self.inventario_items["Gafas y cadena"] -= 1

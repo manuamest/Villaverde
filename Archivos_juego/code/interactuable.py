@@ -9,7 +9,7 @@ class InteractableObject(pygame.sprite.Sprite):
         self.color = color  # Guarda el color
         self.sprite = sprite  # Guarda el sprite
         self.interactable_type = interactable_type  # Guarda el tipo de interactuable
-        
+        self.dialogue = dialogue
         # Configuración general
         if self.sprite is None:
             self.image = pygame.Surface((32, 32))
@@ -27,7 +27,8 @@ class InteractableObject(pygame.sprite.Sprite):
         self.visible = True
         self.make_invisible("fuera")
 
-    def interact(self, inventory):
+    def interact(self, inventory,level):
+   
         if self.visible == True:
             if self.interactable_type == "trigo":
                 inventory.añadir_trigo()
@@ -39,7 +40,12 @@ class InteractableObject(pygame.sprite.Sprite):
                 inventory.añadir_dinero()
                 self.kill()
             elif self.interactable_type == "Fin":
-                inventory.salir()
+                level.salir()
+        
+        if self.interactable_type == "cartel_modista": 
+            self.dialogue.dibujar_cartel(inventory,"Estimado cliente: El establecimiento Eva Modista permanecera cerrado por reformas durante un tiempo.") 
+        elif self.interactable_type == "cartel_mercader":
+            self.dialogue.dibujar_cartel(inventory,"Estimado cliente: El establecimiento de Xoel el Mercader permanecera cerrado durante un tiempo por asuntos personales...")
 
     def make_invisible(self, location):
         if self.location != location:

@@ -104,6 +104,9 @@ class Animal(pygame.sprite.Sprite):
             elif personaje == "vaca":
                 dialogue.set_opcion_dialogo(True)
                 dialogue.dibujar_dialogo(inventory, "vaca")
+            elif personaje == "cabra":
+                dialogue.set_opcion_dialogo(True)
+                dialogue.dibujar_dialogo(inventory, "cabra")
 
           
     def update(self, dt):

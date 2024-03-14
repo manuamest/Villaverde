@@ -23,7 +23,7 @@ class Objectives:
                 Requirement(lambda state: inventory.get_madera() >= 20 , "4"),
             ], (lambda : self.dropdown.set_check_button(4))),
             Objective([
-                Requirement(lambda state: dialogue.get_objetos_a_jordi() == True, "5")
+                #Requirement(lambda state: dialogue.get_objetos_a_jordi() == True, "5")
             ], (lambda : self.dropdown.set_check_button(5)))
             ]
         objectives_check_n2 = [

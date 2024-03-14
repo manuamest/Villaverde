@@ -5,6 +5,7 @@ from soil import SoilLayer
 from level import Level, CameraGroup
 from settings import *
 from menu import Menu
+from inventory import Inventory
 from moviepy.editor import VideoFileClip
 import os
 from pyvidplayer import Video
@@ -27,10 +28,11 @@ class Director:
         # Ajustes necesarios en el futuro para los levels
         self.all_sprites = CameraGroup()
         self.soil_layer = SoilLayer(self.all_sprites)
+        self.inventory = Inventory(self.screen)
         self.last_growth_time = time.time()
-        self.levels = [Level(self.soil_layer, self.all_sprites, self.screen, "Nivel1"),
-                        Level(self.soil_layer, self.all_sprites, self.screen, "Nivel2"),
-                        Level(self.soil_layer, self.all_sprites, self.screen, "Nivel3")]
+        self.levels = [Level(self.soil_layer, self.all_sprites, self.screen,self.inventory, "Nivel1"),
+                        Level(self.soil_layer, self.all_sprites, self.screen,self.inventory, "Nivel2"),
+                        Level(self.soil_layer, self.all_sprites, self.screen,self.inventory, "Nivel3")]
         self.menu = Menu(self.screen, self.clock)
 
         self.paused = False
@@ -119,7 +121,7 @@ class Director:
 
                 pygame.display.update()
             
-            self.salir_escena = level.inventory.salir_escena
+            self.salir_escena = level.salir_escena
 
 if __name__ == '__main__':
     director = Director()

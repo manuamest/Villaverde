@@ -16,7 +16,7 @@ from dialogue_strategy import Dialogue_Strategy
 from objectives import Objectives
 
 class Level:
-    def __init__(self, soil_layer, all_sprites, screen, escene):
+    def __init__(self, soil_layer, all_sprites, screen,inventory, escene):
         self.display_surface = pygame.display.get_surface()
         self.collision_sprites = pygame.sprite.Group()
         self.tree_sprites = pygame.sprite.Group()
@@ -24,13 +24,14 @@ class Level:
 
         self.escene = escene
         self.screen = screen
+        self.inventory = inventory
+        self.salir_escena = False
 
         # Dialogue
-        self.dialogue = Dialogue(self.screen)
-        self.inventory = Inventory(self.screen)
-
+        self.dialogue = Dialogue(self.screen,self.escene,self.inventory)
         self.draw = Draw(self.screen)
-        self.dialogue_strategy = Dialogue_Strategy(self.draw)
+        self.dialogue_strategy = Dialogue_Strategy(self.draw,escene)
+     
 
         self.soil_layer = soil_layer
         self.all_sprites = all_sprites
@@ -42,6 +43,9 @@ class Level:
         self.font = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 40)
         #self.setup()
         self.cnt = 0
+    
+    def salir(self):
+        self.salir_escena = True
         
 
     def setup(self):
@@ -272,7 +276,21 @@ class Level:
         if self.escene == "Nivel1":
             objects_list.append(InteractableObject(
                 pos=(860, 836),
-                group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero", location="wuan"))      
+                group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero", location="wuan")) 
+            objects_list.append(InteractableObject(
+                 pos=(1890, 1420),
+                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_modista", location="fuera"))   
+            objects_list.append(InteractableObject(
+                 pos=(2275, 1420),
+                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_mercader", location="fuera"))   
+        
+        elif self.escene == "Nivel3":
+            objects_list.append(InteractableObject(
+                 pos=(1890, 1420),
+                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_modista", location="fuera"))   
+            objects_list.append(InteractableObject(
+                 pos=(2275, 1420),
+                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_mercader", location="fuera"))        
         else:
             objects_list.append(InteractableObject(
                 pos=(1700, 4100),
@@ -344,7 +362,7 @@ class Level:
         elif self.escene == "Nivel3":
             animals_list.append(Animal(
                 pos=(992, 868), 
-                group=self.all_sprites, animal_type="cabra", inventory=self.inventory, dialogue=self.dialogue,personaje="oveja", prime=True, walk=0, location="final2"))
+                group=self.all_sprites, animal_type="cabra", inventory=self.inventory, dialogue=self.dialogue,personaje="cabra", prime=True, walk=0, location="final2"))
 
             animals_list.append(Animal(
                 pos=(1156, 4596), 

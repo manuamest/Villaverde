@@ -32,12 +32,12 @@ class Player(pygame.sprite.Sprite):
 
         self.puzle = Puzle(self.inventory.screen)
 
+        self.level = level
+
         # Diálogo
-        self.dialogue = dialogue
+        self.dialogue = Dialogue(self.inventory.pantalla,self.level.escene,self.inventory)
         self.personaje_actual = None
         
-
-        self.level = level
 
         self.timers = {
             'uso de herramienta': Timer(350, self.use_tool),
@@ -187,7 +187,7 @@ class Player(pygame.sprite.Sprite):
 
                         elif distancia < 50:  
                             if isinstance(sprite, InteractableObject):
-                                sprite.interact(self.inventory)
+                                sprite.interact(self.inventory,self.level)
                             
     def get_status(self):
         # Si no hay movimiento (está en reposo)
@@ -272,11 +272,14 @@ class Player(pygame.sprite.Sprite):
                     self.level.change_map(self.level.main_tmx_map, True, "exterior_cementerio")
                     return True
 
-                if obj.name == "puertafinal":
-                    self.level.change_map("./code/mapa/final/final.tmx", False, "final1")
-                    return True
-                if obj.name == "puertafinal2":
-                    self.puzle.start_puzle()     
+                elif obj.name == "puertafinal":
+                    if self.level.escene == "Nivel3":
+                        if self.dialogue.dibujar_cartel(self.inventory):
+                            self.level.change_map("./code/mapa/final/final.tmx", False, "final1")
+                        return True
+                        
+                elif obj.name == "puertafinal2":
+                    #self.puzle.start_puzle()     
                     self.level.change_map("./code/mapa/final/final2.tmx", False, "final2")              
                     return True
                 

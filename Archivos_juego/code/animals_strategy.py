@@ -2,10 +2,10 @@
 from dialogue_strategy import Dialogue_Strategy
 
 class DialogoPolloEstrategia(Dialogue_Strategy):
-    def obtener_dialogo(self, contexto):
+    def obtener_dialogo(self, contexto,escene):
 
         if contexto.get_contador_llave() == 3:
-            return self.draw.dialogos_llave_magistral
+                return self.draw.dialogos_llave_magistral
         if contexto.obtener_opcion_escogida_pollo():
             if contexto.obtener_opcion_seleccionada_pollo() == 1:
                 return self.draw.dialogos_pollo_4
@@ -16,7 +16,7 @@ class DialogoPolloEstrategia(Dialogue_Strategy):
     def manejar_opciones(self, contexto):
         return ["Dar Jordan a la gallina Daniel", "Tendras que esperar por tus Jordan"]
     
-    def manejar_interacciones(self, keys, inventory, inicio_texto_x, inicio_texto_y, longitud_actual, personaje,contexto):
+    def manejar_interacciones(self, keys, inventory, inicio_texto_x, inicio_texto_y, longitud_actual, personaje,contexto,escene):
         dialogos_personaje = contexto.obtener_dialogo_personaje(personaje)
         indice_dialogo = contexto.obtener_indice_personaje(personaje)
         fin_dialogo = longitud_actual >= len(dialogos_personaje[indice_dialogo]) and indice_dialogo == len(dialogos_personaje) - 1
@@ -47,7 +47,7 @@ class DialogoPolloEstrategia(Dialogue_Strategy):
                 contexto.set_jordan_dadas(False)
     
 
-    def reset_dialogo(self,keys, dialogos_personaje,timers,personaje_actual,contexto):
+    def reset_dialogo(self,keys, dialogos_personaje,timers,personaje_actual,contexto,escene):
         contexto.set_opcion_dialogo(True)
         contexto.set_indice_personaje(personaje_actual, 0)
         if contexto.obtener_opcion_escogida_pollo():
@@ -86,9 +86,18 @@ class DialogoPolloEstrategia(Dialogue_Strategy):
                         contexto.set_indice_personaje(personaje_actual, 2) 
                         personaje_actual = None
         
+        else:
+                        contexto.set_opcion_dialogo(False)
+                        contexto.set_final_dialogo(False)
+                        contexto.set_jordan_dadas(False)
+                        contexto.set_opcion_escogida_pollo(False)
+                        contexto.set_indice_personaje(personaje_actual, 2) 
+                        personaje_actual = None
+        
+        
 
 class DialogoVacaEstrategia(Dialogue_Strategy):
-    def obtener_dialogo(self, contexto):
+    def obtener_dialogo(self, contexto,escene):
         if contexto.obtener_opcion_escogida_vaca():
             if contexto.get_contador_llave() == 3:
                 return self.draw.dialogos_llave_magistral
@@ -102,7 +111,7 @@ class DialogoVacaEstrategia(Dialogue_Strategy):
     def manejar_opciones(self, contexto):
         return ["Dar gafas Swarovski para que vaya con estilo", "Lo siento Vaca Clara, aun no las he conseguido"]
     
-    def manejar_interacciones(self, keys, inventory, inicio_texto_x, inicio_texto_y, longitud_actual, personaje,contexto):
+    def manejar_interacciones(self, keys, inventory, inicio_texto_x, inicio_texto_y, longitud_actual, personaje,contexto,escene):
         dialogos_personaje = contexto.obtener_dialogo_personaje(personaje)
         indice_dialogo = contexto.obtener_indice_personaje(personaje)
         fin_dialogo = longitud_actual >= len(dialogos_personaje[indice_dialogo]) and indice_dialogo == len(dialogos_personaje) - 1
@@ -127,14 +136,14 @@ class DialogoVacaEstrategia(Dialogue_Strategy):
                     if contexto.get_contador_llave() == 3:
                         inventory.añadir_llave()
                 else:
-                        contexto.get_gafas_dadas(False)
+                        contexto.set_gafas_dadas(False)
             elif contexto.opcion_seleccionada == 1:
                 contexto.set_opcion_seleccionada_vaca(1)
                 contexto.set_opcion_escogida_vaca(True)
                 contexto.set_gafas_dadas(False)
     
 
-    def reset_dialogo(self,keys, dialogos_personaje,timers,personaje_actual,contexto):
+    def reset_dialogo(self,keys, dialogos_personaje,timers,personaje_actual,contexto,escene):
             contexto.set_opcion_dialogo(True)
             contexto.set_indice_personaje(personaje_actual, 0)
             if contexto.obtener_opcion_escogida_vaca():
@@ -175,8 +184,9 @@ class DialogoVacaEstrategia(Dialogue_Strategy):
                             contexto.set_indice_personaje(personaje_actual, 2) 
                             personaje_actual = None
 
+
 class DialogoOvejaEstrategia(Dialogue_Strategy):
-    def obtener_dialogo(self, contexto):
+    def obtener_dialogo(self, contexto,escene):
         if contexto.obtener_opcion_escogida_oveja():
             if contexto.get_contador_llave() == 3:
                 return self.draw.dialogos_llave_magistral
@@ -190,7 +200,7 @@ class DialogoOvejaEstrategia(Dialogue_Strategy):
     def manejar_opciones(self, contexto):
         return ["Dar bufanda Ovejana a Oscar", "Oscar, aun no te puedo dar tu bufanda"]
     
-    def manejar_interacciones(self, keys, inventory, inicio_texto_x, inicio_texto_y, longitud_actual, personaje,contexto):
+    def manejar_interacciones(self, keys, inventory, inicio_texto_x, inicio_texto_y, longitud_actual, personaje,contexto,escene):
         dialogos_personaje = contexto.obtener_dialogo_personaje(personaje)
         indice_dialogo = contexto.obtener_indice_personaje(personaje)
         fin_dialogo = longitud_actual >= len(dialogos_personaje[indice_dialogo]) and indice_dialogo == len(dialogos_personaje) - 1
@@ -222,13 +232,12 @@ class DialogoOvejaEstrategia(Dialogue_Strategy):
                 contexto.set_bufandas_dadas(False)
 
 
-    def reset_dialogo(self,keys, dialogos_personaje,timers,personaje_actual,contexto):
+    def reset_dialogo(self,keys, dialogos_personaje,timers,personaje_actual,contexto,escene):
         contexto.set_opcion_dialogo(True)
         contexto.set_indice_personaje(personaje_actual, 0)
         if contexto.obtener_opcion_escogida_oveja():
             if contexto.obtener_final_dialogo():   
                 if contexto.obtener_opcion_seleccionada_oveja() == 0:
-
 
                     if contexto.get_contador_llave() == 3:
 
@@ -263,3 +272,20 @@ class DialogoOvejaEstrategia(Dialogue_Strategy):
                         contexto.set_opcion_escogida_oveja(False)
                         contexto.set_indice_personaje(personaje_actual, 2) 
                         personaje_actual = None
+        
+
+        else:
+
+                    contexto.set_opcion_dialogo(False)
+                    contexto.set_final_dialogo(False)
+                    contexto.set_bufandas_dadas(False)
+                    contexto.set_opcion_escogida_oveja(False)
+                    contexto.set_indice_personaje(personaje_actual, 2) 
+                    personaje_actual = None
+
+class DialogoCabraEstrategia(Dialogue_Strategy):
+    def obtener_dialogo(self, contexto,escene):
+        return self.draw.dialogos_cabra
+
+
+            
