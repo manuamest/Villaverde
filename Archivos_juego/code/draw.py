@@ -1,17 +1,81 @@
 import pygame
+import time
 from settings import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class Draw:
-    def __init__(self,screen):
+    def __init__(self,screen,dialogue,escene):
       
+      self.dialogue = dialogue
+      self.escene = escene
       self.pantalla = screen
+      self.pantalla_ancho = SCREEN_WIDTH
+      self.pantalla_alto = SCREEN_HEIGHT
+
+      # Fuente
       self.fuente = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 28)
       self.MARRON = (128, 58, 58)
+      self.COLOR_LETRAS = (238, 212, 167)
+
+      # Sonidos
+      self.sonido_llaves = pygame.mixer.Sound("./code/sounds/llaves.wav")
+      self.sonido_select = pygame.mixer.Sound("./code/sounds/select.wav")
+
+      # Imágenes
+      self.imagen_cartel = pygame.image.load('./code/sprites/tutorial/tutorial_sin_z.png').convert_alpha()
+      self.imagen_fondo_dialogo = pygame.image.load('./code/sprites/dialogos/dialogue_box2.png').convert_alpha()
+      self.imagen_menu = pygame.image.load('./code/sprites/dialogos/menu.png').convert_alpha()
+      self.don_diego = pygame.image.load('./code/sprites/dialogos/diego.png').convert_alpha()
+      self.butanero_jordi = pygame.image.load('./code/sprites/dialogos/jordi.png').convert_alpha()
+      self.mercader = pygame.image.load('./code/sprites/dialogos/xoel.png').convert_alpha()
+      self.modista = pygame.image.load('./code/sprites/dialogos/eva.png').convert_alpha()
+      self.pollo = pygame.image.load('./code/sprites/dialogos/dialogo_pollo.png').convert_alpha()
+      self.oveja = pygame.image.load('./code/sprites/dialogos/dialogo_oveja.png').convert_alpha()
+      self.cabra = pygame.image.load('./code/sprites/dialogos/oscar_dialogo.png').convert_alpha()
+      self.vaca =  pygame.image.load('./code/sprites/dialogos/dialogo_vaca.png').convert_alpha()
+      self.pablo = pygame.image.load('./code/sprites/dialogos/pablo_manu.png').convert_alpha()
+      self.manu = pygame.image.load('./code/sprites/dialogos/pablo_manu.png').convert_alpha()
+
+
+
+      # Atributos
+      self.cantidad_seleccionada = 0
       self.caracter_especial_dibujado = False
+      self.update = time.time()
+      self.longitud_actual = 0
+      self.cartel_procesado = False
+      self.cartel_active = False
+      self.retraso_navegacion = 0 
       self.marcador= '\u00A0' 
+      self.message = "Parece que para entrar aqui se necesita la Llave Magistral" 
+      self.precios = {
+            "mercader": {"Madera": 5, "Trigo": 3},
+            "modista": {"Jordan": 10, "Bufanda y boina": 7,"Gafas y cadena":5}
+        }
+      
       self.definir_dialogos()
-   
+
+    
+
+    # Reinicio de letras en el diálogo
+    def reiniciar_letras(self):
+        self.longitud_actual = 0
+        self.update = time.time()
+
+    # Métodos para las cantidades seleccionadas en las tiendas
+
+    def obtener_cantidad_seleccionada(self):
+        return self.cantidad_seleccionada
+
+    def obtener_item_seleccionado(self):
+        return self.item_seleccionado
+
+    def set_cantidad_seleccionada(self, cantidad_seleccionada):
+        self.cantidad_seleccionada = cantidad_seleccionada
+
+
+    # Diálogos del videojuego
+
     def definir_dialogos(self):
         self.dialogos_dondiego  = ["Que va a ser de mi?, mi granja esta destrozada y Fer ha desaparecido...", "Por favor, Wuan, coge la bolsa que tengo en casa con todos mis ahorros y habla con Jordi el obrero, el quizas nos pueda ayudar.", "Todo esta en tus manos..."]
         self.dialogos_dondiego_2 = ["Ugh...ugh...necesito una monst...er.", "Querido Wuan, salva la granja...esta todo en tus manos.", "Eres el unico capaz de hacer que me vaya de esta vida en paz...cumple solo este favor..."]
@@ -67,8 +131,223 @@ class Draw:
         for lista_dialogos in dialogos:
                 for i in range(len(lista_dialogos)):
                     lista_dialogos[i] = lista_dialogos[i] + self.marcador
+                    
 
 
+    # Función para dibujar el diálogo con los personajes
+ 
+    def dibujar_dialogo(self, inventory, personaje):
+            if self.dialogue.dialogo_abierto:
+                dialogo_ancho = 850
+                dialogo_alto = -100
+                dialogo_x = self.pantalla_ancho // 2 - dialogo_ancho // 2
+                dialogo_y = self.pantalla_alto // 2 - dialogo_alto // 2
+                inicio_texto_x = dialogo_x + 30
+                inicio_texto_y = dialogo_y + 50
+                keys = pygame.key.get_pressed()
+                indice_dialogo_actual = self.dialogue.obtener_indice_personaje(personaje)
+                dialogos_personaje = self.dialogue.obtener_dialogo_personaje(personaje)
+
+                if 0 <= indice_dialogo_actual < len(dialogos_personaje):
+                    self.pantalla.blit(self.imagen_fondo_dialogo, (dialogo_x, dialogo_y))
+                    tiempo_actual = time.time()
+
+                    if keys[pygame.K_SPACE]:  
+                        self.longitud_actual = len(dialogos_personaje[indice_dialogo_actual])
+                    elif tiempo_actual - self.update > 0.05:
+                        if self.longitud_actual < len(dialogos_personaje[indice_dialogo_actual]):
+                            self.longitud_actual += 1
+                            self.update = tiempo_actual
+
+                    texto_mostrado = dialogos_personaje[indice_dialogo_actual][:self.longitud_actual]
+                    self.dibujar_frases(texto_mostrado, inicio_texto_x, inicio_texto_y)
+                    
+                    personajes = {
+                        "don diego": (self.don_diego, 'DON DIEGO'),
+                        "butanero": (self.butanero_jordi, 'JORDI EL BUTANERO'),
+                        "mercader": (self.mercader,'XOEL EL MERCADER'),
+                        "modista": (self.modista, 'EVA LA MODISTA'),
+                        "pollo": (self.pollo,'GALLINA DANIEL'),
+                        "vaca":(self.vaca,'VACA CLARA'),
+                        "oveja":(self.oveja,'OVEJA OSCAR'),
+                        "cabra":(self.cabra,'CABRA FER'),
+                        "hermanos": (self.manu,'HERMANO PABLO') if self.dialogue.obtener_indice_personaje(personaje) % 2 == 0 else (self.pablo,'HERMANO MANUEL')
+                    }
+
+                    if personaje in personajes:
+                        imagen, nombre = personajes[personaje]
+                        self.pantalla.blit(imagen, (self.pantalla_ancho - 445, dialogo_y + 25))
+                        self.dialogue.manejar_interacciones(personaje, keys, inventory, inicio_texto_x, inicio_texto_y, self.longitud_actual)
+                    else:
+                        nombre = ''
+
+                    texto_superficie = self.fuente.render(nombre, True, self.MARRON)
+                    texto_rect = texto_superficie.get_rect(center=(self.pantalla_ancho - 350, dialogo_y + 260))
+                    self.pantalla.blit(texto_superficie, texto_rect)
+
+
+    # Función para dibujar el menú de las tiendas
+
+    def dibujar_menu(self, personaje, inventory, keys):
+        
+        if not self.dialogue.obtener_opcion_escogida(): 
+          
+            opciones = {"mercader": ["Madera", "Trigo"], "modista": ["Jordan", "Bufanda y boina","Gafas y cadena"]}.get(personaje, [])
+            self.dialogue.cantidades = {opcion: self.dialogue.cantidades.get(opcion, 0) for opcion in opciones}
+            menu_ancho, menu_alto = 350, 400
+            menu_x, menu_y = self.pantalla_ancho // 2 - menu_ancho // 2 - 400, self.pantalla_alto // 2 - menu_alto // 2 - 155
+            self.pantalla.blit(pygame.transform.scale(self.imagen_menu, (menu_ancho, menu_alto)), (menu_x, menu_y))
+
+            for evento in pygame.event.get():
+                    if evento.type == pygame.KEYDOWN:
+                        if evento.key == pygame.K_RIGHT:
+                            if personaje == "modista":
+                                cantidad_anterior = self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]]
+                                self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]] = min(cantidad_anterior + 1, 1)  
+                                if cantidad_anterior != self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]]:
+                                    self.sonido_select.play()  
+                            else:
+                                cantidad_anterior = self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]]
+                                self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]] += 1  
+                                if cantidad_anterior != self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]]:
+                                    self.sonido_select.play()  
+                        elif evento.key == pygame.K_LEFT and self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]] > 0:
+                            cantidad_anterior = self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]]
+                            self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]] -= 1
+                            if cantidad_anterior != self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]]:
+                                self.sonido_select.play()  
+
+            if keys[pygame.K_UP] and self.dialogue.opcion_seleccionada > 0:
+                if self.retraso_navegacion == 0:
+                    self.dialogue.opcion_seleccionada -= 1
+                    self.retraso_navegacion = 10  
+                    self.sonido_select.play() 
+                    self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada + 1]] = 0
+                    
+            elif keys[pygame.K_DOWN] and self.dialogue.opcion_seleccionada < len(opciones) - 1:
+                if self.retraso_navegacion == 0:
+                    self.dialogue.opcion_seleccionada += 1
+                    self.retraso_navegacion = 10 
+                    self.sonido_select.play() 
+                    self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada - 1]] = 0
+            
+         
+
+            if self.retraso_navegacion > 0:
+                self.retraso_navegacion -= 1
+
+            for indice, opcion in enumerate(opciones):
+                color = (255, 0, 0) if indice == self.dialogue.opcion_seleccionada else self.COLOR_LETRAS
+                opcion_texto = self.fuente.render(f"{opcion}: {self.dialogue.cantidades[opcion]}", True, color)
+                barra_x, barra_y = menu_x + 50, menu_y + 60 + (indice * 50)
+
+                pygame.draw.rect(self.pantalla, (0, 0, 0), (barra_x - 20, barra_y, 280, 40), border_radius=5)
+                pygame.draw.rect(self.pantalla, self.MARRON, (barra_x + 2 - 20, barra_y + 2, 276, 36), border_radius=5)
+                self.pantalla.blit(opcion_texto, (barra_x + 10 - 20, barra_y + 10))
+
+                if opcion in inventory.sprites_items:
+                    sprite_escalado = pygame.transform.scale(inventory.sprites_items[opcion], (36, 36))
+                    self.pantalla.blit(sprite_escalado, (barra_x + 240 - 20, barra_y + 2))
+
+            if keys[pygame.K_x]:
+                self.dialogue.set_confirmacion_abierta(True)
+                self.item_seleccionado = opciones[self.dialogue.opcion_seleccionada]
+                self.cantidad_seleccionada = self.dialogue.cantidades[self.item_seleccionado]
+                if personaje == "modista":
+                    for opcion in opciones:
+                        if opcion in inventory.sprites_items:
+                            self.dialogue.cantidades[opcion] = 0
+
+    
+    # Función para poder avanzar los diálogos
+        
+    def procesar_dialogo(self, keys, dialogos_personaje, timers, personaje_actual):
+        if keys[pygame.K_x] and not timers['dialogo'].active and self.caracter_especial_dibujado:
+            timers['dialogo'].activate()
+            indice_actual = self.dialogue.obtener_indice_personaje(personaje_actual)
+            self.dialogue.set_indice_personaje(personaje_actual, indice_actual + 1)
+            self.reiniciar_letras()
+            indice_actualizado = self.dialogue.obtener_indice_personaje(personaje_actual)
+
+            if indice_actualizado >= len(dialogos_personaje):
+                estrategia = self.dialogue.estrategias_dialogo.get(personaje_actual)
+                if estrategia:
+                    estrategia.reset_dialogo(keys, dialogos_personaje,timers,personaje_actual,self.dialogue,self.escene,self)  
+                else:
+                    pass
+
+    
+    # Función para dibujar el cartel de las tiendas y de la puerta final
+
+    def dibujar_cartel(self, inventory, mensaje=None):
+        self.cartel_active = True  
+        self.opcion_seleccionada = 0
+        if mensaje is None:
+            mensaje = self.message
+
+        self.update = 0
+        self.longitud_actual = 0
+        opciones_renderizadas = False
+
+        while self.cartel_active:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                elif event.type == pygame.KEYDOWN:
+                    if opciones_renderizadas:
+                        if event.key == pygame.K_UP:
+                            self.opcion_seleccionada = max(0, self.opcion_seleccionada - 1)
+                        elif event.key == pygame.K_DOWN:
+                            self.opcion_seleccionada = min(len(self.opciones) - 1, self.opcion_seleccionada + 1)
+
+            dialogo_ancho = 850
+            dialogo_alto = -100
+            dialogo_x = SCREEN_WIDTH // 2 - dialogo_ancho // 2
+            dialogo_y = SCREEN_HEIGHT // 2 - dialogo_alto // 2
+            inicio_texto_x = dialogo_x + (dialogo_ancho - 350) // 2
+            inicio_texto_y = dialogo_y + (dialogo_alto - 30) // 2 + 100
+
+            self.pantalla.blit(self.imagen_cartel, (inicio_texto_x, inicio_texto_y))
+
+            tiempo_actual = time.time()
+            if tiempo_actual - self.update > 0.05:
+                if self.longitud_actual < len(mensaje):
+                    self.longitud_actual += 1
+                    self.update = tiempo_actual
+
+            texto_mostrado = mensaje[:self.longitud_actual]
+            self.dibujar_frases(texto_mostrado, inicio_texto_x + 30, inicio_texto_y + 30, max_ancho_linea=350)
+
+            if mensaje == self.message and self.longitud_actual == len(mensaje):
+                self.opciones = ["Introducir Llave", "Esperar"]
+                opciones_y = inicio_texto_y + 80 + (len(self.opciones) * 30) // 2
+                for indice, opcion in enumerate(self.opciones):
+                    color = (255, 0, 0) if indice == self.opcion_seleccionada else self.MARRON
+                    opcion_texto = self.fuente.render(opcion, True, color)
+                    self.pantalla.blit(opcion_texto, (inicio_texto_x + 30, opciones_y + indice * 30))
+                opciones_renderizadas = True
+
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_x]:
+                self.cartel_active = False
+                if mensaje == self.message and opciones_renderizadas:
+                    if self.opcion_seleccionada == 0 and inventory.get_llave():
+                        self.sonido_llaves.play()
+                        inventory.eliminar_llave()
+                        self.cartel_procesado = True 
+                        return True
+                    elif self.opcion_seleccionada == 1:
+                        self.cartel_procesado = True
+                        return False
+                else:
+                    return False
+
+            pygame.display.flip()
+
+    
+
+    # Función para dibujar letra a letra el diálogo
+    
     def dibujar_frases(self, texto_mostrado, inicio_texto_x, inicio_texto_y, max_ancho_linea=450, color_texto=None):
 
         palabras = texto_mostrado.split(' ')
@@ -94,4 +373,3 @@ class Draw:
                             (inicio_texto_x, inicio_texto_y + y_offset))
             if self.marcador in linea_actual:
               self.caracter_especial_dibujado = True
-

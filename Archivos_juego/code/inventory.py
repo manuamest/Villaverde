@@ -28,10 +28,10 @@ class Inventory:
             "Madera": pygame.image.load('./code/sprites/madera.png'),
             "Trigo": pygame.image.load('./code/sprites/trigo.png'),
             "Bolsa de dinero": pygame.image.load('./code/sprites/dinero.png'),
-            'Bufanda y boina': pygame.image.load('./code/sprites/bufanda_y_boina.png'),
-            'Jordan': pygame.image.load('./code/sprites/jordan.png'),
-            'Gafas y cadena': pygame.image.load('./code/sprites/gafas.png'),
-            'Llave magistral': pygame.image.load('./code/sprites/llavemagistral.png')
+            "Bufanda y boina": pygame.image.load('./code/sprites/bufanda_y_boina.png'),
+            "Jordan": pygame.image.load('./code/sprites/jordan.png'),
+            "Gafas y cadena": pygame.image.load('./code/sprites/gafas.png'),
+            "Llave magistral": pygame.image.load('./code/sprites/llavemagistral.png')
         }
 
     def cambiar_imagen_inventario(self, estacion):

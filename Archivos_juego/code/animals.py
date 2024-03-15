@@ -91,22 +91,22 @@ class Animal(pygame.sprite.Sprite):
     def set_state(self, state):
         self.state = state
 
-    def talk_animal(self, dialogue, inventory, personaje):
+    def talk_animal(self, dialogue,draw, inventory, personaje):
         if self.visible == True:
             self.set_state("inactivo")
             self.stop_counter = 20
             if personaje == "pollo":
                 dialogue.set_opcion_dialogo(True)
-                dialogue.dibujar_dialogo(inventory, "pollo")
+                draw.dibujar_dialogo(inventory, "pollo")
             elif personaje == "oveja":
                 dialogue.set_opcion_dialogo(True)
-                dialogue.dibujar_dialogo(inventory, "oveja")     
+                draw.dibujar_dialogo(inventory, "oveja")     
             elif personaje == "vaca":
                 dialogue.set_opcion_dialogo(True)
-                dialogue.dibujar_dialogo(inventory, "vaca")
+                draw.dibujar_dialogo(inventory, "vaca")
             elif personaje == "cabra":
                 dialogue.set_opcion_dialogo(True)
-                dialogue.dibujar_dialogo(inventory, "cabra")
+                draw.dibujar_dialogo(inventory, "cabra")
 
           
     def update(self, dt):

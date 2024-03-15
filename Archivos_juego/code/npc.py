@@ -4,10 +4,11 @@ import os
 from settings import LAYERS
 
 class NPC(pygame.sprite.Sprite):
-    def __init__(self, pos, group, sprite_directory,inventory,dialogue, personaje, location):
+    def __init__(self, pos, group, sprite_directory,inventory,dialogue,draw, personaje, location):
         super().__init__(group)
         self.sprite_directory = sprite_directory
         self.dialogue = dialogue
+        self.draw = draw
         self.location = location
 
         # Load sprite images
@@ -48,19 +49,19 @@ class NPC(pygame.sprite.Sprite):
         if self.visible == True:
             if personaje == "don diego":
                 dialogue.set_opcion_dialogo(True)
-                dialogue.dibujar_dialogo(inventory, "don diego")
+                self.draw.dibujar_dialogo(inventory, "don diego")
             elif personaje == "mercader":
                 dialogue.set_opcion_dialogo(True)
-                dialogue.dibujar_dialogo(inventory,"mercader")
+                self.draw.dibujar_dialogo(inventory,"mercader")
             elif personaje == "modista":
                 dialogue.set_opcion_dialogo(True)
-                dialogue.dibujar_dialogo(inventory,"modista")
+                self.draw.dibujar_dialogo(inventory,"modista")
             elif personaje == "butanero":
                 dialogue.set_opcion_dialogo(True)
-                dialogue.dibujar_dialogo(inventory, "butanero")
+                self.draw.dibujar_dialogo(inventory, "butanero")
             elif personaje == "hermanos":
                 dialogue.set_opcion_dialogo(True)
-                dialogue.dibujar_dialogo(inventory, "hermanos")
+                self.draw.dibujar_dialogo(inventory, "hermanos")
 
     def make_invisible(self, location):
         if self.location != location:

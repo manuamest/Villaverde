@@ -29,7 +29,7 @@ class Level:
 
         # Dialogue
         self.dialogue = Dialogue(self.screen, self.escene, self.inventory)
-        self.draw = Draw(self.screen)
+        self.draw = Draw(self.screen,self.dialogue,self.escene)
         self.dialogue_strategy = Dialogue_Strategy(self.draw, escene)
      
         self.soil_layer = soil_layer
@@ -69,7 +69,7 @@ class Level:
             self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
 
             #Crear el jugador en la posición deseada
-            self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue)
+            self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue,draw=self.draw)
 
             self.npcs = self.create_npcs()
             self.objects = self.create_objects()
@@ -93,7 +93,7 @@ class Level:
             # Obtener la capa de colisiones
             self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
 
-            self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue)
+            self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue,draw=self.draw)
 
             self.npcs = self.create_npcs()
             self.objects = self.create_objects()
@@ -117,7 +117,7 @@ class Level:
             # Obtener la capa de colisiones
             self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
 
-            self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue)
+            self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue,draw=self.draw)
 
             self.npcs = self.create_npcs()
             self.objects = self.create_objects()
@@ -265,30 +265,30 @@ class Level:
 
         objects_list.append(InteractableObject(
             pos=(900, 4100),
-            group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/jordan.png", interactable_type="Fin", location="fuera"))
+            group=self.all_sprites, color=(255, 128, 0), draw=self.draw,dialogue=self.dialogue, sprite="./code/sprites/jordan.png", interactable_type="Fin", location="fuera"))
 
         if self.escene == "Nivel1":
             objects_list.append(InteractableObject(
                 pos=(860, 836),
-                group=self.all_sprites,color=(0,0,255),dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero", location="wuan")) 
+                group=self.all_sprites,color=(0,0,255),draw=self.draw,dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero", location="wuan")) 
             objects_list.append(InteractableObject(
                  pos=(1890, 1420),
-                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_modista", location="fuera"))   
+                group=self.all_sprites, color=(255, 128, 0),draw=self.draw, dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_modista", location="fuera"))   
             objects_list.append(InteractableObject(
                  pos=(2275, 1420),
-                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_mercader", location="fuera"))   
+                group=self.all_sprites, color=(255, 128, 0), draw=self.draw,dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_mercader", location="fuera"))   
         
         elif self.escene == "Nivel3":
             objects_list.append(InteractableObject(
                  pos=(1890, 1420),
-                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_modista", location="fuera"))   
+                group=self.all_sprites, color=(255, 128, 0), draw=self.draw,dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_modista", location="fuera"))   
             objects_list.append(InteractableObject(
                  pos=(2275, 1420),
-                group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_mercader", location="fuera"))        
+                group=self.all_sprites, color=(255, 128, 0),draw=self.draw, dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_mercader", location="fuera"))        
         else:
             objects_list.append(InteractableObject(
                 pos=(1700, 4100),
-                group=self.all_sprites, color=(255, 255, 0),dialogue=self.dialogue, sprite="./code/sprites/trigo.png", interactable_type="trigo", location="fuera"))
+                group=self.all_sprites, color=(255, 255, 0),draw=self.draw,dialogue=self.dialogue, sprite="./code/sprites/trigo.png", interactable_type="trigo", location="fuera"))
         
         return objects_list
 
@@ -299,41 +299,41 @@ class Level:
         if self.escene == "Nivel1":
             npcs_list.append(NPC(
                 pos=(1656, 3816),
-                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego", location="fuera"))
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,draw=self.draw,personaje="don diego", location="fuera"))
             
             npcs_list.append(NPC(
                 pos=(1900, 3950),
-                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,personaje="butanero", location="fuera"))
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,draw=self.draw,personaje="butanero", location="fuera"))
             
             npcs_list.append(NPC(
                 pos=(2400, 2520),
-                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Pablo_y_Manu",inventory=self.inventory, dialogue=self.dialogue,personaje="hermanos", location="fuera"))
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Pablo_y_Manu",inventory=self.inventory, dialogue=self.dialogue,draw=self.draw,personaje="hermanos", location="fuera"))
             
         elif self.escene == "Nivel2":
             npcs_list.append(NPC(
                 pos=(SCREEN_WIDTH / 2 + 550 , SCREEN_HEIGHT / 2 + 570),
-                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego", location="wuan"))
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,draw=self.draw,personaje="don diego", location="wuan"))
 
             npcs_list.append(NPC(
                 pos=(SCREEN_WIDTH / 2 + 680 , SCREEN_HEIGHT / 2 + 505),
-                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Eva_la_modista",inventory=self.inventory, dialogue=self.dialogue,personaje="modista", location="eva"))
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Eva_la_modista",inventory=self.inventory, dialogue=self.dialogue,draw=self.draw,personaje="modista", location="eva"))
             
             npcs_list.append(NPC(
                 pos=(SCREEN_WIDTH / 2 + 550 , SCREEN_HEIGHT / 2 + 570),
-                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", location="xoel"))
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,draw=self.draw,personaje="mercader", location="xoel"))
             
             npcs_list.append(NPC(
                 pos=(2330, 2500),
-                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Pablo_y_Manu",inventory=self.inventory, dialogue=self.dialogue,personaje="hermanos", location="fuera"))
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Pablo_y_Manu",inventory=self.inventory, dialogue=self.dialogue,draw=self.draw,personaje="hermanos", location="fuera"))
             
         else:
             npcs_list.append(NPC(
                 pos=(SCREEN_WIDTH / 2 + 550 , SCREEN_HEIGHT / 2 + 570),
-                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,personaje="don diego", location="wuan"))
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Don_Diego_el_VIEJO",inventory=self.inventory, dialogue=self.dialogue,draw=self.draw,personaje="don diego", location="wuan"))
             
             npcs_list.append(NPC(
                 pos=(912, 992),
-                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,personaje="mercader", location="final2"))
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Xoel_el_tendero",inventory=self.inventory, dialogue=self.dialogue,draw=self.draw,personaje="mercader", location="final2"))
             
         return npcs_list
 

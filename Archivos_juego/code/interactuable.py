@@ -3,13 +3,13 @@ import os
 from settings import LAYERS
 
 class InteractableObject(pygame.sprite.Sprite):
-    def __init__(self, pos, group, color, dialogue, sprite=None, interactable_type=None, location="fuera"):
+    def __init__(self, pos, group, color, draw,dialogue, sprite=None, interactable_type=None, location="fuera"):
         super().__init__(group)
         self.location = location
         self.color = color  # Guarda el color
         self.sprite = sprite  # Guarda el sprite
         self.interactable_type = interactable_type  # Guarda el tipo de interactuable
-        self.dialogue = dialogue
+        self.draw = draw
         # Configuración general
         if self.sprite is None:
             self.image = pygame.Surface((32, 32))
@@ -43,9 +43,9 @@ class InteractableObject(pygame.sprite.Sprite):
                 level.salir()
         
         if self.interactable_type == "cartel_modista": 
-            self.dialogue.dibujar_cartel(inventory,"Estimado cliente: El establecimiento Eva Modista permanecera cerrado por reformas durante un tiempo.") 
+            self.draw.dibujar_cartel(inventory,"Estimado cliente: El establecimiento Eva Modista permanecera cerrado por reformas durante un tiempo.") 
         elif self.interactable_type == "cartel_mercader":
-            self.dialogue.dibujar_cartel(inventory,"Estimado cliente: El establecimiento de Xoel el Mercader permanecera cerrado durante un tiempo por asuntos personales...")
+            self.draw.dibujar_cartel(inventory,"Estimado cliente: El establecimiento de Xoel el Mercader permanecera cerrado durante un tiempo por asuntos personales...")
 
     def make_invisible(self, location):
         if self.location != location:

@@ -10,7 +10,7 @@ from utils import import_folder
 from puzle import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_layer, soil_layer, tree_sprites, inventory, level, dialogue):
+    def __init__(self, pos, group, collision_layer, soil_layer, tree_sprites, inventory, level, dialogue,draw):
         super().__init__(group)
 
         self.import_assets()
@@ -18,6 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.status = 'abajo'
 
         self.inventory = inventory
+        self.draw = draw
 
         self.collision_layer = collision_layer
         self.soil_layer = soil_layer
@@ -157,9 +158,9 @@ class Player(pygame.sprite.Sprite):
                 self.frame_index = 0
             
             if self.dialogue.obtener_dialogo():
-                self.dialogue.dibujar_dialogo(self.inventory, self.personaje_actual)
+                self.draw.dibujar_dialogo(self.inventory, self.personaje_actual)
                 dialogos_personaje = self.dialogue.obtener_dialogo_personaje(self.personaje_actual)
-                self.dialogue.procesar_dialogo(keys, dialogos_personaje,self.timers,self.personaje_actual)
+                self.draw.procesar_dialogo(keys, dialogos_personaje,self.timers,self.personaje_actual)
                     
 
             if keys[pygame.K_q] and not self.timers['cambio de herramienta'].active and not self.dialogue.obtener_dialogo():
@@ -181,7 +182,7 @@ class Player(pygame.sprite.Sprite):
                             self.personaje_actual = sprite.personaje
                             self.set_talk_with(self.personaje_actual)
                         elif distancia < 110 and (isinstance(sprite, Animal)):
-                            sprite.talk_animal(self.dialogue, self.inventory, sprite.personaje)
+                            sprite.talk_animal(self.dialogue,self.draw, self.inventory, sprite.personaje)
                             self.personaje_actual = sprite.personaje
                             self.set_talk_with(self.personaje_actual)
 
@@ -274,7 +275,7 @@ class Player(pygame.sprite.Sprite):
 
                 elif obj.name == "puertafinal":
                     if self.level.escene == "Nivel3":
-                        if self.dialogue.dibujar_cartel(self.inventory):
+                        if self.draw.dibujar_cartel(self.inventory):
                             self.level.change_map("./code/mapa/final/final.tmx", False, "final1")
                         return True
                         
