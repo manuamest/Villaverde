@@ -12,6 +12,8 @@ class Draw:
       self.pantalla_ancho = SCREEN_WIDTH
       self.pantalla_alto = SCREEN_HEIGHT
 
+      self.opcion_menu = 0
+
       # Fuente
       self.fuente = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 28)
       self.MARRON = (128, 58, 58)
@@ -72,6 +74,10 @@ class Draw:
 
     def set_cantidad_seleccionada(self, cantidad_seleccionada):
         self.cantidad_seleccionada = cantidad_seleccionada
+
+    def set_opcion_menu(self, opcion):
+        self.opcion_menu = opcion
+
 
 
     # Diálogos del videojuego
@@ -202,34 +208,34 @@ class Draw:
                     if evento.type == pygame.KEYDOWN:
                         if evento.key == pygame.K_RIGHT:
                             if personaje == "modista":
-                                cantidad_anterior = self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]]
-                                self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]] = min(cantidad_anterior + 1, 1)  
-                                if cantidad_anterior != self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]]:
+                                cantidad_anterior = self.dialogue.cantidades[opciones[self.opcion_menu]]
+                                self.dialogue.cantidades[opciones[self.opcion_menu]] = min(cantidad_anterior + 1, 1)  
+                                if cantidad_anterior != self.dialogue.cantidades[opciones[self.opcion_menu]]:
                                     self.sonido_select.play()  
                             else:
-                                cantidad_anterior = self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]]
-                                self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]] += 1  
-                                if cantidad_anterior != self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]]:
+                                cantidad_anterior = self.dialogue.cantidades[opciones[self.opcion_menu]]
+                                self.dialogue.cantidades[opciones[self.opcion_menu]] += 1  
+                                if cantidad_anterior != self.dialogue.cantidades[opciones[self.opcion_menu]]:
                                     self.sonido_select.play()  
-                        elif evento.key == pygame.K_LEFT and self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]] > 0:
-                            cantidad_anterior = self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]]
-                            self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]] -= 1
-                            if cantidad_anterior != self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada]]:
+                        elif evento.key == pygame.K_LEFT and self.dialogue.cantidades[opciones[self.opcion_menu]] > 0:
+                            cantidad_anterior = self.dialogue.cantidades[opciones[self.opcion_menu]]
+                            self.dialogue.cantidades[opciones[self.opcion_menu]] -= 1
+                            if cantidad_anterior != self.dialogue.cantidades[opciones[self.opcion_menu]]:
                                 self.sonido_select.play()  
 
-            if keys[pygame.K_UP] and self.dialogue.opcion_seleccionada > 0:
+            if keys[pygame.K_UP] and self.opcion_menu > 0:
                 if self.retraso_navegacion == 0:
-                    self.dialogue.opcion_seleccionada -= 1
+                    self.opcion_menu -= 1
                     self.retraso_navegacion = 10  
                     self.sonido_select.play() 
-                    self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada + 1]] = 0
+                    self.dialogue.cantidades[opciones[self.opcion_menu + 1]] = 0
                     
-            elif keys[pygame.K_DOWN] and self.dialogue.opcion_seleccionada < len(opciones) - 1:
+            elif keys[pygame.K_DOWN] and self.opcion_menu < len(opciones) - 1:
                 if self.retraso_navegacion == 0:
-                    self.dialogue.opcion_seleccionada += 1
+                    self.opcion_menu += 1
                     self.retraso_navegacion = 10 
                     self.sonido_select.play() 
-                    self.dialogue.cantidades[opciones[self.dialogue.opcion_seleccionada - 1]] = 0
+                    self.dialogue.cantidades[opciones[self.opcion_menu - 1]] = 0
             
          
 
@@ -237,7 +243,7 @@ class Draw:
                 self.retraso_navegacion -= 1
 
             for indice, opcion in enumerate(opciones):
-                color = (255, 0, 0) if indice == self.dialogue.opcion_seleccionada else self.COLOR_LETRAS
+                color = (255, 0, 0) if indice == self.opcion_menu else self.COLOR_LETRAS
                 opcion_texto = self.fuente.render(f"{opcion}: {self.dialogue.cantidades[opcion]}", True, color)
                 barra_x, barra_y = menu_x + 50, menu_y + 60 + (indice * 50)
 
@@ -251,12 +257,14 @@ class Draw:
 
             if keys[pygame.K_x]:
                 self.dialogue.set_confirmacion_abierta(True)
-                self.item_seleccionado = opciones[self.dialogue.opcion_seleccionada]
+                self.item_seleccionado = opciones[self.opcion_menu]
                 self.cantidad_seleccionada = self.dialogue.cantidades[self.item_seleccionado]
-                if personaje == "modista":
-                    for opcion in opciones:
-                        if opcion in inventory.sprites_items:
-                            self.dialogue.cantidades[opcion] = 0
+                
+  
+        else:
+            self.opcion_menu = 0
+
+                            
 
     
     # Función para poder avanzar los diálogos

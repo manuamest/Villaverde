@@ -190,10 +190,13 @@ class DialogoMercaderEstrategia(Dialogue_Strategy):
         if contexto.opcion_seleccionada == 0 and material_suficiente:
             contexto.set_opcion_seleccionada(0)
             contexto.set_material_dado(True)
+            
             if draw.item_seleccionado == "Madera":
                 inventory.eliminar_madera(draw.cantidad_seleccionada)
+                draw.set_opcion_menu(0)
             elif draw.item_seleccionado == "Trigo":
                 inventory.eliminar_trigo(draw.cantidad_seleccionada)
+                draw.set_opcion_menu(0)
             inventory.añadir_dinero_mercader(pago)
         else:
             contexto.set_opcion_seleccionada(0 if contexto.opcion_seleccionada == 0 else 1)
@@ -292,12 +295,15 @@ class DialogoModistaEstrategia(Dialogue_Strategy):
                 if draw.item_seleccionado == "Jordan":
                     inventory.añadir_jordan()
                     contexto.jordan_compradas = True
+                    draw.set_opcion_menu(0)
                 elif draw.item_seleccionado == "Bufanda y boina":
                     inventory.añadir_bufandas()
                     contexto.bufandas_compradas = True
+                    draw.set_opcion_menu(0)
                 elif draw.item_seleccionado == "Gafas y cadena":
                     inventory.añadir_gafas()
                     contexto.gafas_compradas = True
+                    draw.set_opcion_menu(0)
             else:
                 contexto.set_opcion_seleccionada(0)
                 contexto.set_material_dado(False)
@@ -309,10 +315,10 @@ class DialogoModistaEstrategia(Dialogue_Strategy):
     def reset_dialogo(self,keys, dialogos_personaje,timers,personaje_actual,contexto,escene,draw):
         contexto.set_opcion_dialogo(True)
         contexto.set_indice_personaje(personaje_actual, 0)
-
+        
         if not contexto.obtener_opcion_escogida():
             contexto.set_opcion_seleccionada(0)
-
+            
         if contexto.jordan_compradas and  contexto.bufandas_compradas and contexto.gafas_compradas and contexto.todo_vendido == 1:
                    contexto.set_opcion_dialogo(True)
                    if contexto.obtener_final_dialogo():
