@@ -181,3 +181,6 @@ class Puzle:
     def start_puzle(self):
         self.new()  # Iniciar un nuevo juego
         self.run()  # Iniciar el bucle principal del juego
+
+    def get_is_complete(self):
+        return self.complete

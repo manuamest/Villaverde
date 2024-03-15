@@ -3,7 +3,7 @@ from settings import *
 
 class Objectives:
 
-    def __init__(self, screen, inventory, dialogue, player, soil_layer, opcion_mapa, director):
+    def __init__(self, screen, inventory, dialogue, player, soil_layer, nivel, director):
         # Evaluacion de objetivos
         objectives_check_n1 = [
             Objective([
@@ -23,7 +23,9 @@ class Objectives:
             ], (lambda : self.dropdown.set_check_button(4))),
             Objective([
                 Requirement(lambda state: dialogue.get_objetos_a_jordi() == True, "0")
-            ], (lambda : self.dropdown.set_check_button(5)))]
+            ], (lambda : self.dropdown.set_check_button(5)))
+        ]
+
         objectives_check_n2 = [
             Objective([
                 Requirement(lambda state: soil_layer.get_fase_cultivo("arar") == True, "0"),
@@ -56,12 +58,20 @@ class Objectives:
                 Requirement(lambda state: dialogue.get_jordan_dadas() == True, "0"),
                 Requirement(lambda state: dialogue.get_bufandas_dadas() == True, "1"),
                 Requirement(lambda state: dialogue.get_gafas_dadas() == True, "2")
-            ], (lambda : self.dropdown.set_check_button(9)))]
+            ], (lambda : self.dropdown.set_check_button(9)))
+        ]
         
         objectives_check_n3 = [
             Objective([
                 Requirement(lambda state: inventory.get_llave() == 1, "0")
-            ], (lambda : self.dropdown.set_check_button(0)))]
+            ], (lambda : self.dropdown.set_check_button(0))),
+            Objective([
+                Requirement(lambda state: player.puzle_is_complete() == True, "0")
+            ], (lambda : self.dropdown.set_check_button(1))),
+            Objective([
+                Requirement(lambda state: player.talk_with("cabra") == True, "0")
+            ], (lambda : self.dropdown.set_check_button(2))), 
+        ]
 
         # Objetivos que se mostraran en el desplegable
         objetivos_n1 = [("Habla con Don Diego", False),
@@ -80,18 +90,21 @@ class Objectives:
                         ("Habla con la gallina Daniel", False),
                         ("Habla con la oveja Oscar", False),
                         ("Habla con la vaca Klara", False),
-                        ("Haz que todos los animales sean felices de nuevo", False)
+                        ("Cumple el deseo de todos los animales", False)
                         ]
-        objetivos_n3 = [("Consigue la llave magistral", False)]
+        objetivos_n3 = [("Consigue la llave magistral", False),
+                        ("Resuelve el puzle", False),
+                        ("Habla con Fer", False)
+                        ]
 
-        self.opcion_mapa = opcion_mapa
-        if self.opcion_mapa == "verano":
+        self.nivel = nivel
+        if self.nivel == "Nivel1":
             self.objectives_check = objectives_check_n1
             self.objectives = objetivos_n1
-        elif self.opcion_mapa == "otoño":
+        elif self.nivel == "Nivel2":
             self.objectives_check = objectives_check_n2
             self.objectives = objetivos_n2
-        elif self.opcion_mapa == "invierno":
+        elif self.nivel == "Nivel3":
             self.objectives_check = objectives_check_n3
             self.objectives = objetivos_n3
 
@@ -106,12 +119,10 @@ class Objectives:
         for i in range(len(self.objectives)):
             if not self.objectives_check[i].is_completed():
                 self.objectives_check[i].evaluate()
-
-        nivel_completo = all(obj.is_completed() for obj in self.objectives_check)  # Verifica si todos los objetivos del nivel están completos
+        # Verifica si todos los objetivos del nivel están completos
+        nivel_completo = all(obj.is_completed() for obj in self.objectives_check)
         if nivel_completo:
-            if self.opcion_mapa == "verano" or self.opcion_mapa == "otoño":
-                self.director.set_salir_escena(True) # Establece cambia de nivel si todos los objetivos del nivel están completos
-            # print(f'Salir de escena {self.opcion_mapa} : {self.salir_escena}')
+            self.director.set_nivel_completo(True)
 
     def show_dropdown(self, left_mouse_button_down, event):
         if left_mouse_button_down and self.button.rect.collidepoint(event.pos):
@@ -134,7 +145,8 @@ class Objective:
         result = [(requirement.get_id(), requirement.evaluate(self.true_results)) for requirement in self.requirements]
         self.true_results = [id for (id, boolean) in result if boolean]
         boolean_results = [boolean for (id,boolean) in result]
-        if all(boolean_results) and not self.completed:  # Verifica si todos los requisitos son verdaderos y el objetivo no se ha completado previamente
+        # Verifica si todos los requisitos son verdaderos y el objetivo no se ha completado previamente
+        if all(boolean_results) and not self.completed:
             (self.action)()
             self.completed = True  # Marca el objetivo como completado
             return True
@@ -151,7 +163,6 @@ class Requirement:
         self.dependencies = dependencies
 
     def evaluate(self, true_results):
-        # print(f" REQ{self.id}")
         if set(self.dependencies).issubset(set(true_results)):
             result = (self.check)(self.state)
             self.state = result

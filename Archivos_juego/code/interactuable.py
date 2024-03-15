@@ -27,8 +27,7 @@ class InteractableObject(pygame.sprite.Sprite):
         self.visible = True
         self.make_invisible("fuera")
 
-    def interact(self, inventory,level):
-   
+    def interact(self, inventory, director):
         if self.visible == True:
             if self.interactable_type == "trigo":
                 inventory.añadir_trigo()
@@ -40,7 +39,7 @@ class InteractableObject(pygame.sprite.Sprite):
                 inventory.añadir_dinero()
                 self.kill()
             elif self.interactable_type == "Fin":
-                level.salir()
+                director.set_salir_escena(True)
         
         if self.interactable_type == "cartel_modista": 
             self.draw.dibujar_cartel(inventory,"Estimado cliente: El establecimiento Eva Modista permanecera cerrado por reformas durante un tiempo.") 

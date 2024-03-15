@@ -10,7 +10,7 @@ from utils import import_folder
 from puzle import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_layer, soil_layer, tree_sprites, inventory, level, dialogue,draw):
+    def __init__(self, pos, group, collision_layer, soil_layer, director, tree_sprites, inventory, level, dialogue, draw):
         super().__init__(group)
 
         self.import_assets()
@@ -34,6 +34,7 @@ class Player(pygame.sprite.Sprite):
         self.puzle = Puzle(self.inventory.screen)
 
         self.level = level
+        self.director = director
 
         # Diálogo
         self.dialogue = dialogue
@@ -188,7 +189,7 @@ class Player(pygame.sprite.Sprite):
 
                         elif distancia < 50:  
                             if isinstance(sprite, InteractableObject):
-                                sprite.interact(self.inventory,self.level)
+                                sprite.interact(self.inventory, self.director)
                             
     def get_status(self):
         # Si no hay movimiento (está en reposo)
@@ -309,3 +310,6 @@ class Player(pygame.sprite.Sprite):
     def talk_with(self, personaje):
         if personaje in self.talk_with_list:
             return self.talk_with_list[personaje]
+
+    def puzle_is_complete(self):
+        return self.puzle.get_is_complete()

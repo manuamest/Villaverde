@@ -57,7 +57,6 @@ class Level:
             self.level_text = pygame.transform.scale(self.level_text, (500, 500))
 
             # Cargar el mapa de Tiled
-            self.opcion_mapa = "verano"
             self.main_tmx_map = "./code/mapa/verano/mapa_verano.tmx"
             self.tmx_map = load_pygame(self.main_tmx_map)
 
@@ -69,7 +68,7 @@ class Level:
             self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
 
             #Crear el jugador en la posición deseada
-            self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue,draw=self.draw)
+            self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, self.director, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue,draw=self.draw)
 
             self.npcs = self.create_npcs()
             self.objects = self.create_objects()
@@ -82,7 +81,6 @@ class Level:
             self.level_text = pygame.transform.scale(self.level_text, (500, 500))
 
             # Cargar el mapa de Tiled
-            self.opcion_mapa = "otoño"   # Cambiar este string para cambiar de mapa
             self.main_tmx_map = "./code/mapa/otoño/mapa_otoño.tmx"
             self.tmx_map = load_pygame(self.main_tmx_map)
 
@@ -93,7 +91,7 @@ class Level:
             # Obtener la capa de colisiones
             self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
 
-            self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue,draw=self.draw)
+            self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, self.director, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue,draw=self.draw)
 
             self.npcs = self.create_npcs()
             self.objects = self.create_objects()
@@ -106,7 +104,6 @@ class Level:
             self.level_text = pygame.transform.scale(self.level_text, (500, 500))
 
             # Cargar el mapa de Tiled
-            self.opcion_mapa = "invierno"   # Cambiar este string para cambiar de mapa
             self.main_tmx_map = "./code/mapa/invierno/mapa_invierno.tmx"
             self.tmx_map = load_pygame(self.main_tmx_map)
 
@@ -117,7 +114,7 @@ class Level:
             # Obtener la capa de colisiones
             self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
 
-            self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue,draw=self.draw)
+            self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, self.director, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue,draw=self.draw)
 
             self.npcs = self.create_npcs()
             self.objects = self.create_objects()
@@ -135,10 +132,10 @@ class Level:
         self.overlay = Overlay(self.player)
         
         # Tutorial
-        self.tutorial = Tutorial(self.screen, self.opcion_mapa)
+        self.tutorial = Tutorial(self.screen, self.escene)
 
         # Objetives
-        self.objectives = Objectives(self.screen, self.inventory, self.dialogue, self.player, self.soil_layer, self.opcion_mapa, self.director)
+        self.objectives = Objectives(self.screen, self.inventory, self.dialogue, self.player, self.soil_layer, self.escene, self.director)
 
 
     def show_loading_screen(self):
@@ -257,15 +254,13 @@ class Level:
             obj.y *= self.zoom  # Aumentar la posición y
             obj.width *= self.zoom  # Aumentar el ancho
             obj.height *= self.zoom  # Aumentar la altura
-    
-
 
     def create_objects(self):
         objects_list = []
 
-        objects_list.append(InteractableObject(
-            pos=(900, 4100),
-            group=self.all_sprites, color=(255, 128, 0), draw=self.draw,dialogue=self.dialogue, sprite="./code/sprites/jordan.png", interactable_type="Fin", location="fuera"))
+        # objects_list.append(InteractableObject(
+        #     pos=(900, 4100),
+        #     group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/jordan.png", interactable_type="Fin", location="fuera"))
 
         if self.escene == "Nivel1":
             objects_list.append(InteractableObject(
@@ -404,6 +399,14 @@ class Level:
         
         self.objectives.evaluate()
 
+        # Crea el objeto para pasar de nivel
+        if self.director.get_nivel_completo():
+            if self.escene == "Nivel1" or self.escene == "Nivel2":
+                self.create_object_final((1830,4300), "./code/sprites/jordan.png", "fuera")
+            else:
+                self.jordan = self.create_object_final((1000, 1080), "./code/sprites/jordan.png", "final2")
+                self.jordan.make_invisible("final2")
+
         # Dropdown
         self.objectives.show_dropdown(left_mouse_button_down, event_mouse)
         
@@ -451,7 +454,12 @@ class Level:
         self.npcs.clear()
         self.objects.clear()
         self.animals.clear()
-                
+
+    def create_object_final(self, position, sprite, location):
+        return InteractableObject(
+                    pos=position,
+                    group=self.all_sprites, color=(255, 128, 0), draw=self.draw, dialogue=self.dialogue, sprite=sprite, interactable_type="Fin", location=location)
+
 class CameraGroup(pygame.sprite.Group):
     def __init__(self):
         super().__init__()

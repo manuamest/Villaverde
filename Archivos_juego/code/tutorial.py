@@ -6,7 +6,7 @@ from objectives import Objectives
 
 
 class Tutorial:
-    def __init__(self, screen, opcion_mapa):
+    def __init__(self, screen, nivel):
         self.pantalla = screen
         self.imagen_fondo_tutorial = pygame.image.load('./code/sprites/tutorial/tutorial.png').convert_alpha()
         self.posicion = self.imagen_fondo_tutorial.get_rect().topleft
@@ -36,9 +36,10 @@ class Tutorial:
             "Sigue explorando!"
             ]
 
-        if opcion_mapa == "verano":
+        self.nivel = nivel
+        if self.nivel == "Nivel1":
             self.tutorial_mensajes = tutorial_verano
-        elif opcion_mapa == "otoño":
+        elif self.nivel == "Nivel2":
             self.tutorial_mensajes = tutorial_otoño
         
         self.tutorial_on = True
@@ -50,10 +51,6 @@ class Tutorial:
 
         self.velocidad_texto = 0.07
         self.update = time.time()
-
-    # def activar_tutorial(self):
-    #     self.tutorial_on = True
-    #     self.indice_tutorial = 0
 
     def desactivar_tutorial(self):
         self.tutorial_on = False
