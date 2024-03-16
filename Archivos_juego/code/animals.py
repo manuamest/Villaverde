@@ -58,8 +58,9 @@ class Animal(pygame.sprite.Sprite):
             self.move_speed = 2
             self.target_positions = [(pos[0] + 30, pos[1] + 30), (pos[0] - 30, pos[1] - 30)]
         else:  # Predeterminado para otros animales
-            self.move_speed = 2
-            self.target_positions = [(pos[0] - 200, pos[1] - 60), (pos[0] + 10, pos[1] - 30)]
+            self.move_speed = 0.5
+            self.stop_duration = 400
+            self.target_positions = [(pos[0] + 5, pos[1] + 5), (pos[0] - 5, pos[1] - 5)]
 
         self.visible = True
         self.make_invisible("fuera")

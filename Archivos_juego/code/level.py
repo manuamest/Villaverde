@@ -41,6 +41,8 @@ class Level:
         self.font = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 40)
         #self.setup()
         self.cnt = 0
+        # Variable para el radio del círculo de transición
+        self.transition_radius = 30
 
     def setup(self):
         
@@ -172,6 +174,7 @@ class Level:
 
 
     def change_map(self, path, outside, place):
+
             
         if not outside:
             for tree in self.tree_sprites.sprites():
@@ -239,7 +242,7 @@ class Level:
             self.player.set_position(990, 1170)
         
         # Mostrar pantalla de carga
-        self.show_loading_screen()
+        #self.show_loading_screen()
 
         #Cargar el mapa de Tiled
         self.tmx_map = load_pygame(path)
@@ -254,6 +257,8 @@ class Level:
             obj.y *= self.zoom  # Aumentar la posición y
             obj.width *= self.zoom  # Aumentar el ancho
             obj.height *= self.zoom  # Aumentar la altura
+            
+        self.transition_effect_close()
 
     def create_objects(self):
         objects_list = []
@@ -359,11 +364,11 @@ class Level:
         
             animals_list.append(Animal(
                 pos=(2864, 3660),
-                group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue,personaje="pollo", prime=False, walk=0, location="fuera"))
+                group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue,personaje="pollo", prime=True, walk=0, location="fuera"))
 
             animals_list.append(Animal(
                 pos=(1308, 5120),
-                group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", prime=True, walk=1, location="fuera"))
+                group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", prime=True, walk=5, location="fuera"))
         
         
         return animals_list
@@ -460,6 +465,14 @@ class Level:
         return InteractableObject(
                     pos=position,
                     group=self.all_sprites, color=(255, 128, 0), draw=self.draw, dialogue=self.dialogue, sprite=sprite, interactable_type="Fin", location=location)
+
+
+    def transition_effect_close(self):
+        # Animación de cierre del círculo de transición
+        for i in range(1, 31):  # Aumenta el radio del círculo
+            pygame.draw.circle(self.screen, (0, 0, 0), (self.screen.get_width() // 2, self.screen.get_height() // 2), self.transition_radius * i)
+            pygame.display.update()
+            pygame.time.delay(30)  # Pequeña pausa entre cada paso de la animación
 
 class CameraGroup(pygame.sprite.Group):
     def __init__(self):

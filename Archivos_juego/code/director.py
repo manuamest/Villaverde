@@ -6,9 +6,8 @@ from level import Level, CameraGroup
 from settings import *
 from menu import Menu
 from inventory import Inventory
-from moviepy.editor import VideoFileClip
-import os
 from pyvidplayer import Video
+import os
 
 class Director:
     def __init__(self):
@@ -21,7 +20,6 @@ class Director:
 
         # Flag para salir de la escena
         self.salir_escena = False
-        self.nivel_completo = False
 
         # Reloj
         self.clock = pygame.time.Clock()
@@ -45,19 +43,20 @@ class Director:
         self.intro_name = 'videos/intro.mp4'
         self.credits_name = 'videos/creditos.mp4'
 
-    def run(self):
+        # Variable para el radio del círculo de transición
+        self.transition_radius = 30
 
+    def run(self):
         self.menu.show_start_screen()
         self.menu.run()
+        self.transition_effect_close()  # Transición al acabar el nivel
         self.tutorial_enabled = self.menu.tutorial_enabled
         
-        #self.playIntro()
-
         for level in self.levels:
             level.setup()
-            self.show_level_text = True
-            self.level_start_time = time.time()
+            self.transition_effect_open()  # Transición al empezar el nivel
             self.bucle(level)
+            self.transition_effect_close()  # Transición al acabar el nivel
             level.clean_level()
         
         self.playCredits()
@@ -100,7 +99,7 @@ class Director:
 
     def bucle(self, level):
         self.salir_escena = False
-
+        
         while not self.salir_escena:
             self.key_z_pressed = False
             left_mouse_button_down = False
@@ -126,10 +125,23 @@ class Director:
                 level.run(dt, self.key_z_pressed, left_mouse_button_down, event_mouse, self.tutorial_enabled)
                 pygame.display.update()                
             else:
-                self.screen.blit(self.overlay_surface, (0, 0))  # Agrega el filtro oscuro
-                self.menu.show_pause_menu() # Muestra las opciones de continuar y salir del juego
+                # Si el juego está pausado, mostrar menú de pausa
+                self.menu.show_pause_menu()
                 pygame.display.update()
-        # self.nivel_completo = False
+                
+    def transition_effect_open(self):
+        # Animación de apertura del círculo de transición
+        for i in range(30, 0, -1):  # Disminuye el radio del círculo
+            pygame.draw.circle(self.screen, (0, 0, 0), (self.screen.get_width() // 2, self.screen.get_height() // 2), self.transition_radius * i)
+            pygame.display.update()
+            self.clock.tick(30)  # Espera 30 milisegundos entre cada cuadro del juego
+
+    def transition_effect_close(self):
+        # Animación de cierre del círculo de transición
+        for i in range(1, 31):  # Aumenta el radio del círculo
+            pygame.draw.circle(self.screen, (0, 0, 0), (self.screen.get_width() // 2, self.screen.get_height() // 2), self.transition_radius * i)
+            pygame.display.update()
+            pygame.time.delay(30)  # Pequeña pausa entre cada paso de la animación
 
 if __name__ == '__main__':
     director = Director()
