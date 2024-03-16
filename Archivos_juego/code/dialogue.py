@@ -38,6 +38,8 @@ class Dialogue:
             self.contador_llave = 0
             self.opcion_escogida_obrero = False
             self.objetos_dados_a_jordi = False
+            
+            self.animals = []
 
 
             # Estrategia de cada personaje
@@ -48,9 +50,9 @@ class Dialogue:
                 "hermanos": DialogoHermanosEstrategia(self.draw,self.escene),
                 "mercader": DialogoMercaderEstrategia(self.draw,self.escene),
                 "modista": DialogoModistaEstrategia(self.draw,self.escene),
-                "pollo": DialogoPolloEstrategia(self.draw,self.escene),
-                "vaca": DialogoVacaEstrategia(self.draw,self.escene),
-                "oveja": DialogoOvejaEstrategia(self.draw,self.escene),
+                "pollo": DialogoPolloEstrategia(self.draw,self.escene,self.animals),
+                "vaca": DialogoVacaEstrategia(self.draw,self.escene,self.animals),
+                "oveja": DialogoOvejaEstrategia(self.draw,self.escene,self.animals),
                 "cabra": DialogoCabraEstrategia(self.draw,self.escene),
             }
         
@@ -77,6 +79,17 @@ class Dialogue:
 
 
     # Setters 
+    def set_animals(self, animals):
+        self.animals = animals
+        self.actualizar_estrategias_con_animales()
+
+    def actualizar_estrategias_con_animales(self):
+   
+        self.estrategias_dialogo["vaca"].set_animals(self.animals)
+        self.estrategias_dialogo["oveja"].set_animals(self.animals)
+        self.estrategias_dialogo["pollo"].set_animals(self.animals)
+
+
 
     def set_indice_personaje(self, personaje, indice):
         self.indices[personaje] = indice

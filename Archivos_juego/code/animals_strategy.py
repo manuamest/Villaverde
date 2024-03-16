@@ -2,6 +2,17 @@
 from dialogue_strategy import Dialogue_Strategy
 
 class DialogoPolloEstrategia(Dialogue_Strategy):
+
+    def __init__(self, draw, escene, animales):
+        self.animals = animales
+        self.draw = draw
+        self.escene = escene
+        
+        self.animals = animales if animales is not None else []
+
+    def set_animals(self, animals):
+        self.animals = animals
+
     def obtener_dialogo(self, contexto,escene,draw):
 
         if contexto.get_contador_llave() == 3:
@@ -36,6 +47,8 @@ class DialogoPolloEstrategia(Dialogue_Strategy):
                     if inventory.get_jordan():
                         contexto.set_jordan_dadas(True)
                         inventory.eliminar_jordan()
+                        self.animals[1].target_positions = [(self.animals[1].pos[0]+ 5, self.animals[1].pos[1] + 5), (self.animals[1].pos[0] - 5, self.animals[1].pos[1] - 5)]
+                        self.animals[1].make_prime()
                         contexto.set_incr_llave(1)
                         if contexto.get_contador_llave() == 3:
                             inventory.añadir_llave()
@@ -98,6 +111,16 @@ class DialogoPolloEstrategia(Dialogue_Strategy):
         
 
 class DialogoVacaEstrategia(Dialogue_Strategy):
+    def __init__(self, draw, escene, animales):
+        self.animals = animales
+        self.draw = draw
+        self.escene = escene
+        
+        self.animals = animales if animales is not None else []
+
+    def set_animals(self, animals):
+        self.animals = animals
+
     def obtener_dialogo(self, contexto,escene,draw):
         if contexto.obtener_opcion_escogida_vaca():
             if contexto.get_contador_llave() == 3:
@@ -133,6 +156,7 @@ class DialogoVacaEstrategia(Dialogue_Strategy):
                 if inventory.get_gafas():
                     contexto.set_gafas_dadas(True)
                     inventory.eliminar_gafas()
+                    self.animals[2].make_prime()
                     contexto.set_incr_llave(1)
                     if contexto.get_contador_llave() == 3:
                         inventory.añadir_llave()
@@ -188,6 +212,16 @@ class DialogoVacaEstrategia(Dialogue_Strategy):
 
 
 class DialogoOvejaEstrategia(Dialogue_Strategy):
+
+    def __init__(self, draw, escene, animales):
+        self.animals = animales
+        self.draw = draw
+        self.escene = escene
+        
+        self.animals = animales if animales is not None else []
+
+    def set_animals(self, animals):
+        self.animals = animals
     def obtener_dialogo(self, contexto,escene,draw):
         if contexto.obtener_opcion_escogida_oveja():
             if contexto.get_contador_llave() == 3:
@@ -223,6 +257,7 @@ class DialogoOvejaEstrategia(Dialogue_Strategy):
                 if inventory.get_bufandas():
                     contexto.set_bufandas_dadas(True)
                     inventory.eliminar_bufandas()
+                    self.animals[0].make_prime()
                     contexto.set_incr_llave(1) 
                     if contexto.get_contador_llave() == 3:
                         inventory.añadir_llave()

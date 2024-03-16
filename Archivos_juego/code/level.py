@@ -98,6 +98,7 @@ class Level:
             self.npcs = self.create_npcs()
             self.objects = self.create_objects()
             self.animals = self.create_animals()
+            self.dialogue.set_animals(self.animals)
 
         elif self.escene == "Nivel3":
             self.inventory.cambiar_imagen_inventario("invierno")

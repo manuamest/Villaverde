@@ -12,6 +12,8 @@ class Animal(pygame.sprite.Sprite):
         self.dialogue = dialogue
         self.prime = prime
         self.location = location
+        self.pos = pos
+        self.personaje = personaje
      
         # Load sprite images for walking and inactive states
         if self.prime:  # Comprueba si está en estado cabraprime
@@ -167,5 +169,9 @@ class Animal(pygame.sprite.Sprite):
                 self.sprites_inactivo = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_inactivo"))
 
     def make_prime(self):
-        self.sprites_caminando = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_caminando_prime"))
-        self.sprites_inactivo = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_inactivo_prime"))
+        if self.personaje == "pollo":
+            self.sprites_caminando = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_inactivo_prime"))
+            self.sprites_inactivo = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_inactivo_prime"))
+        else:
+            self.sprites_caminando = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_caminando_prime"))
+            self.sprites_inactivo = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_inactivo_prime"))
