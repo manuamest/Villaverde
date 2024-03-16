@@ -164,3 +164,7 @@ class Animal(pygame.sprite.Sprite):
             else:
                 self.sprites_caminando = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_caminando"))
                 self.sprites_inactivo = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_inactivo"))
+
+    def make_prime(self):
+        self.sprites_caminando = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_caminando_prime"))
+        self.sprites_inactivo = self.load_sprites(os.path.join(self.sprite_directory, f"{self.animal_type}_inactivo_prime"))
