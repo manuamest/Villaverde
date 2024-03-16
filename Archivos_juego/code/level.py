@@ -439,9 +439,9 @@ class Level:
                     x = plant.rect.centerx // TILE_SIZE
                     y = plant.rect.centery // TILE_SIZE
                     if 'S' in self.soil_layer.grid[y][x]:
-                        self.soil_layer.grid[y][x].remove('S')
+                        self.soil_layer.grid[y][x] = [element for element in self.soil_layer.grid[y][x] if element != 'S']
                     if 'W' in self.soil_layer.grid[y][x]:
-                        self.soil_layer.grid[y][x].remove('W')
+                        self.soil_layer.grid[y][x] = [element for element in self.soil_layer.grid[y][x] if element != 'W']
                         # Eliminar el agua del tile
                         for water_sprite in self.soil_layer.water_sprites.sprites():
                             if water_sprite.rect.collidepoint((x * TILE_SIZE, y * TILE_SIZE)):
