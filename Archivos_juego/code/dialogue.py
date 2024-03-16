@@ -38,6 +38,7 @@ class Dialogue:
             self.contador_llave = 0
             self.opcion_escogida_obrero = False
             self.objetos_dados_a_jordi = False
+            self.ultimo_dialogo_cabra = False
             
             self.animals = []
 
@@ -145,6 +146,8 @@ class Dialogue:
     def set_objetos_a_jordi(self, opcion):
         self.objetos_dados_a_jordi = opcion
 
+    def set_ultimo_dialogo_cabra(self, opcion):
+        self.ultimo_dialogo_cabra = opcion
         
 
     # Getters
@@ -215,6 +218,9 @@ class Dialogue:
     
     def get_objetos_a_jordi(self):
         return self.objetos_dados_a_jordi
+
+    def get_ultimo_dialogo_cabra(self):
+        return self.ultimo_dialogo_cabra
     
 
     # Función para calcular cuanto ofrece/cobra el mercader o la modista

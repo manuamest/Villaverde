@@ -323,5 +323,13 @@ class DialogoOvejaEstrategia(Dialogue_Strategy):
 
 class DialogoCabraEstrategia(Dialogue_Strategy):
     def obtener_dialogo(self, contexto,escene,draw):
-        return self.draw.dialogos_cabra
+        return self.draw.dialogos_cabra    
 
+    def manejar_interacciones(self, keys, inventory, inicio_texto_x, inicio_texto_y, longitud_actual, personaje,contexto,escene,draw):
+        dialogos_personaje = contexto.obtener_dialogo_personaje(personaje)
+        indice_dialogo = contexto.obtener_indice_personaje(personaje)
+        fin_dialogo = longitud_actual >= len(dialogos_personaje[indice_dialogo]) and indice_dialogo == len(dialogos_personaje) - 1
+
+        if fin_dialogo:
+            contexto.set_final_dialogo(True)
+            contexto.set_ultimo_dialogo_cabra(True)

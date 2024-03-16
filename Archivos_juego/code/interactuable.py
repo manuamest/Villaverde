@@ -3,7 +3,7 @@ import os
 from settings import LAYERS
 
 class InteractableObject(pygame.sprite.Sprite):
-    def __init__(self, pos, group, color, draw,dialogue, sprite=None, interactable_type=None, location="fuera"):
+    def __init__(self, pos, group, color, draw, dialogue, sprite=None, interactable_type=None, location="fuera"):
         super().__init__(group)
         self.location = location
         self.color = color  # Guarda el color
@@ -27,7 +27,7 @@ class InteractableObject(pygame.sprite.Sprite):
         self.visible = True
         self.make_invisible("fuera")
 
-    def interact(self, inventory, director):
+    def interact(self, inventory, director, player):
         if self.visible == True:
             if self.interactable_type == "trigo":
                 inventory.añadir_trigo()
@@ -40,6 +40,8 @@ class InteractableObject(pygame.sprite.Sprite):
                 self.kill()
             elif self.interactable_type == "Fin":
                 director.set_salir_escena(True)
+            elif self.interactable_type == "cama" and director.get_nivel_precompleto():
+                player.set_interact_with_last_object(True)
         
         if self.interactable_type == "cartel_modista": 
             self.draw.dibujar_cartel(inventory,"Estimado cliente: El establecimiento Eva Modista permanecera cerrado por reformas durante un tiempo.") 

@@ -43,6 +43,9 @@ class Director:
         self.intro_name = 'videos/intro.mp4'
         self.credits_name = 'videos/creditos.mp4'
 
+        # Indica si esta en el penultimo objetivo
+        self.nivel_precompleto = False
+
         # Variable para el radio del círculo de transición
         self.transition_radius = 30
 
@@ -91,11 +94,11 @@ class Director:
     def get_salir_escena(self):
         return self.salir_escena
 
-    # def set_nivel_completo(self, opcion):
-    #     self.nivel_completo = opcion
+    def set_nivel_precompleto(self, opcion):
+        self.nivel_precompleto = opcion
 
-    # def get_nivel_completo(self):
-    #     return self.nivel_completo
+    def get_nivel_precompleto(self):
+        return self.nivel_precompleto
 
     def bucle(self, level):
         self.salir_escena = False
@@ -128,6 +131,7 @@ class Director:
                 # Si el juego está pausado, mostrar menú de pausa
                 self.menu.show_pause_menu()
                 pygame.display.update()
+        self.nivel_precompleto = False
                 
     def transition_effect_open(self):
         # Animación de apertura del círculo de transición

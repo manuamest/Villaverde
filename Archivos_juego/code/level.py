@@ -50,51 +50,37 @@ class Level:
         
         player_start_x = 1800
         player_start_y = 4000
-
         if self.escene == "Nivel1":
             
             self.cnt = 0
-
             self.level_text = pygame.image.load("./code/sprites/text_level/verano.png").convert_alpha()
             self.level_text = pygame.transform.scale(self.level_text, (500, 500))
-
             # Cargar el mapa de Tiled
             self.main_tmx_map = "./code/mapa/verano/mapa_verano.tmx"
             self.tmx_map = load_pygame(self.main_tmx_map)
-
             # trees 
             for obj in self.tmx_map.get_layer_by_name('arboles'):
                 Tree( pos = (obj.x *5 + obj.x/10, obj.y * 7 + obj.y/2.5), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, inventory=self.inventory)
-
             # Obtener la capa de colisiones
             self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
-
             #Crear el jugador en la posición deseada
             self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, self.director, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue,draw=self.draw)
-
             self.npcs = self.create_npcs()
             self.objects = self.create_objects()
             self.animals = []
-
         elif self.escene == "Nivel2":
             self.inventory.cambiar_imagen_inventario("otoño")
-
             self.level_text = pygame.image.load("./code/sprites/text_level/otono.png").convert_alpha()
             self.level_text = pygame.transform.scale(self.level_text, (500, 500))
-
             # Cargar el mapa de Tiled
             self.main_tmx_map = "./code/mapa/otoño/mapa_otoño.tmx"
             self.tmx_map = load_pygame(self.main_tmx_map)
-
             # trees 
             for obj in self.tmx_map.get_layer_by_name('arboles'):
                 Tree( pos = (obj.x *5 + obj.x/10, obj.y * 7 + obj.y/2.5), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, inventory=self.inventory, season=1)
-
             # Obtener la capa de colisiones
             self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
-
             self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, self.director, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue,draw=self.draw)
-
             self.npcs = self.create_npcs()
             self.objects = self.create_objects()
             self.animals = self.create_animals()
@@ -102,44 +88,34 @@ class Level:
 
         elif self.escene == "Nivel3":
             self.inventory.cambiar_imagen_inventario("invierno")
-
             self.level_text = pygame.image.load("./code/sprites/text_level/invierno.png").convert_alpha()
             self.level_text = pygame.transform.scale(self.level_text, (500, 500))
-
             # Cargar el mapa de Tiled
             self.main_tmx_map = "./code/mapa/invierno/mapa_invierno.tmx"
             self.tmx_map = load_pygame(self.main_tmx_map)
-
             # trees 
             for obj in self.tmx_map.get_layer_by_name('arboles'):
                 Tree( pos = (obj.x *5 + obj.x/10, obj.y * 7 + obj.y/2.5), surf = obj.image, groups = [self.all_sprites, self.collision_sprites, self.tree_sprites], name = obj.name, inventory=self.inventory, season=2)
-
             # Obtener la capa de colisiones
             self.collision_layer = self.tmx_map.get_layer_by_name("colisiones")
-
             self.player = Player((player_start_x, player_start_y), self.all_sprites, self.collision_layer, self.soil_layer, self.director, tree_sprites=self.tree_sprites,  inventory=self.inventory, level=self, dialogue=self.dialogue,draw=self.draw)
-
             self.npcs = self.create_npcs()
             self.objects = self.create_objects()
             self.animals = self.create_animals()
-
         # Ajustar la posición y el tamaño de los objetos en el mapa
         for obj in self.collision_layer:
             obj.x *= self.zoom  # Aumentar la posición x
             obj.y *= self.zoom  # Aumentar la posición y
             obj.width *= self.zoom  # Aumentar el ancho
             obj.height *= self.zoom  # Aumentar la altura
-
         
         # Overlay 
         self.overlay = Overlay(self.player)
         
         # Tutorial
         self.tutorial = Tutorial(self.screen, self.escene)
-
         # Objetives
         self.objectives = Objectives(self.screen, self.inventory, self.dialogue, self.player, self.soil_layer, self.escene, self.director)
-
 
     def show_loading_screen(self):
         # Directorio donde se encuentran las imágenes del GIF
@@ -270,7 +246,7 @@ class Level:
 
         if self.escene == "Nivel1":
             objects_list.append(InteractableObject(
-                pos=(860, 836),
+                pos=(875, 825),
                 group=self.all_sprites,color=(0,0,255),draw=self.draw,dialogue=self.dialogue, sprite="./code/sprites/dinero.png", interactable_type="dinero", location="wuan")) 
             objects_list.append(InteractableObject(
                  pos=(1890, 1420),
@@ -278,6 +254,9 @@ class Level:
             objects_list.append(InteractableObject(
                  pos=(2275, 1420),
                 group=self.all_sprites, color=(255, 128, 0), draw=self.draw,dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_mercader", location="fuera"))   
+            objects_list.append(InteractableObject(
+                 pos=(800, 860),
+                group=self.all_sprites, color=(255, 128, 0), draw=self.draw, dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cama", location="wuan"))
         
         elif self.escene == "Nivel3":
             objects_list.append(InteractableObject(
@@ -285,11 +264,14 @@ class Level:
                 group=self.all_sprites, color=(255, 128, 0), draw=self.draw,dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_modista", location="fuera"))   
             objects_list.append(InteractableObject(
                  pos=(2275, 1420),
-                group=self.all_sprites, color=(255, 128, 0),draw=self.draw, dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_mercader", location="fuera"))        
+                group=self.all_sprites, color=(255, 128, 0),draw=self.draw, dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_mercader", location="fuera"))
         else:
             objects_list.append(InteractableObject(
                 pos=(1700, 4100),
                 group=self.all_sprites, color=(255, 255, 0),draw=self.draw,dialogue=self.dialogue, sprite="./code/sprites/trigo.png", interactable_type="trigo", location="fuera"))
+            objects_list.append(InteractableObject(
+                 pos=(800, 860),
+                group=self.all_sprites, color=(255, 128, 0), draw=self.draw, dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cama", location="wuan"))
         
         return objects_list
 
@@ -461,12 +443,6 @@ class Level:
         self.npcs.clear()
         self.objects.clear()
         self.animals.clear()
-
-    def create_object_final(self, position, sprite, location):
-        return InteractableObject(
-                    pos=position,
-                    group=self.all_sprites, color=(255, 128, 0), draw=self.draw, dialogue=self.dialogue, sprite=sprite, interactable_type="Fin", location=location)
-
 
     def transition_effect_close(self):
         # Animación de cierre del círculo de transición

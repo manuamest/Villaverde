@@ -3,6 +3,10 @@ from settings import *
 
 class Objectives:
 
+    def penultimate_objective(dropdown, index, director):
+        dropdown.set_check_button(index)
+        director.set_nivel_precompleto(True)
+
     def __init__(self, screen, inventory, dialogue, player, soil_layer, nivel, director):
         # Evaluacion de objetivos
         objectives_check_n1 = [
@@ -23,7 +27,10 @@ class Objectives:
             ], (lambda : self.dropdown.set_check_button(4))),
             Objective([
                 Requirement(lambda state: dialogue.get_objetos_a_jordi() == True, "0")
-            ], (lambda : self.dropdown.set_check_button(5)))
+            ], (lambda : Objectives.penultimate_objective(self.dropdown, 5, director))),
+            Objective([
+                Requirement(lambda state: player.get_interact_with_last_object() == True, "0")
+            ], (lambda : self.dropdown.set_check_button(1)))
         ]
 
         objectives_check_n2 = [
@@ -58,7 +65,10 @@ class Objectives:
                 Requirement(lambda state: dialogue.get_jordan_dadas() == True, "0"),
                 Requirement(lambda state: dialogue.get_bufandas_dadas() == True, "1"),
                 Requirement(lambda state: dialogue.get_gafas_dadas() == True, "2")
-            ], (lambda : self.dropdown.set_check_button(9)))
+            ], (lambda : Objectives.penultimate_objective(self.dropdown, 9, director))),
+            Objective([
+                Requirement(lambda state: player.get_interact_with_last_object() == True, "0")
+            ], (lambda : self.dropdown.set_check_button(1)))
         ]
         
         objectives_check_n3 = [
@@ -69,7 +79,7 @@ class Objectives:
                 Requirement(lambda state: player.puzle_is_complete() == True, "0")
             ], (lambda : self.dropdown.set_check_button(1))),
             Objective([
-                Requirement(lambda state: player.talk_with("cabra") == True, "0")
+                Requirement(lambda state: dialogue.get_ultimo_dialogo_cabra() == True, "0")
             ], (lambda : self.dropdown.set_check_button(2))), 
         ]
 
@@ -79,7 +89,8 @@ class Objectives:
                         ("Consigue el dinero", False),
                         ("Tala un arbol usando el hacha (SPACE)", False),
                         ("Consigue 20 de madera", False),
-                        ("Dale a Jordi lo que necesita", False)
+                        ("Dale a Jordi lo que necesita", False),
+                        ("Ve a dormir (Cumple los anteriores)", False)
                         ]
         objetivos_n2 = [("Ara la tierra con la azada (SPACE)", False),
                         ("Planta trigo (F)", False),
@@ -89,8 +100,9 @@ class Objectives:
                         ("Habla con Eva la modista", False),
                         ("Habla con la gallina Daniel", False),
                         ("Habla con la oveja Oscar", False),
-                        ("Habla con la vaca Klara", False),
-                        ("Cumple el deseo de todos los animales", False)
+                        ("Habla con la vaca Clara", False),
+                        ("Cumple el deseo de todos los animales", False),
+                        ("Ve a dormir (Cumple los anteriores)", False)
                         ]
         objetivos_n3 = [("Consigue la llave magistral", False),
                         ("Resuelve el puzle", False),
@@ -116,13 +128,13 @@ class Objectives:
         self.director = director
 
     def evaluate(self):
-        for i in range(len(self.objectives)):
+        for i in range(len(self.objectives_check)):
             if not self.objectives_check[i].is_completed():
                 self.objectives_check[i].evaluate()
         # Verifica si todos los objetivos del nivel están completos
         nivel_completo = all(obj.is_completed() for obj in self.objectives_check)
-        # if nivel_completo:
-            # self.director.set_nivel_completo(True)
+        if nivel_completo:
+            self.director.set_salir_escena(True)
 
     def show_dropdown(self, left_mouse_button_down, event):
         if left_mouse_button_down and self.button.rect.collidepoint(event.pos):

@@ -75,10 +75,12 @@ class Player(pygame.sprite.Sprite):
                                 "pollo": False,
                                 "vaca marron": False}
         self.inventario_abierto = False
+        self.interact_last_object = False
 
     def use_tool(self):
         if self.selected_tool == 'azada':
-            self.soil_layer.get_hit(self.target_pos)
+            if self.level.escene == "Nivel2":
+                self.soil_layer.get_hit(self.target_pos)
         
         if self.selected_tool == 'hacha':
             for tree in self.tree_sprites.sprites():
@@ -87,10 +89,12 @@ class Player(pygame.sprite.Sprite):
                     self.cut_down_tree = True
 
         if self.selected_tool == 'agua':
-            self.soil_layer.water(self.target_pos)
+            if self.level.escene == "Nivel2":
+                self.soil_layer.water(self.target_pos)
 
     def use_seed(self):
-        self.soil_layer.plant_seed(self.target_pos, self.selected_seed)
+        if self.level.escene == "Nivel2":
+            self.soil_layer.plant_seed(self.target_pos, self.selected_seed)
 
     def get_target_pos(self):
         # Obtén la posición del jugador en coordenadas de tiles
@@ -187,9 +191,9 @@ class Player(pygame.sprite.Sprite):
                             self.personaje_actual = sprite.personaje
                             self.set_talk_with(self.personaje_actual)
 
-                        elif distancia < 50:  
+                        elif distancia < 60:  
                             if isinstance(sprite, InteractableObject):
-                                sprite.interact(self.inventory, self.director)
+                                sprite.interact(self.inventory, self.director, self)
                             
     def get_status(self):
         # Si no hay movimiento (está en reposo)
@@ -313,3 +317,9 @@ class Player(pygame.sprite.Sprite):
 
     def puzle_is_complete(self):
         return self.puzle.get_is_complete()
+
+    def set_interact_with_last_object(self, opcion):
+        self.interact_last_object = opcion
+    
+    def get_interact_with_last_object(self):
+        return self.interact_last_object
