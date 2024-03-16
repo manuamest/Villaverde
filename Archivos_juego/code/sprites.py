@@ -71,7 +71,7 @@ class Tree(Generic):
         self.image = pygame.image.load('code/sprites/invisible.png')
 
     def make_visible(self):
-        self.visible = True
+        self.visible = True  # Restaura el estado de visibilidad
         self.image = self.visible_image  # Restaura la imagen original
 
     def update(self, dt):
