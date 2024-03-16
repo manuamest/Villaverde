@@ -37,7 +37,6 @@ class InteractableObject(pygame.sprite.Sprite):
                 self.kill()
             elif self.interactable_type == "dinero":
                 inventory.añadir_dinero()
-                inventory.añadir_madera()
                 self.kill()
             elif self.interactable_type == "Fin":
                 director.set_salir_escena(True)
