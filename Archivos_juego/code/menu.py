@@ -21,8 +21,9 @@ class MenuBase:
         self.quit_text_rect = self.quit_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50))
 
     def show_pause_menu(self):
-        self.screen.blit(self.continue_text, self.continue_text_rect)
-        self.screen.blit(self.quit_text, self.quit_text_rect)
+        self.screen.blit(self.background_image, self.background_rect)
+        self.screen.blit(self.imagen_controles_ampliada, self.posicion_controles)
+        pygame.display.flip()
 
     def show_menu(self):
         self.screen.blit(self.background_image, self.background_rect)
