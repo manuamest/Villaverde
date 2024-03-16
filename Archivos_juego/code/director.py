@@ -92,11 +92,11 @@ class Director:
     def get_salir_escena(self):
         return self.salir_escena
 
-    def set_nivel_completo(self, opcion):
-        self.nivel_completo = opcion
+    # def set_nivel_completo(self, opcion):
+    #     self.nivel_completo = opcion
 
-    def get_nivel_completo(self):
-        return self.nivel_completo
+    # def get_nivel_completo(self):
+    #     return self.nivel_completo
 
     def bucle(self, level):
         self.salir_escena = False
@@ -129,7 +129,7 @@ class Director:
                 self.screen.blit(self.overlay_surface, (0, 0))  # Agrega el filtro oscuro
                 self.menu.show_pause_menu() # Muestra las opciones de continuar y salir del juego
                 pygame.display.update()
-        self.nivel_completo = False
+        # self.nivel_completo = False
 
 if __name__ == '__main__':
     director = Director()

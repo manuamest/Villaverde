@@ -121,8 +121,8 @@ class Objectives:
                 self.objectives_check[i].evaluate()
         # Verifica si todos los objetivos del nivel están completos
         nivel_completo = all(obj.is_completed() for obj in self.objectives_check)
-        if nivel_completo:
-            self.director.set_nivel_completo(True)
+        # if nivel_completo:
+            # self.director.set_nivel_completo(True)
 
     def show_dropdown(self, left_mouse_button_down, event):
         if left_mouse_button_down and self.button.rect.collidepoint(event.pos):

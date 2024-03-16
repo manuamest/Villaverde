@@ -258,9 +258,9 @@ class Level:
     def create_objects(self):
         objects_list = []
 
-        # objects_list.append(InteractableObject(
-        #     pos=(900, 4100),
-        #     group=self.all_sprites, color=(255, 128, 0), dialogue=self.dialogue, sprite="./code/sprites/jordan.png", interactable_type="Fin", location="fuera"))
+        objects_list.append(InteractableObject(
+            pos=(900, 4100),
+            group=self.all_sprites, color=(255, 128, 0), draw=self.draw, dialogue=self.dialogue, sprite="./code/sprites/jordan.png", interactable_type="Fin", location="fuera"))
 
         if self.escene == "Nivel1":
             objects_list.append(InteractableObject(
@@ -400,12 +400,13 @@ class Level:
         self.objectives.evaluate()
 
         # Crea el objeto para pasar de nivel
-        if self.director.get_nivel_completo():
-            if self.escene == "Nivel1" or self.escene == "Nivel2":
-                self.create_object_final((1830,4300), "./code/sprites/jordan.png", "fuera")
-            else:
-                self.jordan = self.create_object_final((1000, 1080), "./code/sprites/jordan.png", "final2")
-                self.jordan.make_invisible("final2")
+        # if self.director.get_nivel_completo():
+        #     if self.escene == "Nivel1" or self.escene == "Nivel2":
+        #         self.create_object_final((1830,4300), "./code/sprites/jordan.png", "fuera")
+        #         self.director.set_nivel_completo(False)
+        #     else:
+        #         self.jordan = self.create_object_final((1000, 1080), "./code/sprites/jordan.png", "final2")
+        #         self.jordan.make_invisible("final2")
 
         # Dropdown
         self.objectives.show_dropdown(left_mouse_button_down, event_mouse)
