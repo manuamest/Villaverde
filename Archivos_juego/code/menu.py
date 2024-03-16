@@ -11,6 +11,9 @@ class MenuBase:
         self.background_image = background_image
         self.background_rect = background_rect
         self.font = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 40)
+        self.imagen_controles = pygame.image.load('./code/sprites/controles/controles.png').convert_alpha()
+        self.imagen_controles_ampliada = pygame.transform.scale(self.imagen_controles, (800, 400))
+        self.posicion_controles = (SCREEN_WIDTH//2-800//2, SCREEN_HEIGHT//2-400//2)
         self.should_return_flag = False        
         self.continue_text = self.font.render('Continuar', True, (255, 255, 255))
         self.quit_text = self.font.render('Salir del juego', True, (255, 255, 255))
@@ -57,6 +60,8 @@ class Menu(MenuBase):
         super().__init__(screen, menu_options, self.background_image, self.background_rect)
         self.screen = screen
         self.clock = clock
+        self.showing_controls = False  # Bandera para controlar si se muestra la imagen de controles
+
 
     def show_start_screen(self):
         waiting = True
@@ -110,9 +115,8 @@ class Menu(MenuBase):
             self.in_menu = False
         elif self.selected_option == 1:  # Opciones
             self.options = Options(self.screen, self.clock, self.background_image, self.background_rect, self.tutorial_enabled, self.full_screen)
-            # print("Mostrar Opciones")  # Agrega lógica de opciones aquí
         elif self.selected_option == 2:  # Controles
-            print("Mostrar Controles")  # Agrega lógica de controles aquí
+            self.showing_controls = True  # Mostrar la imagen de los controles
         elif self.selected_option == 3:  # Salir
             pygame.quit()
             sys.exit()
@@ -140,7 +144,19 @@ class Menu(MenuBase):
                 self.full_screen = self.options.get_full_screen_enabled()
                 if self.options.get_should_return():
                     self.options = None
-            self.show_menu()
+            if self.showing_controls:
+                # Mostrar la imagen de los controles
+                self.screen.blit(self.imagen_controles_ampliada, self.posicion_controles)
+                pygame.display.flip()
+                # Esperar hasta que se presione Enter para ocultar los controles
+                while True:
+                    event = pygame.event.wait()
+                    if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                        self.showing_controls = False
+                        break
+            else:
+                self.show_menu()
+            
             self.clock.tick(FPS)
 
 class Options(MenuBase):

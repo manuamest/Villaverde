@@ -19,7 +19,7 @@ class Tutorial:
             "Para cambiar de herramienta, presiona la tecla 'Q' y para usarla presiona 'SPACE'.",
             "Intenta talar un arbol. Acercate con el hacha y usala. Algunos son mas duros que otros, prueba desde distintos angulos.",
             "Para recoger objetos, simplemente camina sobre ellos y/o presiona la tecla 'E'.",
-            "Ahora, vamos a ver tu inventario. Presiona la tecla 'B' para abrirlo. Cierralo presionando 'B' de nuevo.",
+            "Ahora, vamos a ver tu inventario. Presiona la tecla 'TAB' para abrirlo. Cierralo presionando 'TAB' de nuevo.",
             "Hablemos con Don Diego o Jordi el obrero. Acercate a el y presiona la tecla 'E'.",
             "Usa la tecla 'X' para avanzar en el dialogo o seleccionar una opcion. Si necesitas escoger una opcion, presiona 'UP' o 'DOWN'.",
             "Haz clic en la esquina superior derecha para ver los objetivos y vuelve a hacer clic para cerrar el desplegable.",

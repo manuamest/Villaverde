@@ -147,7 +147,7 @@ class Player(pygame.sprite.Sprite):
                 self.direction = pygame.math.Vector2()
                 self.frame_index = 0
 
-            if keys[pygame.K_b] and not self.timers['alternar inventario'].active and not self.dialogue.obtener_dialogo():
+            if keys[pygame.K_TAB] and not self.timers['alternar inventario'].active and not self.dialogue.obtener_dialogo():
                 self.timers['alternar inventario'].activate()
                 self.inventario_abierto = not self.inventario_abierto
 
