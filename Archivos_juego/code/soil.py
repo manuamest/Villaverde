@@ -67,7 +67,7 @@ class SoilLayer:
         self.plant_sprites = pygame.sprite.Group()
 
         # Cargar imagen del suelo cultivable
-        self.soil_surf = pygame.image.load("./code/sprites/suelo/otoño/tile025.png")
+        self.soil_surf = pygame.image.load("./code/sprites/tierra.png")
         self.surf_water = import_folder("./code/sprites/suelo/agua")
         # Escalar la imagen del suelo al tamaño del TILE_SIZE
         self.soil_surf = pygame.transform.scale(self.soil_surf, (TILE_SIZE, TILE_SIZE))
