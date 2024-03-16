@@ -121,7 +121,6 @@ class Inventory:
     def get_llave(self):
 
         return self.inventario_items["Llave magistral"]
-    
 
     # Función para dibujar el inventario
     def dibujar_inventario(self, inventario_x=None, inventario_y=None, not_transparencia=False):
