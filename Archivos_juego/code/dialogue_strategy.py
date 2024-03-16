@@ -19,7 +19,7 @@ class Dialogue_Strategy:
         indice_dialogo = contexto.obtener_indice_personaje(personaje)
         fin_dialogo = longitud_actual >= len(dialogos_personaje[indice_dialogo]) and indice_dialogo == len(dialogos_personaje) - 1
 
-        if fin_dialogo and personaje in ["butanero","mercader","modista","pollo","oveja","vaca"]:
+        if fin_dialogo and personaje in ["obrero","mercader","modista","pollo","oveja","vaca"]:
             contexto.manejar_opciones_personaje(keys, inventory, inicio_texto_x, inicio_texto_y, personaje)
 
     def reset_dialogo(self,keys, dialogos_personaje,timers,personaje_actual,contexto,escene,draw):

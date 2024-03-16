@@ -56,9 +56,9 @@ class NPC(pygame.sprite.Sprite):
             elif personaje == "modista":
                 dialogue.set_opcion_dialogo(True)
                 self.draw.dibujar_dialogo(inventory,"modista")
-            elif personaje == "butanero":
+            elif personaje == "obrero":
                 dialogue.set_opcion_dialogo(True)
-                self.draw.dibujar_dialogo(inventory, "butanero")
+                self.draw.dibujar_dialogo(inventory, "obrero")
             elif personaje == "hermanos":
                 dialogue.set_opcion_dialogo(True)
                 self.draw.dibujar_dialogo(inventory, "hermanos")

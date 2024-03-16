@@ -28,7 +28,7 @@ class Draw:
       self.imagen_fondo_dialogo = pygame.image.load('./code/sprites/dialogos/dialogue_box2.png').convert_alpha()
       self.imagen_menu = pygame.image.load('./code/sprites/dialogos/menu.png').convert_alpha()
       self.don_diego = pygame.image.load('./code/sprites/dialogos/diego.png').convert_alpha()
-      self.butanero_jordi = pygame.image.load('./code/sprites/dialogos/jordi.png').convert_alpha()
+      self.obrero_jordi = pygame.image.load('./code/sprites/dialogos/jordi.png').convert_alpha()
       self.mercader = pygame.image.load('./code/sprites/dialogos/xoel.png').convert_alpha()
       self.modista = pygame.image.load('./code/sprites/dialogos/eva.png').convert_alpha()
       self.pollo = pygame.image.load('./code/sprites/dialogos/dialogo_pollo.png').convert_alpha()
@@ -85,13 +85,13 @@ class Draw:
     def definir_dialogos(self):
         self.dialogos_dondiego  = ["Que va a ser de mi?, mi granja esta destrozada y Fer ha desaparecido...", "Por favor, Wuan, coge la bolsa que tengo en casa con todos mis ahorros y habla con Jordi el obrero, el quizas nos pueda ayudar.", "Todo esta en tus manos..."]
         self.dialogos_dondiego_2 = ["Ugh...ugh...necesito una monst...er.", "Querido Wuan, salva la granja...esta todo en tus manos.", "Eres el unico capaz de hacer que me vaya de esta vida en paz...cumple solo este favor..."]
-        self.dialogos_butanero = ["Hola! Soy Jordi el obrero, yo te puedo ayudar a reconstruir la granja.", "Wuan, lamento decirte que los ahorros de tu abuelo probablemente no sean suficientes para pagar la reconstruccion...", "Si no puedes conseguir mas dinero vas a tener que proporcionarme los materiales de construccion.", "Traeme 20 de madera y 100 monedas y vere que puedo hacer."]
-        self.dialogos_butanero_2 = ["Genial! Ya era hora de que por fin me trajeras el dinero y la madera, sigue asi Wuan."]
-        self.dialogos_butanero_3 = ["Estas sordo primo? Que te he dicho que me des el dinero y la madera, ya veo que no tienes suficientes unidades de ambos, traeme lo que te he pedido."]
-        self.dialogos_butanero_4 = ["Me vas a tener esperando un tiempecito parece eh, avisame cuando los consigas"]
-        self.dialogos_butanero_5 = ["Solo tienes madera, traeme el dinero tambien anda"]
-        self.dialogos_butanero_6 = ["Solo tienes dinero, traeme la madera tambien anda"]
-        self.dialogos_butanero_7 = ["No tienes suficientes unidades de dinero y madera, vuelve cuando tengas la cantidad que te pedi"]
+        self.dialogos_obrero = ["Hola! Soy Jordi el obrero, yo te puedo ayudar a reconstruir la granja.", "Wuan, lamento decirte que los ahorros de tu abuelo probablemente no sean suficientes para pagar la reconstruccion...", "Si no puedes conseguir mas dinero vas a tener que proporcionarme los materiales de construccion.", "Traeme 20 de madera y 100 monedas y vere que puedo hacer."]
+        self.dialogos_obrero_2 = ["Genial! Ya era hora de que por fin me trajeras el dinero y la madera, sigue asi Wuan."]
+        self.dialogos_obrero_3 = ["Estas sordo primo? Que te he dicho que me des el dinero y la madera, ya veo que no tienes suficientes unidades de ambos, traeme lo que te he pedido."]
+        self.dialogos_obrero_4 = ["Me vas a tener esperando un tiempecito parece eh, avisame cuando los consigas"]
+        self.dialogos_obrero_5 = ["Solo tienes madera, traeme el dinero tambien anda"]
+        self.dialogos_obrero_6 = ["Solo tienes dinero, traeme la madera tambien anda"]
+        self.dialogos_obrero_7 = ["No tienes suficientes unidades de dinero y madera, vuelve cuando tengas la cantidad que te pedi"]
         self.dialogos_mercader = ["Bienvenido a la tienda de Xoel el mercader, donde tu madera y trigo compra sin perder. Trae tus bienes, los frutos de tu labor, Xoel paga bien, con justicia y honor.", "Dicen que soy agarrado, de mi eso murmuran, por no soltar el dinero, criticas me aseguran. Mas si supieran la verdad, detras del velo y la penumbra, necesito cada centavo, para vivir sin ninguna duda.", "Dime Wuan, como te puedo estafar hoy?"]
         self.dialogos_mercader_3 = ["No puedes seleccionar 0 unidades."]
         self.dialogos_modista_3 = ["No puedes seleccionar 0 unidades querido Wuan...se paciente."]
@@ -123,15 +123,15 @@ class Draw:
         self.dialogos_cabra = ["MEEEEEEE!!!"]
 
         dialogos = [
-            self.dialogos_dondiego,self.dialogos_dondiego_2, self.dialogos_butanero, self.dialogos_butanero_2, self.dialogos_mercader,
+            self.dialogos_dondiego,self.dialogos_dondiego_2, self.dialogos_obrero, self.dialogos_obrero_2, self.dialogos_mercader,
             self.dialogos_mercader_3, self.dialogos_mercader_4, self.dialogos_mercader_5, self.dialogos_mercader_6,self.dialogos_mercader_7,
             self.dialogos_modista_3, self.dialogos_modista_4, self.dialogos_modista_5, self.dialogos_modista_6,
             self.dialogos_modista, self.dialogos_pollo, self.dialogos_pollo_2, self.dialogos_pollo_3,
             self.dialogos_pollo_4, self.dialogos_vaca, self.dialogos_oveja, self.dialogos_oveja_2,
             self.dialogos_oveja_3, self.dialogos_oveja_4, self.dialogos_hermanos, self.dialogos_vaca_2,
             self.dialogos_vaca_3, self.dialogos_vaca_4, self.dialogos_llave_magistral, self.dialogos_modista_7,
-            self.dialogos_modista_8, self.dialogos_butanero_3, self.dialogos_butanero_4, self.dialogos_butanero_5,
-            self.dialogos_butanero_6, self.dialogos_butanero_7,self.dialogos_cabra
+            self.dialogos_modista_8, self.dialogos_obrero_3, self.dialogos_obrero_4, self.dialogos_obrero_5,
+            self.dialogos_obrero_6, self.dialogos_obrero_7,self.dialogos_cabra
         ]
 
         for lista_dialogos in dialogos:
@@ -170,7 +170,7 @@ class Draw:
                     
                     personajes = {
                         "don diego": (self.don_diego, 'DON DIEGO'),
-                        "butanero": (self.butanero_jordi, 'JORDI EL BUTANERO'),
+                        "obrero": (self.obrero_jordi, 'JORDI EL OBRERO'),
                         "mercader": (self.mercader,'XOEL EL MERCADER'),
                         "modista": (self.modista, 'EVA LA MODISTA'),
                         "pollo": (self.pollo,'GALLINA DANIEL'),

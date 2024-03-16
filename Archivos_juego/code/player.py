@@ -69,7 +69,7 @@ class Player(pygame.sprite.Sprite):
         self.talk_with_list = { "don diego": False,
                                 "mercader": False,
                                 "modista": False,
-                                "butanero": False,
+                                "obrero": False,
                                 "cabra": False,
                                 "oveja": False,
                                 "pollo": False,

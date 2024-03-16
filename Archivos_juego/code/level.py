@@ -298,7 +298,7 @@ class Level:
             
             npcs_list.append(NPC(
                 pos=(1900, 3950),
-                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,draw=self.draw,personaje="butanero", location="fuera"))
+                group=self.all_sprites, sprite_directory="./code/sprites/NPC/Jordi_el_obrero",inventory=self.inventory, dialogue=self.dialogue,draw=self.draw,personaje="obrero", location="fuera"))
             
             npcs_list.append(NPC(
                 pos=(2400, 2520),

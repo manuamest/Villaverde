@@ -10,7 +10,7 @@ class Objectives:
                 Requirement(lambda state: player.talk_with("don diego") == True, "0")
             ], (lambda : self.dropdown.set_check_button(0))),
             Objective([
-                Requirement(lambda state: player.talk_with("butanero") == True, "0")
+                Requirement(lambda state: player.talk_with("obrero") == True, "0")
             ], (lambda : self.dropdown.set_check_button(1))),
             Objective([
                 Requirement(lambda state: inventory.get_dinero() == 100, "0")

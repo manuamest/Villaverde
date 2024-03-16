@@ -36,7 +36,7 @@ class Dialogue:
             self.todo_vendido = False
             self.madera_dada = False
             self.contador_llave = 0
-            self.opcion_escogida_butanero = False
+            self.opcion_escogida_obrero = False
             self.objetos_dados_a_jordi = False
 
 
@@ -44,7 +44,7 @@ class Dialogue:
 
             self.estrategias_dialogo = {
                 "don diego": DialogoDonDiegoEstrategia(self.draw,self.escene),
-                "butanero": DialogoButaneroEstrategia(self.draw,self.escene),
+                "obrero": DialogoObreroEstrategia(self.draw,self.escene),
                 "hermanos": DialogoHermanosEstrategia(self.draw,self.escene),
                 "mercader": DialogoMercaderEstrategia(self.draw,self.escene),
                 "modista": DialogoModistaEstrategia(self.draw,self.escene),
@@ -66,7 +66,7 @@ class Dialogue:
            # Indices de cada personaje
             self.indices = {
                 "don diego": 0,
-                "butanero": 0,
+                "obrero": 0,
                 "mercader": 0,
                 "modista": 0,
                 "oveja":0,
@@ -105,8 +105,8 @@ class Dialogue:
     def set_dinero_dado(self, dinero_dado):
         self.dinero_dado = dinero_dado
        
-    def set_opcion_escogida_butanero(self, opcion_escogida_butanero):
-        self.opcion_escogida_butanero = opcion_escogida_butanero
+    def set_opcion_escogida_obrero(self, opcion_escogida_obrero):
+        self.opcion_escogida_obrero = opcion_escogida_obrero
     
     def set_opcion_escogida_pollo(self, opcion_escogida_pollo):
         self.opcion_escogida_pollo = opcion_escogida_pollo
@@ -147,8 +147,8 @@ class Dialogue:
         return self.madera_dada
     
 
-    def obtener_opcion_escogida_butanero(self):
-        return self.opcion_escogida_butanero
+    def obtener_opcion_escogida_obrero(self):
+        return self.opcion_escogida_obrero
     
 
     def obtener_opcion_escogida_pollo(self):
