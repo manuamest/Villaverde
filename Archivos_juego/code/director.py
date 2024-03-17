@@ -10,7 +10,18 @@ from pyvidplayer import Video
 import os
 
 class Director:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            return cls._instance
+        else:
+            raise Exception("Director instance already exists!")
+
     def __init__(self):
+        if hasattr(self, 'initialized'):
+            return
         # Inicializamos la pantalla, con un icono y el modo grafico
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         icon_path = "./code/sprites/icono.png"
@@ -51,6 +62,8 @@ class Director:
         self.imagen_controles = pygame.image.load('./code/sprites/controles/controles.png').convert_alpha()
         self.imagen_controles_ampliada = pygame.transform.scale(self.imagen_controles, (800, 400))
         self.posicion_controles = (SCREEN_WIDTH//2-800//2, SCREEN_HEIGHT//2-400//2)
+
+        self.initialized = True
 
     def run(self):
         # Cargar música de fondo
