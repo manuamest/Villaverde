@@ -12,10 +12,6 @@ import os
 class Director:
     def __init__(self):
         # Inicializamos la pantalla, con un icono y el modo grafico
-<<<<<<< Updated upstream
-=======
-        #self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
->>>>>>> Stashed changes
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         icon_path = "./code/sprites/icono.png"
         icon = pygame.image.load(icon_path)
@@ -67,15 +63,10 @@ class Director:
         self.tutorial_enabled = self.menu.tutorial_enabled
         # Para detener la música de fondo
         pygame.mixer.music.stop()
-<<<<<<< HEAD
-        self.playIntro()
+        #self.playIntro()
         pygame.mixer.music.load('./code/villaverde.mp3')
         pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1)  # Repetir infinitamente
-=======
-        #self.playIntro()
-        
->>>>>>> 36adb51 (Arreglo animales que no se mueven)
         for level in self.levels:
             level.setup()
             self.transition_effect_open()  # Transición al empezar el nivel
