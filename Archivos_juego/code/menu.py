@@ -49,7 +49,7 @@ class MenuBase:
         
         # Agregar mensaje en la parte inferior
         bottom_font = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 20)  # Fuente más pequeña
-        bottom_text = bottom_font.render("Utiliza las flechas del teclado para cambiar de opción y 'Enter' para confirmar.", True, (255, 255, 255))
+        bottom_text = bottom_font.render("Utiliza las flechas del teclado para cambiar de opcion y 'Enter' para confirmar.", True, (255, 255, 255))
         bottom_text_rect = bottom_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 30))  # Posición ajustada
         
         # Renderizar el texto en negro con un ligero desplazamiento para crear el borde
