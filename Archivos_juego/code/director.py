@@ -63,10 +63,15 @@ class Director:
         self.tutorial_enabled = self.menu.tutorial_enabled
         # Para detener la música de fondo
         pygame.mixer.music.stop()
+<<<<<<< HEAD
         self.playIntro()
         pygame.mixer.music.load('./code/villaverde.mp3')
         pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1)  # Repetir infinitamente
+=======
+        #self.playIntro()
+        
+>>>>>>> 36adb51 (Arreglo animales que no se mueven)
         for level in self.levels:
             level.setup()
             self.transition_effect_open()  # Transición al empezar el nivel

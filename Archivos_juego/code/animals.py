@@ -136,6 +136,21 @@ class Animal(pygame.sprite.Sprite):
             dx *= self.move_speed
             dy *= self.move_speed
             # Mover hacia la posición objetivo
+            self.rect.centerx += dx
+            self.rect.centery += dy
+            # Comprobar si la cabra ha alcanzado la posición objetivo
+            if abs(self.rect.centerx - target_pos[0]) < self.move_speed and abs(self.rect.centery - target_pos[1]) < self.move_speed:
+                # La cabra ha alcanzado la posición objetivo, cambiar a estado inactivo
+                self.set_state("inactivo")
+                # Reiniciar el contador de parada
+                self.stop_counter = 0
+                # Incrementar el índice de movimiento
+                self.move_index = (self.move_index + 1) % len(self.target_positions)
+                # Cambiar la dirección si la nueva posición es hacia la izquierda
+                if self.target_positions[self.move_index][0] < self.rect.centerx:
+                    self.direction = -1
+                else:
+                    self.direction = 1
 
     def last_objective(dropdown, index, director):
         self.rect.centerx += dx
