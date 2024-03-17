@@ -15,25 +15,28 @@ class Tutorial:
         self.indice_tutorial = 0
 
         tutorial_verano = [
-            "Bienvenido a Villaverde! Usa las teclas A,W,S,D para mover al jugador. Presiona 'Z' para seguir.",
+            "Bienvenido a Villaverde! Si es tu primera vez jugando, te recomendamos seguir este breve tutorial.",
+            "Usa las teclas A,W,S,D para mover al jugador.",
+            "Haz clic en la esquina superior derecha para ver los objetivos y vuelve a hacer clic para cerrar el desplegable.",
             "Para cambiar de herramienta, presiona la tecla 'Q' y para usarla presiona 'SPACE'.",
             "Intenta talar un arbol. Acercate con el hacha y usala. Algunos son mas duros que otros, prueba desde distintos angulos.",
             "Para recoger objetos, simplemente camina sobre ellos y/o presiona la tecla 'E'.",
             "Ahora, vamos a ver tu inventario. Presiona la tecla 'TAB' para abrirlo. Cierralo presionando 'TAB' de nuevo.",
             "Hablemos con Don Diego o Jordi el obrero. Acercate a el y presiona la tecla 'E'.",
             "Usa la tecla 'X' para avanzar en el dialogo o seleccionar una opcion. Si necesitas escoger una opcion, presiona 'UP' o 'DOWN'.",
-            "Haz clic en la esquina superior derecha para ver los objetivos y vuelve a hacer clic para cerrar el desplegable.",
+            "Recuerda que si olvidas las teclas, puedes presionar la tecla 'Esc' para recordarlas.",
             "Felicidades! Has completado el tutorial. Disfruta del juego!"
             ]
 
         tutorial_otoño = [
-            "Bienvenido al mapa de otono! Dirigete a una zona vallada abierta, que sera terreno cultivable.",
+            "Felicitaciones por llegar al nivel2! Estas progresando en tu aventura.",
+            "Dirigete a una zona vallada abierta de madera, que sera terreno cultivable.",
             "Asegurate de tener la herramienta adecuada para arar y presiona 'SPACE'.",
             "Intenta plantar una semilla de trigo presionando la tecla 'F' sobre el terreno arado.",
             "Ahora, vamos a regarla con agua. Espera unos segundos. Ya tenemos nuestro trigo!",
-            "Busca a Xoel el mercader o a Eva la modista. Acercate a uno de ellos y presiona la tecla 'E'.",
+            "Busca las tiendas!. Acercate a Xoel el mercader o a Eva la modista y presiona la tecla 'E'.",
             "Para escoger la cantidad a vender o comprar, muevete con las teclas 'LEFT' y 'RIGHT'. Para seleccionar la opcion, presiona 'X'.",
-            "Sigue explorando!"
+            "Sigue explorando. Recuerda que aun quedan secretos por descubrir, como encontrar a los animales perdidos."
             ]
 
         self.nivel = nivel
