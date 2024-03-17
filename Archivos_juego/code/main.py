@@ -9,12 +9,6 @@ if __name__ == '__main__':
     # Creamos al director
     director = Director()
 
-    # Creamos la escena con la pantalla del menu
-    
-
-    # Apilamos la escena
-    
-
     # Ejecutamos el juego
     director.run()
 
