@@ -12,6 +12,10 @@ import os
 class Director:
     def __init__(self):
         # Inicializamos la pantalla, con un icono y el modo grafico
+<<<<<<< Updated upstream
+=======
+        #self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+>>>>>>> Stashed changes
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         icon_path = "./code/sprites/icono.png"
         icon = pygame.image.load(icon_path)
