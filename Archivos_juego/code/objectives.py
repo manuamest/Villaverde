@@ -117,8 +117,8 @@ class Objectives:
             self.objectives_check = objectives_check_n2
             self.objectives_dropdown = objectives_dropdown_n2
         elif self.nivel == "Nivel3":
-            self.objectives_check = objectives_dropdown_n3
-            self.objectives_dropdown = objetivos_n3
+            self.objectives_check = objectives_check_n3
+            self.objectives_dropdown = objectives_dropdown_n3
 
         self.hide_dropdown = False
         self.screen = screen
