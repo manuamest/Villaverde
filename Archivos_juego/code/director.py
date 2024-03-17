@@ -63,10 +63,13 @@ class Director:
         self.tutorial_enabled = self.menu.tutorial_enabled
         # Para detener la música de fondo
         pygame.mixer.music.stop()
-        #self.playIntro()
+
+        self.playVideo(self.intro_name)
+        
         pygame.mixer.music.load('./code/villaverde.mp3')
         pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1)  # Repetir infinitamente
+        
         for level in self.levels:
             level.setup()
             self.transition_effect_open()  # Transición al empezar el nivel
@@ -74,22 +77,14 @@ class Director:
             self.transition_effect_close()  # Transición al acabar el nivel
             level.clean_level()
         
-        self.playCredits()
+        self.playVideo(self.credits_name)
                 
-    def playIntro(self):
-        self.video_path = os.path.join(self.current_path, self.intro_name)
-        self.intro = Video(self.video_path)
-        self.intro.set_size((SCREEN_WIDTH, SCREEN_HEIGHT))
-        while self.intro.active:
-            self.intro.draw(self.screen, (0,0))
-            pygame.display.update()
-
-    def playCredits(self):
-        self.video_path = os.path.join(self.current_path, self.credits_name)
-        self.credits = Video(self.video_path)
-        self.credits.set_size((SCREEN_WIDTH, SCREEN_HEIGHT))
-        while self.credits.active:
-            self.credits.draw(self.screen, (0,0), force_draw=False)
+    def playVideo(self, video_name):
+        video_path = os.path.join(self.current_path, video_name)
+        video = Video(video_path)
+        video.set_size((SCREEN_WIDTH, SCREEN_HEIGHT))
+        while video.active:
+            video.draw(self.screen, (0,0))
             pygame.display.update()
 
     def _update_plants(self):
