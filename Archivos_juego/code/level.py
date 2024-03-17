@@ -210,6 +210,10 @@ class Level:
 
             self.player.set_position(2400, 1470)
         elif(place == "final1"):
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load('./code/villaverde.mp3')
+            pygame.mixer.music.set_volume(0.5)
+            pygame.mixer.music.play(-1)  # Repetir infinitamente
             self.make_things_invisible(place)
 
             self.player.set_position(1180, 1000)

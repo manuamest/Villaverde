@@ -53,12 +53,17 @@ class Director:
         self.posicion_controles = (SCREEN_WIDTH//2-800//2, SCREEN_HEIGHT//2-400//2)
 
     def run(self):
+        # Cargar música de fondo
+        pygame.mixer.music.load('./code/villaverde.mp3')
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.play(-1)  # Repetir infinitamente
         self.menu.show_start_screen()
         self.menu.run()
         self.transition_effect_close()  # Transición al acabar el nivel
         self.tutorial_enabled = self.menu.tutorial_enabled
-
-        #self.playIntro()
+        # Para detener la música de fondo
+        pygame.mixer.music.stop()
+        self.playIntro()
         
         for level in self.levels:
             level.setup()
