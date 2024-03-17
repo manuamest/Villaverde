@@ -138,11 +138,13 @@ class Director:
                 self._update_plants()
                 dt = self.clock.tick(FPS) / 700
                 level.run(dt, self.key_z_pressed, left_mouse_button_down, event_mouse, self.tutorial_enabled)
-                pygame.display.update()                
+                pygame.display.update()      
+                level.player.speed = 100          
             else:
                 # Mostrar la imagen de los controles
                 self.screen.blit(self.imagen_controles_ampliada, self.posicion_controles)
                 pygame.display.flip()
+                level.player.speed = 0    
         self.nivel_precompleto = False
                 
     def transition_effect_open(self):
