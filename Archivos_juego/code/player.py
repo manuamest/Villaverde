@@ -69,7 +69,7 @@ class Player(pygame.sprite.Sprite):
         self.talk_with_list = { "don diego": False,
                                 "mercader": False,
                                 "modista": False,
-                                "obrero": False,
+                                "butanero": False,
                                 "cabra": False,
                                 "oveja": False,
                                 "pollo": False,
@@ -209,18 +209,21 @@ class Player(pygame.sprite.Sprite):
             timer.update()
 
     def move(self, dt):
-        # Normalizar el vector de dirección si no está en reposo
+        # Verificar si hay movimiento
         if self.direction.magnitude() != 0:
-            self.direction = self.direction.normalize()
-        
-        new_pos = self.pos + self.velocity * dt
-        new_rect = self.rect.copy()
-        new_rect.center = new_pos
-        if not self.dialogue.obtener_dialogo():
-            # Check for collisions before updating the position
-            if not self.check_collision(new_rect):
-                self.pos = new_pos
-                self.rect.center = self.pos
+            # Normalizar el vector de dirección
+            self.direction.normalize_ip()
+            # Calcular la nueva posición con la velocidad y el tiempo transcurrido
+            new_pos = self.pos + self.direction * self.speed * dt
+            new_rect = self.rect.copy()
+            new_rect.center = new_pos
+            if not self.dialogue.obtener_dialogo():
+                # Verificar colisiones antes de actualizar la posición
+                if not self.check_collision(new_rect):
+                    self.pos = new_pos
+                    self.rect.center = self.pos
+
+
 
     def set_position(self, x, y):
         self.pos.x = x

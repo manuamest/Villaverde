@@ -235,7 +235,7 @@ class Level:
             obj.width *= self.zoom  # Aumentar el ancho
             obj.height *= self.zoom  # Aumentar la altura
             
-        self.transition_effect_close()
+        #self.transition_effect_close()
 
     def create_objects(self):
         objects_list = []
@@ -326,15 +326,15 @@ class Level:
         if self.escene == "Nivel2":
             animals_list.append(Animal(
                 pos=(1308, 1072), 
-                group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue, personaje="oveja", prime=False, walk=1, location="cementerio"))
+                group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue, personaje="oveja", prime=False, walk=3, location="cementerio"))
         
             animals_list.append(Animal(
                 pos=(1928, 1488),
-                group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue, personaje="pollo", prime=False, walk=3, location="playa"))
+                group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue, personaje="pollo", prime=False, walk=1, location="playa"))
 
             animals_list.append(Animal(
                 pos=(1520, 1588),
-                group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", prime=False, walk=3, location="parking"))
+                group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", prime=False, walk=2, location="parking"))
             
         elif self.escene == "Nivel3":
             animals_list.append(Animal(
@@ -343,15 +343,15 @@ class Level:
 
             animals_list.append(Animal(
                 pos=(1156, 4596), 
-                group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue,personaje="oveja", prime=True, walk=1, location="fuera"))
+                group=self.all_sprites, animal_type="oveja", inventory=self.inventory, dialogue=self.dialogue,personaje="oveja", prime=True, walk=3, location="fuera"))
         
             animals_list.append(Animal(
                 pos=(2864, 3660),
-                group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue,personaje="pollo", prime=True, walk=0, location="fuera"))
+                group=self.all_sprites, animal_type="pollo", inventory=self.inventory, dialogue=self.dialogue,personaje="pollo", prime=True, walk=5, location="fuera"))
 
             animals_list.append(Animal(
                 pos=(1308, 5120),
-                group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", prime=True, walk=5, location="fuera"))
+                group=self.all_sprites, animal_type="vaca_marron", inventory=self.inventory, dialogue=self.dialogue,personaje="vaca", prime=True, walk=2, location="fuera"))
         
         
         return animals_list

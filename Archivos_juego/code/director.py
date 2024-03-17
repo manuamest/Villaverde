@@ -48,12 +48,17 @@ class Director:
 
         # Variable para el radio del círculo de transición
         self.transition_radius = 30
+        self.imagen_controles = pygame.image.load('./code/sprites/controles/controles.png').convert_alpha()
+        self.imagen_controles_ampliada = pygame.transform.scale(self.imagen_controles, (800, 400))
+        self.posicion_controles = (SCREEN_WIDTH//2-800//2, SCREEN_HEIGHT//2-400//2)
 
     def run(self):
         self.menu.show_start_screen()
         self.menu.run()
         self.transition_effect_close()  # Transición al acabar el nivel
         self.tutorial_enabled = self.menu.tutorial_enabled
+
+        #self.playIntro()
         
         for level in self.levels:
             level.setup()
@@ -128,9 +133,9 @@ class Director:
                 level.run(dt, self.key_z_pressed, left_mouse_button_down, event_mouse, self.tutorial_enabled)
                 pygame.display.update()                
             else:
-                # Si el juego está pausado, mostrar menú de pausa
-                self.menu.show_pause_menu()
-                pygame.display.update()
+                # Mostrar la imagen de los controles
+                self.screen.blit(self.imagen_controles_ampliada, self.posicion_controles)
+                pygame.display.flip()
         self.nivel_precompleto = False
                 
     def transition_effect_open(self):
