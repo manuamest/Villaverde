@@ -23,7 +23,7 @@ class Objectives:
                 Requirement(lambda state: player.is_cut_down_tree() == True, "0")
             ], (lambda : self.dropdown.set_check_button(3))),
             Objective([
-                Requirement(lambda state: inventory.get_madera() >= 20 , "0"),
+                Requirement(lambda state: inventory.get_madera() >= 30 , "0"),
             ], (lambda : self.dropdown.set_check_button(4))),
             Objective([
                 Requirement(lambda state: dialogue.get_objetos_a_jordi() == True, "0")
@@ -88,7 +88,7 @@ class Objectives:
                         ("Habla con Jordi el obrero", False),
                         ("Consigue el dinero", False),
                         ("Tala un arbol usando el hacha (SPACE)", False),
-                        ("Consigue 20 de madera", False),
+                        ("Consigue 30 de madera", False),
                         ("Dale a Jordi lo que necesita", False),
                         ("Ve a dormir (Cumple los anteriores)", False)
                         ]
