@@ -255,8 +255,8 @@ class Level:
                  pos=(2275, 1420),
                 group=self.all_sprites, color=(255, 128, 0), draw=self.draw,dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cartel_mercader", location="fuera"))   
             objects_list.append(InteractableObject(
-                 pos=(800, 860),
-                group=self.all_sprites, color=(255, 128, 0), draw=self.draw, dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cama", location="wuan"))
+                 pos=(805, 855),
+                group=self.all_sprites, color=(255, 128, 0), draw=self.draw, dialogue=self.dialogue, sprite="./code/sprites/invisible2.png", interactable_type="cama", location="wuan"))
         
         elif self.escene == "Nivel3":
             objects_list.append(InteractableObject(
@@ -270,8 +270,8 @@ class Level:
                 pos=(1700, 4100),
                 group=self.all_sprites, color=(255, 255, 0),draw=self.draw,dialogue=self.dialogue, sprite="./code/sprites/trigo.png", interactable_type="trigo", location="fuera"))
             objects_list.append(InteractableObject(
-                 pos=(800, 860),
-                group=self.all_sprites, color=(255, 128, 0), draw=self.draw, dialogue=self.dialogue, sprite="./code/sprites/invisible.png", interactable_type="cama", location="wuan"))
+                 pos=(805, 855),
+                group=self.all_sprites, color=(255, 128, 0), draw=self.draw, dialogue=self.dialogue, sprite="./code/sprites/invisible2.png", interactable_type="cama", location="wuan"))
         
         return objects_list
 
