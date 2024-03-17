@@ -11,17 +11,17 @@ class NPC(pygame.sprite.Sprite):
         self.draw = draw
         self.location = location
 
-        # Load sprite images
+        # Cargar sprites
         self.sprites = self.load_sprites()
         self.original_sprites = self.sprites
         self.dialogo_abierto = False 
 
         # Configuración inicial
-        self.image = self.sprites[0]  # Use the first sprite as the initial image
+        self.image = self.sprites[0]  
         self.rect = self.image.get_rect(center=pos)
         self.z = LAYERS['main']
 
-        # Animation variables
+        # Variables de animación
         self.current_frame = 0
         self.animation_delay = 13
         self.animation_counter = 0

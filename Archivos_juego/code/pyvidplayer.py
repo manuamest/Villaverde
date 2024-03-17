@@ -45,7 +45,7 @@ class Video:
         self._video.set_size(*size)
         self.current_size = size
 
-    # volume goes from 0.0 to 1.0
+    # El volumen va de 0.0 a 1.0
     def set_volume(self, volume: float): 
         self._video.set_volume(volume)
         
@@ -61,7 +61,7 @@ class Video:
     def resume(self):
         self._video.set_pause(False)
         
-    # gets time in seconds
+    # Obtiene el tiempo en segundos
     def get_pos(self) -> float: 
         return self._video.get_pts()
             
@@ -90,7 +90,7 @@ class Video:
                     
         return updated
     
-    # seek uses seconds
+    # seek usa segundos
     def seek(self, seek_time: int): 
         vid_time = self._video.get_pts()
         if vid_time + seek_time < self.duration and self.active:

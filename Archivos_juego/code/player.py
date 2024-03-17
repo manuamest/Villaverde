@@ -172,14 +172,12 @@ class Player(pygame.sprite.Sprite):
                 self.timers['cambio de herramienta'].activate()
                 self.tool_index = (self.tool_index + 1) % len(self.tools)
                 self.selected_tool = self.tools[self.tool_index]
-                # print(f'Cambiando a herramienta [{self.selected_tool}] ')
   
             if keys[pygame.K_e] and not self.timers['interaccion'].active:
                 self.timers['interaccion'].activate()
                 player_center = pygame.math.Vector2(self.rect.center)
                 for sprite in self.groups()[0].sprites():
                     if (isinstance(sprite, InteractableObject) or isinstance(sprite, NPC) or isinstance(sprite, Animal)) and sprite.visible:  
-                        # print(sprite.location)
                         obj_center = pygame.math.Vector2(sprite.rect.center)
                         distancia = player_center.distance_to(obj_center)
                         if distancia < 110 and (isinstance(sprite, NPC)):
@@ -223,8 +221,6 @@ class Player(pygame.sprite.Sprite):
                     self.pos = new_pos
                     self.rect.center = self.pos
 
-
-
     def set_position(self, x, y):
         self.pos.x = x
         self.pos.y = y
@@ -233,7 +229,7 @@ class Player(pygame.sprite.Sprite):
     def set_collision_layer(self, collision_layer):
         self.collision_layer = collision_layer
 
-   # Verifica las colisiones y los cambios de escenario.
+    # Verifica las colisiones y los cambios de escenario.
     def check_collision(self, new_rect):
         for obj in self.collision_layer:
             col_rect = pygame.Rect(obj.x, obj.y, obj.width, obj.height)

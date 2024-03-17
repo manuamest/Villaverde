@@ -157,39 +157,39 @@ class Draw:
                 if 0 <= indice_dialogo_actual < len(dialogos_personaje):
                     self.pantalla.blit(self.imagen_fondo_dialogo, (dialogo_x, dialogo_y))
                     tiempo_actual = time.time()
+                    if not keys[pygame.K_x]:
+                        if keys[pygame.K_SPACE]:  
+                            self.longitud_actual = len(dialogos_personaje[indice_dialogo_actual])
+                        elif tiempo_actual - self.update > 0.05:
+                            if self.longitud_actual < len(dialogos_personaje[indice_dialogo_actual]):
+                                self.longitud_actual += 1
+                                self.update = tiempo_actual
 
-                    if keys[pygame.K_SPACE]:  
-                        self.longitud_actual = len(dialogos_personaje[indice_dialogo_actual])
-                    elif tiempo_actual - self.update > 0.05:
-                        if self.longitud_actual < len(dialogos_personaje[indice_dialogo_actual]):
-                            self.longitud_actual += 1
-                            self.update = tiempo_actual
+                        texto_mostrado = dialogos_personaje[indice_dialogo_actual][:self.longitud_actual]
+                        self.dibujar_frases(texto_mostrado, inicio_texto_x, inicio_texto_y)
+                        
+                        personajes = {
+                            "don diego": (self.don_diego, 'DON DIEGO'),
+                            "obrero": (self.obrero_jordi, 'JORDI EL OBRERO'),
+                            "mercader": (self.mercader,'XOEL EL MERCADER'),
+                            "modista": (self.modista, 'EVA LA MODISTA'),
+                            "pollo": (self.pollo,'GALLINA DANIEL'),
+                            "vaca":(self.vaca,'VACA KLARA'),
+                            "oveja":(self.oveja,'OVEJA OSCAR'),
+                            "cabra":(self.cabra,'CABRA FER'),
+                            "hermanos": (self.manu,'HERMANO PABLO') if self.dialogue.obtener_indice_personaje(personaje) % 2 == 0 else (self.pablo,'HERMANO MANUEL')
+                        }
 
-                    texto_mostrado = dialogos_personaje[indice_dialogo_actual][:self.longitud_actual]
-                    self.dibujar_frases(texto_mostrado, inicio_texto_x, inicio_texto_y)
-                    
-                    personajes = {
-                        "don diego": (self.don_diego, 'DON DIEGO'),
-                        "obrero": (self.obrero_jordi, 'JORDI EL OBRERO'),
-                        "mercader": (self.mercader,'XOEL EL MERCADER'),
-                        "modista": (self.modista, 'EVA LA MODISTA'),
-                        "pollo": (self.pollo,'GALLINA DANIEL'),
-                        "vaca":(self.vaca,'VACA KLARA'),
-                        "oveja":(self.oveja,'OVEJA OSCAR'),
-                        "cabra":(self.cabra,'CABRA FER'),
-                        "hermanos": (self.manu,'HERMANO PABLO') if self.dialogue.obtener_indice_personaje(personaje) % 2 == 0 else (self.pablo,'HERMANO MANUEL')
-                    }
+                        if personaje in personajes:
+                            imagen, nombre = personajes[personaje]
+                            self.pantalla.blit(imagen, (self.pantalla_ancho - 445, dialogo_y + 25))
+                            self.dialogue.manejar_interacciones(personaje, keys, inventory, inicio_texto_x, inicio_texto_y, self.longitud_actual)
+                        else:
+                            nombre = ''
 
-                    if personaje in personajes:
-                        imagen, nombre = personajes[personaje]
-                        self.pantalla.blit(imagen, (self.pantalla_ancho - 445, dialogo_y + 25))
-                        self.dialogue.manejar_interacciones(personaje, keys, inventory, inicio_texto_x, inicio_texto_y, self.longitud_actual)
-                    else:
-                        nombre = ''
-
-                    texto_superficie = self.fuente.render(nombre, True, self.MARRON)
-                    texto_rect = texto_superficie.get_rect(center=(self.pantalla_ancho - 350, dialogo_y + 260))
-                    self.pantalla.blit(texto_superficie, texto_rect)
+                        texto_superficie = self.fuente.render(nombre, True, self.MARRON)
+                        texto_rect = texto_superficie.get_rect(center=(self.pantalla_ancho - 350, dialogo_y + 260))
+                        self.pantalla.blit(texto_superficie, texto_rect)
 
 
     # Función para dibujar el menú de las tiendas

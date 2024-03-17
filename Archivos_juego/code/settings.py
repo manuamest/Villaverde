@@ -1,11 +1,11 @@
 from pygame.math import Vector2
-# screen
+# Pantalla
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 TILE_SIZE = 64
 FPS = 60
 
-# overlay positions 
+# Posiciones overlay 
 OVERLAY_POSITIONS = {
 	'tool' : (40, SCREEN_HEIGHT - 15), 
 	'seed': (70, SCREEN_HEIGHT - 5)}
@@ -48,12 +48,12 @@ PURCHASE_PRICES = {
 	'tomato': 5
 }
 
-#Puzle
+# Puzle
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 DARKGREY = (40, 40, 40)
 LIGHTGREY = (100, 100, 100)
-# game settings
+# Configuración del juego
 WIDTH = 800
 HEIGHT = 641
 FPS = 60

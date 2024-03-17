@@ -15,7 +15,7 @@ class Animal(pygame.sprite.Sprite):
         self.pos = pos
         self.personaje = personaje
      
-        # Load sprite images for walking and inactive states
+        # Cargar sprites
         if self.prime:  # Comprueba si está en estado cabraprime
             self.sprites_caminando = self.load_sprites(os.path.join(self.sprite_directory, f"{animal_type}_caminando_prime"))
             self.sprites_inactivo = self.load_sprites(os.path.join(self.sprite_directory, f"{animal_type}_inactivo_prime"))
@@ -25,16 +25,16 @@ class Animal(pygame.sprite.Sprite):
         self.dialogo_abierto = False 
         
         # Configuración inicial
-        self.image = self.sprites_inactivo[0]  # Use the first sprite as the initial image
+        self.image = self.sprites_inactivo[0]  
         self.rect = self.image.get_rect(center=pos)
         self.z = LAYERS['main']
 
-        # Animation variables
+        # Variables de animación
         self.current_frame = 0
         self.animation_delay = 13
         self.animation_counter = 0
 
-        # Additional states
+        # Estados adicionales
         self.state = "inactivo"  # Default state
         self.personaje = personaje 
 
@@ -44,7 +44,7 @@ class Animal(pygame.sprite.Sprite):
         self.stop_counter = 0  # Contador para rastrear la duración de la parada
         self.direction = 1  # Dirección inicial: 1 para derecha, -1 para izquierda
 
-        # Movement variables based on 'walk' parameter
+        # Variables de movimiento basadas en el parámetro'walk'
         if walk == 0:  # Cabra
             self.move_speed = 3
             self.target_positions = [(pos[0] + 50, pos[1] + 50), (pos[0] - 50, pos[1] - 50)]

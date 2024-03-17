@@ -7,7 +7,7 @@ from settings import *
 class Puzle:
     def __init__(self, screen):
         self.screen = screen
-        self.puzle_ancho, self.puzle_alto = SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2  # Ajustar según necesidad
+        self.puzle_ancho, self.puzle_alto = SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
         self.puzle_surface = pygame.Surface((self.puzle_ancho, self.puzle_alto))
         self.puzle_surface.set_alpha(200)
         self.puzle_x = (SCREEN_WIDTH - self.puzle_ancho) // 2
@@ -125,7 +125,7 @@ class Puzle:
         self.all_sprites.update()
 
     def draw_grid(self):
-         # Dibujar líneas verticales del grid
+        # Dibujar líneas verticales del grid
         for x in range(0, GAME_SIZE * TILESIZE + 1, TILESIZE): 
             pygame.draw.line(self.puzle_surface, LIGHTGREY, (x + self.grid_offset_x, 0 + self.grid_offset_y), (x + self.grid_offset_x, GAME_SIZE * TILESIZE + self.grid_offset_y))
         # Dibujar líneas horizontales del grid
@@ -179,8 +179,8 @@ class Puzle:
                             self.start_shuffle = True
 
     def start_puzle(self):
-        self.new()  # Iniciar un nuevo juego
-        self.run()  # Iniciar el bucle principal del juego
+        self.new() # Iniciar un nuevo juego
+        self.run() # Iniciar el bucle principal del juego
 
     def get_is_complete(self):
         return self.complete

@@ -39,7 +39,6 @@ class Plant(pygame.sprite.Sprite):
         self.z = LAYERS['ground plant']
     
     def grow(self):
-        #print('El método grow() se está ejecutando')
         if self.check_watered(self.rect.center):
             self.phase += self.grow_speed
             
@@ -54,7 +53,6 @@ class Plant(pygame.sprite.Sprite):
 
             self.y_offset = -48
             self.image = self.frames[int(self.phase)]
-            #self.image = pygame.transform.scale(self.image, (40, 40))
             self.rect = self.image.get_rect(midbottom=self.soil.rect.midbottom + pygame.math.Vector2(0, self.y_offset))
 
 class SoilLayer:
@@ -88,7 +86,7 @@ class SoilLayer:
 
         # Llenar la matriz con los azulejos cultivables 
         for x, y, _ in cultivable_layer.tiles():
-            self.grid[y][x].append('F') # el azulejo es cultivable
+            self.grid[y][x].append('F') # el Tile es cultivable
 
 
     def create_hit_rects(self):
@@ -101,16 +99,11 @@ class SoilLayer:
                     self.hit_rects.append(rect)
 
     def get_hit(self, point):
-        #print("Punto recibido:", point)
         for rect in self.hit_rects:
-            # print("Rectángulo:", rect)
             if rect.collidepoint(point):
                 x = rect.x // TILE_SIZE
                 y = rect.y // TILE_SIZE
-                # print("Coordenadas de la cuadrícula: x =", x, ", y =", y)
-                # print("Contenido de self.grid en la posición (", x, ",", y, "):", self.grid[y][x])
                 if 'F' in self.grid[y][x]:
-                    # print('farmable')
                     self.set_fase_cultivo("arar")
                     self.grid[y][x].append('C') # Tile cultivado
                     self.create_soil_tiles()
@@ -144,13 +137,9 @@ class SoilLayer:
                     self.grid[y][x].append('S') # Tile con una semilla plantada
                     self.set_fase_cultivo("sembrar")
                     Plant(seed, [self.all_sprites, self.plant_sprites], soil_sprite, self.check_watered)
-                    #print("Nueva planta creada:", new_plant)
-                    #print("Tamaño del grupo de plantas:", len(self.plant_sprites.sprites()))
     
     def update_plants(self):
-        #print('El método update_plants() se está ejecutando')
         for plant in self.plant_sprites.sprites():
-            #print('Iterando sobre las plantas')
             plant.grow()
 
             
