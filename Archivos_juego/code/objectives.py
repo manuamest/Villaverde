@@ -100,7 +100,7 @@ class Objectives:
                         ("Habla con Eva la modista", False),
                         ("Habla con la gallina Daniel", False),
                         ("Habla con la oveja Oscar", False),
-                        ("Habla con la vaca Clara", False),
+                        ("Habla con la vaca Klara", False),
                         ("Cumple el deseo de todos los animales", False),
                         ("Ve a dormir (Cumple los anteriores)", False)
                         ]

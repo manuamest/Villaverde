@@ -88,10 +88,10 @@ class Draw:
         self.dialogos_obrero = ["Hola! Soy Jordi el obrero, yo te puedo ayudar a reconstruir la granja.", "Wuan, lamento decirte que los ahorros de tu abuelo probablemente no sean suficientes para pagar la reconstruccion...", "Si no puedes conseguir mas dinero vas a tener que proporcionarme los materiales de construccion.", "Traeme 20 de madera y 100 monedas y vere que puedo hacer."]
         self.dialogos_obrero_2 = ["Genial! Ya era hora de que por fin me trajeras el dinero y la madera, sigue asi Wuan."]
         self.dialogos_obrero_3 = ["Estas sordo primo? Que te he dicho que me des el dinero y la madera, ya veo que no tienes suficientes unidades de ambos, traeme lo que te he pedido."]
-        self.dialogos_obrero_4 = ["Me vas a tener esperando un tiempecito parece eh, avisame cuando los consigas"]
-        self.dialogos_obrero_5 = ["Solo tienes madera, traeme el dinero tambien anda"]
-        self.dialogos_obrero_6 = ["Solo tienes dinero, traeme la madera tambien anda"]
-        self.dialogos_obrero_7 = ["No tienes suficientes unidades de dinero y madera, vuelve cuando tengas la cantidad que te pedi"]
+        self.dialogos_obrero_4 = ["Me vas a tener esperando un tiempecito parece eh, avisame cuando los consigas."]
+        self.dialogos_obrero_5 = ["Solo tienes madera, traeme el dinero tambien anda."]
+        self.dialogos_obrero_6 = ["Solo tienes dinero, traeme la madera tambien anda."]
+        self.dialogos_obrero_7 = ["No tienes suficientes unidades de dinero y madera, vuelve cuando tengas la cantidad que te pedi."]
         self.dialogos_mercader = ["Bienvenido a la tienda de Xoel el mercader, donde tu madera y trigo compra sin perder. Trae tus bienes, los frutos de tu labor, Xoel paga bien, con justicia y honor.", "Dicen que soy agarrado, de mi eso murmuran, por no soltar el dinero, criticas me aseguran. Mas si supieran la verdad, detras del velo y la penumbra, necesito cada centavo, para vivir sin ninguna duda.", "Dime Wuan, como te puedo estafar hoy?"]
         self.dialogos_mercader_3 = ["No puedes seleccionar 0 unidades."]
         self.dialogos_modista_3 = ["No puedes seleccionar 0 unidades querido Wuan...se paciente."]
@@ -107,7 +107,7 @@ class Draw:
         self.dialogos_modista = ["Bienvenido a la tienda de Eva la modista...Wuan, que articulo de lujo necesitas?", "Nos han llegado las ultimas novedades como las bufandas de Ovejana, a las ovejas misteriosamente les atrae este accesorio..."]
         self.dialogos_pollo = ["Cococo! Escucha bien, te lo voy a decir, mi amor por las Jordans es algo que no puede huir, si quieres que camine junto a ti, en este lugar, necesitas comprender que es lo que quiero calzar.", "Con mis Jordan en mis patas, contigo voy a marchar.", "Dime Wuan, me has traido mi complemento favorito? Tengo muchas ganas de lucirlas por el corral."]
         self.dialogos_pollo_2 = ["Con Jordan en las garras, sere el gallo de las carreras, Gallina Daniel, ¡brillando como estrellas en las praderas! En la granja, sere el mas veloz de todas las bestias granjeras!,Y junto a Wuan, la granja salvare, en cada paso que de!"]
-        self.dialogos_pollo_3 = ["Aun no tienes mis preciadas Jordan...ya se que estan caras pero sin mi no podras conseguirlo, tu veras Wuan, o Jordans o no hay trato."]
+        self.dialogos_pollo_3 = ["Aun no tienes mis preciadas Jordan...ya se que estan caras pero sin mi no podras conseguirlo, tu veras Wuan, o Jordan o no hay trato."]
         self.dialogos_pollo_4 = ["Que paciencia hay que tener contigo Wuan, bueno, confio en que al menos las que me traeras seran una edicion limitada."]
         
         self.dialogos_oveja = ["Baa-baa! Yo soy Oscar, lanuda y noble oveja, para salvar tu granja, una peticion te dejo. Una bufanda de Ovejana, con nudos de esperanza, traeme esa prenda, y juntos tendremos bonanza. Con la bufanda al cuello, sere tu fiel aliado,te ayudare en tu granja, hasta que todo haya acabado.", "Asi que amigo del campo, ya sabes mi condicion,una bufanda para mi, y yo te doy mi devocion. Juntos enfrentaremos, el frio y la adversidad,y con bufanda en mano, la granja vamos a salvar.", "Me has traido mi preciada bufanda de Ovejana?"]
@@ -115,7 +115,7 @@ class Draw:
         self.dialogos_oveja_3 = ["Corre Wuan, aunque sea una oveja me estoy muriendo de frio, necesito una bufanda al cuello para poder servirte como aliado."]
         self.dialogos_oveja_4 = ["Vaya...bueno no te preocupes Wuan, confiamos todo el pueblo de Villaverde en ti, seguro que seras capaz de conseguir cada uno de los retos, aqui te esperare."]
         self.dialogos_vaca = ["Moo-moo! Presta atencion, aqui te voy a contar, mis gustos son exclusivos! Si quieres que camine a tu lado, que te siga sin fallar, necesitas comprender lo que me hace deslumbrar.", "Mi estilo ha de resplandecer, con unas gafas Swarovski, me vas a enloquecer! Asi que si quieres mi amistad, si quieres mi devocion, trae esas gafas!", "Dime cielo, tienes unas gafas rechulonas por ahi que poder darme?"]
-        self.dialogos_vaca_2 = ["Gracias cielo, ahora junto a ti desfilare, con estas gafas y nuestro esfuerzo salvaremos la granja. Puedes contar conmigo, Clara, como tu fiel aliada."]
+        self.dialogos_vaca_2 = ["Gracias cielo, ahora junto a ti desfilare, con estas gafas y nuestro esfuerzo salvaremos la granja. Puedes contar conmigo, Klara, como tu fiel aliada."]
         self.dialogos_vaca_3 = ["Aun no tienes las gafas cielo...vuelve cuando tengas algo mas de disposicion."]
         self.dialogos_vaca_4 = ["De acuerdo, cuando las traigas sere la vaca mas guapa y te podre ayudar."]
         self.dialogos_hermanos = ["Al viejo ese le quedan dos telediarios.", "Con el disgusto que le ha dado Wuan, no creo que llegue a ver el amanecer.", "Wuan, eres la oveja negra de la familia.", "Espabila Wuan!", "Wuan, no tienes nada mejor que hacer?", "Wuan, tienes mucho que aprender de nosotros...", "Lavate o algo, Wuan, hueles a estiercol!"]
@@ -174,7 +174,7 @@ class Draw:
                         "mercader": (self.mercader,'XOEL EL MERCADER'),
                         "modista": (self.modista, 'EVA LA MODISTA'),
                         "pollo": (self.pollo,'GALLINA DANIEL'),
-                        "vaca":(self.vaca,'VACA CLARA'),
+                        "vaca":(self.vaca,'VACA KLARA'),
                         "oveja":(self.oveja,'OVEJA OSCAR'),
                         "cabra":(self.cabra,'CABRA FER'),
                         "hermanos": (self.manu,'HERMANO PABLO') if self.dialogue.obtener_indice_personaje(personaje) % 2 == 0 else (self.pablo,'HERMANO MANUEL')
