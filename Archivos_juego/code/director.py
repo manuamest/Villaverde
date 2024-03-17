@@ -64,7 +64,9 @@ class Director:
         # Para detener la música de fondo
         pygame.mixer.music.stop()
         self.playIntro()
-        
+        pygame.mixer.music.load('./code/villaverde.mp3')
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.play(-1)  # Repetir infinitamente
         for level in self.levels:
             level.setup()
             self.transition_effect_open()  # Transición al empezar el nivel
