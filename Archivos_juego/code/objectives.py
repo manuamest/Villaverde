@@ -30,7 +30,7 @@ class Objectives:
             ], (lambda : Objectives.penultimate_objective(self.dropdown, 5, director))),
             Objective([
                 Requirement(lambda state: player.get_interact_with_last_object() == True, "0")
-            ], (lambda : self.dropdown.set_check_button(1)))
+            ], (lambda : self.dropdown.set_check_button(6)))
         ]
 
         objectives_check_n2 = [
@@ -68,7 +68,7 @@ class Objectives:
             ], (lambda : Objectives.penultimate_objective(self.dropdown, 9, director))),
             Objective([
                 Requirement(lambda state: player.get_interact_with_last_object() == True, "0")
-            ], (lambda : self.dropdown.set_check_button(1)))
+            ], (lambda : self.dropdown.set_check_button(10)))
         ]
         
         objectives_check_n3 = [
@@ -84,7 +84,7 @@ class Objectives:
         ]
 
         # Objetivos que se mostraran en el desplegable
-        objetivos_n1 = [("Habla con Don Diego", False),
+        objectives_dropdown_n1 = [("Habla con Don Diego", False),
                         ("Habla con Jordi el obrero", False),
                         ("Consigue el dinero", False),
                         ("Tala un arbol usando el hacha (SPACE)", False),
@@ -92,7 +92,7 @@ class Objectives:
                         ("Dale a Jordi lo que necesita", False),
                         ("Ve a dormir (Cumple los anteriores)", False)
                         ]
-        objetivos_n2 = [("Ara la tierra con la azada (SPACE)", False),
+        objectives_dropdown_n2 = [("Ara la tierra con la azada (SPACE)", False),
                         ("Planta trigo (F)", False),
                         ("Usa la regadera (SPACE)", False),
                         ("Recoge trigo", False),
@@ -104,7 +104,7 @@ class Objectives:
                         ("Cumple el deseo de todos los animales", False),
                         ("Ve a dormir (Cumple los anteriores)", False)
                         ]
-        objetivos_n3 = [("Consigue la llave magistral", False),
+        objectives_dropdown_n3 = [("Consigue la llave magistral", False),
                         ("Resuelve el puzle", False),
                         ("Habla con Fer", False)
                         ]
@@ -112,19 +112,19 @@ class Objectives:
         self.nivel = nivel
         if self.nivel == "Nivel1":
             self.objectives_check = objectives_check_n1
-            self.objectives = objetivos_n1
+            self.objectives_dropdown = objectives_dropdown_n1
         elif self.nivel == "Nivel2":
             self.objectives_check = objectives_check_n2
-            self.objectives = objetivos_n2
+            self.objectives_dropdown = objectives_dropdown_n2
         elif self.nivel == "Nivel3":
-            self.objectives_check = objectives_check_n3
-            self.objectives = objetivos_n3
+            self.objectives_check = objectives_dropdown_n3
+            self.objectives_dropdown = objetivos_n3
 
         self.hide_dropdown = False
         self.screen = screen
         self.click_on_objectives_button = False
         self.button = Button()
-        self.dropdown = Dropdown(self.button.rect, self.objectives)
+        self.dropdown = Dropdown(self.button.rect, self.objectives_dropdown)
         self.director = director
 
     def evaluate(self):
