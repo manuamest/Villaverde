@@ -37,6 +37,9 @@ class Draw:
       self.vaca =  pygame.image.load('./code/sprites/dialogos/dialogo_vaca.png').convert_alpha()
       self.pablo = pygame.image.load('./code/sprites/dialogos/pablo_manu.png').convert_alpha()
       self.manu = pygame.image.load('./code/sprites/dialogos/pablo_manu.png').convert_alpha()
+      self.moneda = pygame.image.load('./code/sprites/moneda_tiendas.png').convert_alpha()
+      self.moneda2 = pygame.image.load('./code/sprites/moneda_tiendas2.png').convert_alpha()
+      self.moneda3 = pygame.image.load('./code/sprites/moneda_tiendas3.png').convert_alpha()
 
 
 
@@ -51,8 +54,8 @@ class Draw:
       self.marcador= '\u00A0' 
       self.message = "Parece que para entrar aqui se necesita la Llave Magistral" 
       self.precios = {
-            "mercader": {"Madera": 5, "Trigo": 3},
-            "modista": {"Jordan": 10, "Bufanda y boina": 7,"Gafas y cadena":5}
+            "mercader": {"Madera": 3, "Trigo": 5},
+            "modista": {"Jordan": 33, "Bufanda y boina": 66,"Gafas y cadena":99}
         }
       
       self.definir_dialogos()
@@ -85,7 +88,7 @@ class Draw:
     def definir_dialogos(self):
         self.dialogos_dondiego  = ["Que va a ser de mi?, mi granja esta destrozada y Fer ha desaparecido...", "Por favor, Wuan, coge la bolsa que tengo en casa con todos mis ahorros y habla con Jordi el obrero, el quizas nos pueda ayudar.", "Todo esta en tus manos..."]
         self.dialogos_dondiego_2 = ["Ugh...ugh...necesito una monst...er.", "Querido Wuan, salva la granja...esta todo en tus manos.", "Eres el unico capaz de hacer que me vaya de esta vida en paz...cumple solo este favor..."]
-        self.dialogos_obrero = ["Hola! Soy Jordi el obrero, yo te puedo ayudar a reconstruir la granja.", "Wuan, lamento decirte que los ahorros de tu abuelo probablemente no sean suficientes para pagar la reconstruccion...", "Si no puedes conseguir mas dinero vas a tener que proporcionarme los materiales de construccion.", "Traeme 20 de madera y 100 monedas y vere que puedo hacer."]
+        self.dialogos_obrero = ["Hola! Soy Jordi el obrero, yo te puedo ayudar a reconstruir la granja.", "Wuan, lamento decirte que los ahorros de tu abuelo probablemente no sean suficientes para pagar la reconstruccion...", "Si no puedes conseguir mas dinero vas a tener que proporcionarme los materiales de construccion.", "Traeme 30 de madera y 100 monedas y vere que puedo hacer."]
         self.dialogos_obrero_2 = ["Genial! Ya era hora de que por fin me trajeras el dinero y la madera, sigue asi Wuan."]
         self.dialogos_obrero_3 = ["Estas sordo primo? Que te he dicho que me des el dinero y la madera, ya veo que no tienes suficientes unidades de ambos, traeme lo que te he pedido."]
         self.dialogos_obrero_4 = ["Me vas a tener esperando un tiempecito parece eh, avisame cuando los consigas."]
@@ -107,7 +110,7 @@ class Draw:
         self.dialogos_modista = ["Bienvenido a la tienda de Eva la modista...Wuan, que articulo de lujo necesitas?", "Nos han llegado las ultimas novedades como las bufandas de Ovejana, a las ovejas misteriosamente les atrae este accesorio..."]
         self.dialogos_pollo = ["Cococo! Escucha bien, te lo voy a decir, mi amor por las Jordans es algo que no puede huir, si quieres que camine junto a ti, en este lugar, necesitas comprender que es lo que quiero calzar.", "Con mis Jordan en mis patas, contigo voy a marchar.", "Dime Wuan, me has traido mi complemento favorito? Tengo muchas ganas de lucirlas por el corral."]
         self.dialogos_pollo_2 = ["Con Jordan en las garras, sere el gallo de las carreras, Gallina Daniel, ¡brillando como estrellas en las praderas! En la granja, sere el mas veloz de todas las bestias granjeras!,Y junto a Wuan, la granja salvare, en cada paso que de!"]
-        self.dialogos_pollo_3 = ["Aun no tienes mis preciadas Jordan...ya se que estan caras pero sin mi no podras conseguirlo, tu veras Wuan, o Jordan o no hay trato."]
+        self.dialogos_pollo_3 = ["Aun no tienes mis preciadas Jordan...ya se que estan caras pero sin mi no podras conseguirlo, tu veras Wuan, o Jordans o no hay trato."]
         self.dialogos_pollo_4 = ["Que paciencia hay que tener contigo Wuan, bueno, confio en que al menos las que me traeras seran una edicion limitada."]
         
         self.dialogos_oveja = ["Baa-baa! Yo soy Oscar, lanuda y noble oveja, para salvar tu granja, una peticion te dejo. Una bufanda de Ovejana, con nudos de esperanza, traeme esa prenda, y juntos tendremos bonanza. Con la bufanda al cuello, sere tu fiel aliado,te ayudare en tu granja, hasta que todo haya acabado.", "Asi que amigo del campo, ya sabes mi condicion,una bufanda para mi, y yo te doy mi devocion. Juntos enfrentaremos, el frio y la adversidad,y con bufanda en mano, la granja vamos a salvar.", "Me has traido mi preciada bufanda de Ovejana?"]
@@ -157,39 +160,39 @@ class Draw:
                 if 0 <= indice_dialogo_actual < len(dialogos_personaje):
                     self.pantalla.blit(self.imagen_fondo_dialogo, (dialogo_x, dialogo_y))
                     tiempo_actual = time.time()
-                    if not keys[pygame.K_x]:
-                        if keys[pygame.K_SPACE]:  
-                            self.longitud_actual = len(dialogos_personaje[indice_dialogo_actual])
-                        elif tiempo_actual - self.update > 0.05:
-                            if self.longitud_actual < len(dialogos_personaje[indice_dialogo_actual]):
-                                self.longitud_actual += 1
-                                self.update = tiempo_actual
 
-                        texto_mostrado = dialogos_personaje[indice_dialogo_actual][:self.longitud_actual]
-                        self.dibujar_frases(texto_mostrado, inicio_texto_x, inicio_texto_y)
-                        
-                        personajes = {
-                            "don diego": (self.don_diego, 'DON DIEGO'),
-                            "obrero": (self.obrero_jordi, 'JORDI EL OBRERO'),
-                            "mercader": (self.mercader,'XOEL EL MERCADER'),
-                            "modista": (self.modista, 'EVA LA MODISTA'),
-                            "pollo": (self.pollo,'GALLINA DANIEL'),
-                            "vaca":(self.vaca,'VACA KLARA'),
-                            "oveja":(self.oveja,'OVEJA OSCAR'),
-                            "cabra":(self.cabra,'CABRA FER'),
-                            "hermanos": (self.manu,'HERMANO PABLO') if self.dialogue.obtener_indice_personaje(personaje) % 2 == 0 else (self.pablo,'HERMANO MANUEL')
-                        }
+                    if keys[pygame.K_SPACE]:  
+                        self.longitud_actual = len(dialogos_personaje[indice_dialogo_actual])
+                    elif tiempo_actual - self.update > 0.05:
+                        if self.longitud_actual < len(dialogos_personaje[indice_dialogo_actual]):
+                            self.longitud_actual += 1
+                            self.update = tiempo_actual
 
-                        if personaje in personajes:
-                            imagen, nombre = personajes[personaje]
-                            self.pantalla.blit(imagen, (self.pantalla_ancho - 445, dialogo_y + 25))
-                            self.dialogue.manejar_interacciones(personaje, keys, inventory, inicio_texto_x, inicio_texto_y, self.longitud_actual)
-                        else:
-                            nombre = ''
+                    texto_mostrado = dialogos_personaje[indice_dialogo_actual][:self.longitud_actual]
+                    self.dibujar_frases(texto_mostrado, inicio_texto_x, inicio_texto_y)
+                    
+                    personajes = {
+                        "don diego": (self.don_diego, 'DON DIEGO'),
+                        "obrero": (self.obrero_jordi, 'JORDI EL OBRERO'),
+                        "mercader": (self.mercader,'XOEL EL MERCADER'),
+                        "modista": (self.modista, 'EVA LA MODISTA'),
+                        "pollo": (self.pollo,'GALLINA DANIEL'),
+                        "vaca":(self.vaca,'VACA KLARA'),
+                        "oveja":(self.oveja,'OVEJA OSCAR'),
+                        "cabra":(self.cabra,'CABRA FER'),
+                        "hermanos": (self.manu,'HERMANO PABLO') if self.dialogue.obtener_indice_personaje(personaje) % 2 == 0 else (self.pablo,'HERMANO MANUEL')
+                    }
 
-                        texto_superficie = self.fuente.render(nombre, True, self.MARRON)
-                        texto_rect = texto_superficie.get_rect(center=(self.pantalla_ancho - 350, dialogo_y + 260))
-                        self.pantalla.blit(texto_superficie, texto_rect)
+                    if personaje in personajes:
+                        imagen, nombre = personajes[personaje]
+                        self.pantalla.blit(imagen, (self.pantalla_ancho - 445, dialogo_y + 25))
+                        self.dialogue.manejar_interacciones(personaje, keys, inventory, inicio_texto_x, inicio_texto_y, self.longitud_actual)
+                    else:
+                        nombre = ''
+
+                    texto_superficie = self.fuente.render(nombre, True, self.MARRON)
+                    texto_rect = texto_superficie.get_rect(center=(self.pantalla_ancho - 350, dialogo_y + 260))
+                    self.pantalla.blit(texto_superficie, texto_rect)
 
 
     # Función para dibujar el menú de las tiendas
@@ -248,8 +251,26 @@ class Draw:
                 barra_x, barra_y = menu_x + 50, menu_y + 60 + (indice * 50)
 
                 pygame.draw.rect(self.pantalla, (0, 0, 0), (barra_x - 20, barra_y, 280, 40), border_radius=5)
-                pygame.draw.rect(self.pantalla, self.MARRON, (barra_x + 2 - 20, barra_y + 2, 276, 36), border_radius=5)
+                pygame.draw.rect(self.pantalla, (177, 75, 1), (barra_x + 2 - 20, barra_y + 2, 276, 36), border_radius=5)
                 self.pantalla.blit(opcion_texto, (barra_x + 10 - 20, barra_y + 10))
+                texto_ancho = opcion_texto.get_width()
+                posicion_moneda_x = barra_x + 10 - 20 + texto_ancho + 5 
+                posicion_moneda_y = barra_y + 20
+                
+           
+                if personaje == "modista":
+                    if indice == 0:
+                        moneda_a_usar = self.moneda
+                    elif indice == 1:
+                        moneda_a_usar = self.moneda2
+                    elif indice == 2:
+                        moneda_a_usar = self.moneda3
+                 
+                    ancho_original, alto_original = moneda_a_usar.get_size()
+                    ancho_nuevo = int(ancho_original * 1.2)
+                    alto_nuevo = int(alto_original * 1.2)
+                    moneda_escalada = pygame.transform.scale(moneda_a_usar, (ancho_nuevo, alto_nuevo))
+                    self.pantalla.blit(moneda_escalada, (posicion_moneda_x, posicion_moneda_y))
 
                 if opcion in inventory.sprites_items:
                     sprite_escalado = pygame.transform.scale(inventory.sprites_items[opcion], (36, 36))

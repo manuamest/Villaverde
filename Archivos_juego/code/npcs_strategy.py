@@ -53,7 +53,7 @@ class DialogoObreroEstrategia(Dialogue_Strategy):
         if not contexto.obtener_dinero_dado() and not contexto.obtener_madera_dada():
             if contexto.opcion_seleccionada == 0:
                 tiene_dinero = inventory.get_dinero() == 100
-                tiene_madera = inventory.get_madera() >= 20
+                tiene_madera = inventory.get_madera() >= 30
               
                 if tiene_dinero and not tiene_madera:
                     contexto.set_dinero_dado(True)
@@ -72,7 +72,7 @@ class DialogoObreroEstrategia(Dialogue_Strategy):
                     contexto.set_madera_dada(True)
                     contexto.set_opcion_seleccionada(0) 
                     inventory.eliminar_dinero(100)
-                    inventory.eliminar_madera(20)
+                    inventory.eliminar_madera(30)
                     contexto.set_opcion_escogida_obrero(True)
                     contexto.set_objetos_a_jordi(True)
                 

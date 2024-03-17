@@ -104,7 +104,7 @@ class Director:
         current_time = time.time()
         elapsed_time = current_time - self.last_growth_time
 
-        if elapsed_time >= 5:
+        if elapsed_time >= 15:
             self.soil_layer.update_plants() 
             self.last_growth_time = current_time
         
