@@ -284,6 +284,7 @@ class Draw:
   
         else:
             self.opcion_menu = 0
+            self.item_seleccionado = 0
 
                             
 
