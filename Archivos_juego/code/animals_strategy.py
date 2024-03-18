@@ -133,7 +133,7 @@ class DialogoVacaEstrategia(Dialogue_Strategy):
             return contexto.draw.dialogos_vaca
 
     def manejar_opciones(self, contexto,draw):
-        return ["Dar gafas Swarovski para que vaya con estilo", "Lo siento Vaca Clara, aun no las he conseguido"]
+        return ["Dar gafas Swarovski para que vaya con estilo", "Lo siento Vaca Klara, aun no las he conseguido"]
     
     def manejar_interacciones(self, keys, inventory, inicio_texto_x, inicio_texto_y, longitud_actual, personaje,contexto,escene,draw):
         dialogos_personaje = contexto.obtener_dialogo_personaje(personaje)
