@@ -27,7 +27,6 @@ class NPC(pygame.sprite.Sprite):
         self.animation_counter = 0
 
         self.personaje = personaje 
-
         self.visible = True
         self.make_invisible("fuera")
 
@@ -74,7 +73,6 @@ class NPC(pygame.sprite.Sprite):
                     
     def update(self, dt):
         self.update_animation()
-          
                     
     def update(self, dt):
         self.update_animation()

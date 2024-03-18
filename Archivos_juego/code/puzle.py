@@ -47,7 +47,6 @@ class Puzle:
                     break
             if len(possible_moves) > 0:
                 break
-
         
         if self.previous_choice == "right":
             possible_moves.remove("left") if "left" in possible_moves else possible_moves
@@ -73,7 +72,6 @@ class Puzle:
             self.tiles_grid[row][col], self.tiles_grid[row + 1][col] = self.tiles_grid[row + 1][col], \
                                                                        self.tiles_grid[row][col]
             
-
     def draw_tiles(self):
         self.tiles = []
         for row, tiles_row in enumerate(self.tiles_grid):
@@ -95,7 +93,6 @@ class Puzle:
         self.buttons_list.append(Button(350, 150, 200, 50, "INICIAR", WHITE, BLACK))
         self.draw_tiles()
 
-
     def run(self):
         self.playing = True
         if self.complete:
@@ -112,7 +109,6 @@ class Puzle:
                 self.start_game = False
                 self.complete = True 
                 self.playing = False
-
         if self.start_shuffle:
             self.shuffle()
             self.draw_tiles()
@@ -145,12 +141,10 @@ class Puzle:
 
 
     def events(self):
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit(0)
-
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 mouse_x = mouse_x - self.puzle_x

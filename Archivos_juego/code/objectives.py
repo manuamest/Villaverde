@@ -136,6 +136,7 @@ class Objectives:
         if nivel_completo:
             self.director.set_salir_escena(True)
 
+    # Muestra el desplegable
     def show_dropdown(self, left_mouse_button_down, event):
         if left_mouse_button_down and self.button.rect.collidepoint(event.pos):
             self.hide_dropdown = not self.hide_dropdown
@@ -153,6 +154,7 @@ class Objective:
         self.true_results = []
         self.completed = False
 
+    # Evalua si el/los Requirement del objetivo estan completos, para realizar una accion
     def evaluate(self):
         result = [(requirement.get_id(), requirement.evaluate(self.true_results)) for requirement in self.requirements]
         self.true_results = [id for (id, boolean) in result if boolean]
@@ -174,6 +176,7 @@ class Requirement:
         self.id = id
         self.dependencies = dependencies
 
+    # Si tiene dependencias evalua si estan completas, para realizar una accion
     def evaluate(self, true_results):
         if set(self.dependencies).issubset(set(true_results)):
             result = (self.check)(self.state)

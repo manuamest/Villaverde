@@ -11,7 +11,6 @@ class Tutorial:
         self.imagen_fondo_tutorial = pygame.image.load('./code/sprites/tutorial/tutorial.png').convert_alpha()
         self.posicion = self.imagen_fondo_tutorial.get_rect().topleft
         self.margen = 35
-
         self.indice_tutorial = 0
 
         tutorial_verano = [
@@ -71,13 +70,11 @@ class Tutorial:
         if self.tutorial_on and tutorial_enabled:
             tiempo_actual = time.time()
             texto = self.tutorial_mensajes[self.indice_tutorial]
-
             self.pantalla.blit(self.imagen_fondo_tutorial, self.posicion)
             if tiempo_actual - self.update > self.velocidad_texto:
                 if self.longitud_actual < len(texto):
                     self.longitud_actual += 1
                     self.ultimo_update = tiempo_actual
-
             texto_mostrado = texto[:self.longitud_actual]
             self.mostrar_texto(texto_mostrado, self.posicion)
             if self.key_z_pressed:
@@ -87,6 +84,7 @@ class Tutorial:
                 else:
                     self.reiniciar_letras()
 
+    # Muestra el texto letra a letra
     def mostrar_texto(self, texto_mostrado, posicion):
         max_ancho_linea = 350
         palabras = texto_mostrado.split(' ')
@@ -99,7 +97,6 @@ class Tutorial:
             prueba_linea = f"{linea_actual} {palabra}" if linea_actual else palabra
             prueba_superficie = self.fuente.render(prueba_linea, True, self.MARRON)
             prueba_ancho = prueba_superficie.get_width()
-
             if prueba_ancho <= max_ancho_linea:
                 linea_actual = prueba_linea
             else:
@@ -107,7 +104,6 @@ class Tutorial:
                                    (inicio_texto_x, inicio_texto_y + espacio_entre_lineas))
                 espacio_entre_lineas += 30
                 linea_actual = palabra
-
         if linea_actual:
             self.pantalla.blit(self.fuente.render(linea_actual, True, self.MARRON),
                                (inicio_texto_x, inicio_texto_y + espacio_entre_lineas))

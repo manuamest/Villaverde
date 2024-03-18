@@ -29,7 +29,6 @@ class Video:
         
         self.active = True
         self.frame_surf = pygame.Surface((0, 0))
-
         self.alt_resize = pygame.transform.smoothscale
         
     def close(self):
@@ -78,14 +77,12 @@ class Video:
         while self._video.get_pts() > self._frame_num * self.frame_delay:
             frame = self._video.get_frame()[0]
             self._frame_num += 1
-            
             if frame != None:
                 size =  frame[0].get_size()
                 img = pygame.image.frombuffer(frame[0].to_bytearray()[0], size, "RGB")
                 if size != self.current_size:
                     img = self.alt_resize(img, self.current_size)
                 self.frame_surf = img
-                
                 updated = True
                     
         return updated
@@ -102,5 +99,4 @@ class Video:
         if self.active and (self._update() or force_draw):
             surf.blit(self.frame_surf, pos)
             return True
-            
         return False

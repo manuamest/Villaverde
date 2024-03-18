@@ -69,7 +69,7 @@ class SoilLayer:
         self.surf_water = import_folder("./code/sprites/suelo/agua")
         # Escalar la imagen del suelo al tamaño del TILE_SIZE
         self.soil_surf = pygame.transform.scale(self.soil_surf, (TILE_SIZE, TILE_SIZE))
-        # Fases del trigo
+        # Fases del sistema de cultivo
         self.fases_cultivo = {  "arar": False,
                                 "sembrar": False,
                                 "regar": False}
@@ -142,9 +142,6 @@ class SoilLayer:
         for plant in self.plant_sprites.sprites():
             plant.grow()
 
-            
-        
-
     def create_soil_tiles(self):
         self.soil_sprites.empty()
         # Iterar sobre la zona cultivable solamente
@@ -157,6 +154,7 @@ class SoilLayer:
                         groups=[self.all_sprites, self.soil_sprites]
                     )
 
+    # Funciones que necesarias para evaluar objetivos
     def set_fase_cultivo(self, fase):
         self.fases_cultivo[fase] = True
     

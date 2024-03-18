@@ -19,7 +19,6 @@ class InteractableObject(pygame.sprite.Sprite):
             scaled_size = (original_image.get_width() * 15, original_image.get_height() * 15)
             self.image = pygame.transform.scale(original_image, scaled_size)
 
-
         self.original_image = self.image
         self.rect = self.image.get_rect(center=pos)
         self.z = LAYERS['ground plant']
@@ -38,15 +37,12 @@ class InteractableObject(pygame.sprite.Sprite):
             elif self.interactable_type == "dinero":
                 inventory.añadir_dinero()
                 self.kill()
-            elif self.interactable_type == "Fin":
-                director.set_salir_escena(True)
             elif self.interactable_type == "cama" and director.get_nivel_precompleto():
                 player.set_interact_with_last_object(True)
-        
         if self.interactable_type == "cartel_modista": 
-            self.draw.dibujar_cartel(inventory,"Estimado cliente: El establecimiento Eva Modista permanecera cerrado por reformas durante un tiempo.") 
+            self.draw.dibujar_cartel(inventory, "Estimado cliente: El establecimiento Eva Modista permanecera cerrado por reformas durante un tiempo.") 
         elif self.interactable_type == "cartel_mercader":
-            self.draw.dibujar_cartel(inventory,"Estimado cliente: El establecimiento de Xoel el Mercader permanecera cerrado durante un tiempo por asuntos personales...")
+            self.draw.dibujar_cartel(inventory, "Estimado cliente: El establecimiento de Xoel el Mercader permanecera cerrado durante un tiempo por asuntos personales...")
 
     def make_invisible(self, location):
         if self.location != location:

@@ -8,11 +8,9 @@ class Dialogue:
             
             self.pantalla = screen
             self.escene = escene
-
             pygame.mixer.init()
             self.draw = Draw(screen,self,self.escene)
             self.draw.definir_dialogos()
-        
 
             # Atributos
             self.opcion_escogida = False
@@ -39,12 +37,10 @@ class Dialogue:
             self.opcion_escogida_obrero = False
             self.objetos_dados_a_jordi = False
             self.ultimo_dialogo_cabra = False
-            
+    
             self.animals = []
 
-
             # Estrategia de cada personaje
-
             self.estrategias_dialogo = {
                 "don diego": DialogoDonDiegoEstrategia(self.draw,self.escene),
                 "obrero": DialogoObreroEstrategia(self.draw,self.escene),
@@ -66,7 +62,7 @@ class Dialogue:
                 "Gafas y cadena":0
             }
 
-           # Indices de cada personaje
+            # Indices de cada personaje
             self.indices = {
                 "don diego": 0,
                 "obrero": 0,
@@ -85,12 +81,9 @@ class Dialogue:
         self.actualizar_estrategias_con_animales()
 
     def actualizar_estrategias_con_animales(self):
-   
         self.estrategias_dialogo["vaca"].set_animals(self.animals)
         self.estrategias_dialogo["oveja"].set_animals(self.animals)
         self.estrategias_dialogo["pollo"].set_animals(self.animals)
-
-
 
     def set_indice_personaje(self, personaje, indice):
         self.indices[personaje] = indice
@@ -151,61 +144,47 @@ class Dialogue:
         
 
     # Getters
-
     def obtener_indice_personaje(self, personaje):
         return self.indices.get(personaje, 0)
 
     def obtener_opcion_escogida(self):
         return self.opcion_escogida
 
-  
     def obtener_madera_dada(self):
         return self.madera_dada
     
-
     def obtener_opcion_escogida_obrero(self):
         return self.opcion_escogida_obrero
     
-
     def obtener_opcion_escogida_pollo(self):
         return self.opcion_escogida_pollo
     
-
     def obtener_opcion_escogida_oveja(self):
         return self.opcion_escogida_oveja
-
 
     def obtener_opcion_escogida_vaca(self):
         return self.opcion_escogida_vaca
 
-
     def obtener_final_dialogo(self):
         return self.final_dialogo
     
-
     def get_gafas_dadas(self):
         return self.gafas_dadas
-    
 
     def get_jordan_dadas(self):
         return self.jordan_dadas
-    
 
     def get_bufandas_dadas(self):
         return self.bufandas_dadas
 
-
     def obtener_dialogo(self):
         return self.dialogo_abierto
-
 
     def obtener_material_dado(self):
         return self.material_dado
 
-
     def obtener_dinero_dado(self):
         return self.dinero_dado
-
 
     def obtener_confirmacion_abierta(self):
         return self.confirmacion_abierta
@@ -222,16 +201,12 @@ class Dialogue:
     def get_ultimo_dialogo_cabra(self):
         return self.ultimo_dialogo_cabra
     
-
     # Función para calcular cuanto ofrece/cobra el mercader o la modista
-
     def calcular_pago(self, servicio, item, cantidad):
         precio = self.draw.precios.get(servicio, {}).get(item, 0)
         return precio * cantidad
     
-
     # Función para determinar qué dialogo hay que procesar
-
     def obtener_dialogo_personaje(self, personaje):
         estrategia = self.estrategias_dialogo.get(personaje)
         if estrategia:
@@ -240,12 +215,10 @@ class Dialogue:
             return []
         
     # Función para la selección de las opiones de los personajes
-        
     def manejar_opciones_personaje(self, keys, inventory, inicio_texto_x, inicio_texto_y, personaje):
         estrategia = self.estrategias_dialogo.get(personaje)
         if estrategia:
             opciones = estrategia.manejar_opciones(self,self.draw)
-
             if self.opcion_seleccionada is None:
                 self.opcion_seleccionada = 0
 
@@ -260,19 +233,14 @@ class Dialogue:
             if keys[pygame.K_DOWN] and self.opcion_seleccionada < len(opciones) - 1:
                 self.opcion_seleccionada += 1
                 self.draw.sonido_select.play()
-
             if keys[pygame.K_x]:
-                    estrategia.ejecutar_accion(inventory,self, personaje,self.draw)
-                        
+                    estrategia.ejecutar_accion(inventory,self, personaje,self.draw)    
         else:
             print("No hay estrategia definida para este personaje.")
-
     
     # Función para determinar cuando se ha terminado un diálogo
-
     def manejar_interacciones(self, personaje, keys, inventory, inicio_texto_x, inicio_texto_y, longitud_actual):
         estrategia = self.estrategias_dialogo.get(personaje)
-    
         if estrategia:
             estrategia.manejar_interacciones(keys, inventory, inicio_texto_x, inicio_texto_y, longitud_actual, personaje,self,self.escene,self.draw)
         else:

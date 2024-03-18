@@ -67,7 +67,7 @@ class Director:
 
     def run(self):
         # Cargar música de fondo
-        pygame.mixer.music.load('./code/villaverde.mp3')
+        pygame.mixer.music.load('./code/sounds/villaverde.mp3')
         pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1)  # Repetir infinitamente
         self.menu.show_start_screen()
@@ -79,7 +79,7 @@ class Director:
 
         self.playVideo(self.intro_name)
         
-        pygame.mixer.music.load('./code/villaverde.mp3')
+        pygame.mixer.music.load('./code/sounds/villaverde.mp3')
         pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1)  # Repetir infinitamente
         
@@ -103,7 +103,6 @@ class Director:
     def _update_plants(self):
         current_time = time.time()
         elapsed_time = current_time - self.last_growth_time
-
         if elapsed_time >= 15:
             self.soil_layer.update_plants() 
             self.last_growth_time = current_time
@@ -122,12 +121,10 @@ class Director:
 
     def bucle(self, level):
         self.salir_escena = False
-        
         while not self.salir_escena:
             self.key_z_pressed = False
             left_mouse_button_down = False
             event_mouse = None
-
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -141,7 +138,6 @@ class Director:
                     if event.button == 1:
                         left_mouse_button_down = True
                         event_mouse = event
-
             if not self.paused:
                 self._update_plants()
                 dt = self.clock.tick(FPS) / 700

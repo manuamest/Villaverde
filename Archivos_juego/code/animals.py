@@ -110,7 +110,6 @@ class Animal(pygame.sprite.Sprite):
             elif personaje == "cabra":
                 dialogue.set_opcion_dialogo(True)
                 draw.dibujar_dialogo(inventory, "cabra")
-
           
     def update(self, dt):
         if self.state == "inactivo":

@@ -184,6 +184,7 @@ class Menu(MenuBase):
             
             self.clock.tick(FPS)
 
+# Submenu
 class Options(MenuBase):
     def __init__(self, screen, clock, background_image, background_rect, tutorial_enabled, full_screen):
         # Inicialización de la clase Options con los parámetros dados

@@ -1,21 +1,19 @@
 import pygame
 from settings import *
 from settings import SCREEN_WIDTH, SCREEN_HEIGHT
+
 class Inventory:
     def __init__(self,screen):
-
         # Cargar fuentes
         self.fuente = pygame.font.Font("./code/fonts/Stardew_Valley.ttf", 24)
         self.pantalla = screen
         self.pantalla_ancho = SCREEN_WIDTH
         self.pantalla_alto = SCREEN_HEIGHT
         self.screen = screen
-
         # Colores
         self.COLOR_LETRAS = (238, 212, 167)
         self.MARRON = (177, 75, 1)
         self.GRIS = (200, 200, 200)
-
         # Variables del inventario
         self.inventario_abierto = False
         self.inventario_items = {"Madera": 0, "Trigo": 0,"Bolsa de dinero":0,"Jordan":0,"Bufanda y boina":0,"Gafas y cadena":0,"Llave magistral":0}
@@ -39,13 +37,10 @@ class Inventory:
             nueva_imagen = pygame.image.load('./code/sprites/inventarios/otoño.png').convert_alpha()
         else:
             nueva_imagen = pygame.image.load('./code/sprites/inventarios/invierno.png').convert_alpha()
-
         nueva_imagen = pygame.transform.scale(nueva_imagen, (400, 300))
         nueva_imagen.set_alpha(200)
-
         # Actualizar la imagen de fondo del inventario
         self.imagen_fondo_inventario = nueva_imagen
-
 
     def añadir_madera(self):
         self.inventario_items["Madera"] += 5
@@ -102,24 +97,18 @@ class Inventory:
         return self.inventario_items["Trigo"] 
     
     def get_madera(self):
-
         return self.inventario_items["Madera"]
-    
      
     def get_bufandas(self):
-
         return self.inventario_items["Bufanda y boina"]
     
     def get_gafas(self):
-
         return self.inventario_items["Gafas y cadena"]
     
     def get_jordan(self):
-
         return self.inventario_items["Jordan"]
     
     def get_llave(self):
-
         return self.inventario_items["Llave magistral"]
 
     # Función para dibujar el inventario

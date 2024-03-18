@@ -39,7 +39,6 @@ class Player(pygame.sprite.Sprite):
         # Diálogo
         self.dialogue = dialogue
         self.personaje_actual = None
-        
 
         self.timers = {
             'uso de herramienta': Timer(350, self.use_tool),
@@ -118,12 +117,10 @@ class Player(pygame.sprite.Sprite):
             full_path = 'code/sprites/wuan/' + animation
             self.animations[animation] = import_folder(full_path)
 
-
     def animate(self, dt):
         self.frame_index += 4 * dt
         if self.frame_index >= len(self.animations[self.status]):
             self.frame_index = 0
-
         self.image = self.animations[self.status][int(self.frame_index)]
 
     def input(self):
@@ -131,7 +128,6 @@ class Player(pygame.sprite.Sprite):
 
         if not self.timers['uso de herramienta'].active:
             self.direction = pygame.math.Vector2(0, 0)  # Reiniciar la dirección
-
             if keys[pygame.K_w]:
                 self.direction.y = -1
                 self.status = 'arriba'
@@ -166,7 +162,6 @@ class Player(pygame.sprite.Sprite):
                 self.draw.dibujar_dialogo(self.inventory, self.personaje_actual)
                 dialogos_personaje = self.dialogue.obtener_dialogo_personaje(self.personaje_actual)
                 self.draw.procesar_dialogo(keys, dialogos_personaje,self.timers,self.personaje_actual)
-                    
 
             if keys[pygame.K_q] and not self.timers['cambio de herramienta'].active and not self.dialogue.obtener_dialogo():
                 self.timers['cambio de herramienta'].activate()
@@ -188,7 +183,6 @@ class Player(pygame.sprite.Sprite):
                             sprite.talk_animal(self.dialogue,self.draw, self.inventory, sprite.personaje)
                             self.personaje_actual = sprite.personaje
                             self.set_talk_with(self.personaje_actual)
-
                         elif distancia < 60:  
                             if isinstance(sprite, InteractableObject):
                                 sprite.interact(self.inventory, self.director, self)
@@ -234,63 +228,53 @@ class Player(pygame.sprite.Sprite):
         for obj in self.collision_layer:
             col_rect = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
             if new_rect.colliderect(col_rect):
-
                 if obj.name == "puertawuan":
                     self.level.change_map("./code/mapa/casas/casawuan.tmx", False, "wuan")
                     return True
                 if obj.name == "salidawuan":
                     self.level.change_map(self.level.main_tmx_map, True, "exterior_wuan")
                     return True
-                
                 elif obj.name == "puertaeva":
                     self.level.change_map("./code/mapa/casas/tiendaeva.tmx", False, "eva")
                     return True
                 elif obj.name == "salidaeva":
                     self.level.change_map(self.level.main_tmx_map, True, "exterior_eva")
                     return True
-                
                 elif obj.name == "puertaxoel":
                     self.level.change_map("./code/mapa/casas/tiendaxoel.tmx", False, "xoel")
                     return True
                 elif obj.name == "salidaxoel":
                     self.level.change_map(self.level.main_tmx_map, True, "exterior_xoel")
                     return True
-                
                 elif obj.name == "parking":
                     self.level.change_map("./code/mapa/parking/parking.tmx", False, "parking")
                     return True
                 elif obj.name == "salida_parking":
                     self.level.change_map(self.level.main_tmx_map, True, "exterior_parking")
                     return True
-                
                 elif obj.name == "playa":
                     self.level.change_map("./code/mapa/playa/playa.tmx", False, "playa")
                     return True
                 elif obj.name == "salida_playa":
                     self.level.change_map(self.level.main_tmx_map, True, "exterior_playa")
                     return True
-                
                 elif obj.name == "cementerio":
                     self.level.change_map("./code/mapa/cementerio/cementerio.tmx", False, "cementerio")
                     return True
                 elif obj.name == "salida_cementerio":
                     self.level.change_map(self.level.main_tmx_map, True, "exterior_cementerio")
                     return True
-
                 elif obj.name == "puertafinal":
                     if self.level.escene == "Nivel3":
                         if self.draw.dibujar_cartel(self.inventory):
                             self.level.change_map("./code/mapa/final/final.tmx", False, "final1")
                         return True
-                        
                 elif obj.name == "puertafinal2":
                     self.puzle.start_puzle()     
                     self.level.change_map("./code/mapa/final/final2.tmx", False, "final2")              
                     return True
-                
                 else:
                     return True
-        
         # Si no se detectan colisiones, se devuelve False
         return False
 
