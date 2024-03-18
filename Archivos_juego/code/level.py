@@ -244,10 +244,6 @@ class Level:
     def create_objects(self):
         objects_list = []
 
-        objects_list.append(InteractableObject(
-            pos=(900, 4100),
-            group=self.all_sprites, color=(255, 128, 0), draw=self.draw, dialogue=self.dialogue, sprite="./code/sprites/jordan.png", interactable_type="Fin", location="fuera"))
-
         if self.escene == "Nivel1":
             objects_list.append(InteractableObject(
                 pos=(875, 825),
