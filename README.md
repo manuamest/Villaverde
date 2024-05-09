@@ -1,6 +1,8 @@
 # Descripción del Videojuego
 La ambientación de este juego se sitúa en un entorno rural destrozado, donde los jugadores tienen la oportunidad de sumergirse en la vida en una granja y su reconstrucción. El juego ofrece la posibilidad de realizar actividades agrícolas, que incluyen el cultivo de cultivos, la gestión de animales y la compra-venta de productos. Los jugadores pueden disfrutar de la gestión de su granja, experimentando con diferentes estrategias para alcanzar unos objetivos prefijados. El juego tiene un estilo pixel art muy colorido.
-![Menu principal](URL_de_la_imagen)
+
+![Menu principal](https://github.com/manuamest/Villaverde/blob/main/menu.png)
+
 # Mecánicas Implementadas
 ## Sistema de Tala
 El jugador puede talar usando la tecla 'Espacio', tras haber seleccionado como herramienta la azada con la tecla 'Q'. Para talar un árbol es necesario golpearlo desde las distintas posiciones posibles hasta que este caiga.
